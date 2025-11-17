@@ -1,0 +1,79 @@
+# Performance & Memory Management {#sec-performance-memory}
+
+## Memory Management
+
+### Clean Up Old Generations
+```{r}
+#| eval: false
+# Remove data from old generations
+pop <- clean.up(pop, gen = 1:5)  # Keep gens 6+
+```
+
+### New Base Generation
+```{r}
+#| eval: false
+# Reset generation numbering, free memory
+pop <- new.base.generation(pop, base.gen = 10)
+# Gen 10 becomes new "gen 1"
+```
+
+## Computational Speed
+
+### Use miraculix
+```{r}
+#| eval: false
+# Install for fast matrix operations
+devtools::install_github("tpook92/miraculix")
+
+# Automatically used when available
+```
+
+### Optimize Cores
+```{r}
+#| eval: false
+# Find optimal number of cores for your system
+optimal <- optimize.cores(pop)
+```
+
+### Reduce Marker Number
+```{r}
+#| eval: false
+# Fewer SNPs = faster
+pop <- creating.diploid(
+  nsnp = 1000,     # Instead of 50000
+  nindi = 1000,
+  n.additive = 100
+)
+```
+
+### Disable Copying
+```{r}
+#| eval: false
+# Don't store full breeding values in memory
+pop <- breeding.diploid(
+  pop,
+  copy.breeding.values = FALSE
+)
+```
+
+## Parallel Processing
+
+```{r}
+#| eval: false
+# Run multiple simulations in parallel
+library(parallel)
+
+results <- mclapply(1:100, function(i) {
+  pop <- creating.diploid(nsnp = 5000, nindi = 200)
+  # ... run simulation ...
+  return(mean(get.bv(pop, gen = 10)))
+}, mc.cores = 4)
+```
+
+## Summary
+- Memory management techniques
+- Speed optimization
+- Parallel simulation
+
+Continue to [Chapter 17: Function Reference](17-function-reference.qmd)!
+

@@ -1,0 +1,47 @@
+# References {.unnumbered}
+
+## Key MoBPS Publications
+
+**Main Paper:**
+
+Pook, T., Freudenthal, J., Korte, A., & Simianer, H. (2020). Using local convolutional neural networks for genomic prediction. *Frontiers in Genetics*, 11, 561497.
+
+Pook, T., Schlather, M., & Simianer, H. (2020). MoBPS - Modular Breeding Program Simulator. *G3: Genes, Genomes, Genetics*, 10(6), 1915-1918.
+
+## Additional Resources
+
+- **GitHub Repository:** <https://github.com/tpook92/MoBPS>
+- **Web Interface:** <https://www.mobps.de>
+- **CRAN Page:** <https://CRAN.R-project.org/package=MoBPS>
+
+## Contact
+
+For questions, bug reports, or collaborations:
+
+- **Torsten Pook:** [Torsten.pook@wur.nl](mailto:Torsten.pook@wur.nl)
+- Wageningen University & Research
+- Animal Breeding and Genomics Group
+
+## Citation
+
+If you use MoBPS in your research, please cite:
+
+```
+@article{pook2020mobps,
+  title={MoBPS—Modular breeding program simulator},
+  author={Pook, Torsten and Schlather, Martin and Simianer, Henner},
+  journal={G3: Genes, Genomes, Genetics},
+  volume={10},
+  number={6},
+  pages={1915--1918},
+  year={2020},
+  publisher={Oxford University Press}
+}
+```
+
+## Related Software
+
+- **AlphaSimR:** Another breeding simulation package
+- **QMSim:** Quantitative and molecular simulation
+- **Genomic Selection packages:** rrBLUP, BGLR, sommer, BLUPF90
+

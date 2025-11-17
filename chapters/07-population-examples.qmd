@@ -1,0 +1,318 @@
+# Population Examples {#sec-population-examples}
+
+## Learning Objectives
+
+- See complete worked examples of population creation
+- Learn patterns for common scenarios
+- Understand how to combine features
+
+## Example 1: Inbred Lines (DH Production) {#sec-example-inbred}
+
+```{r}
+#| eval: false
+
+# Heterozygous founders
+pop <- creating.diploid(
+  nindi = 50,
+  nsnp = 5000,
+  sex.quota = 0,          # All "male" (no sex distinction)
+  n.additive = 100
+)
+
+# Create DH lines (instant homozygosity)
+pop <- breeding.diploid(
+  pop,
+  breeding.size = c(200, 0),
+  dh.mating = TRUE,        # Doubled haploid technology
+  name.cohort = "DH_Lines"
+)
+
+# Check homozygosity
+table(get.geno(pop, gen = 2))  # Should be mostly 0 and 2, few 1s
+```
+
+**Compare with selfing:**
+
+```{r}
+#| eval: false
+
+# 5 generations of selfing
+pop_selfing <- pop
+for (i in 1:5) {
+  pop_selfing <- breeding.diploid(
+    pop_selfing,
+    breeding.size = c(200, 0),
+    selfing.mating = TRUE
+  )
+}
+
+# Check reduction in heterozygosity
+for (gen in 1:6) {
+  print(table(get.geno(pop_selfing, gen = gen)))
+}
+# ~50% reduction per generation
+```
+
+## Example 2: MAGIC Population (Maize) {#sec-example-magic}
+
+Multi-parent Advanced Generation Inter-Cross:
+
+```{r}
+#| eval: false
+
+# 20 fully homozygous founder lines
+pop <- creating.diploid(
+  nindi = 20,
+  sex.quota = 0,
+  template.chip = "maize",
+  dataset = "homorandom",
+  n.additive = 200
+)
+
+# Round 1: All pairwise crosses (190 F1s)
+pop <- breeding.diploid(
+  pop,
+  breeding.size = c(190, 0),
+  breeding.all.combination = TRUE,  # All combinations
+  selection.size = c(20, 0),
+  max.offspring = 19                # Each parent in 19 crosses
+)
+
+# Rounds 2-4: Random inter-mating
+for (round in 1:3) {
+  pop <- breeding.diploid(
+    pop,
+    breeding.size = c(190, 0),
+    selection.size = c(190, 0),
+    same.sex.activ = TRUE,
+    same.sex.sex = 0,
+    max.offspring = 2
+  )
+}
+
+# Final: Create RILs by selfing
+pop <- breeding.diploid(
+  pop,
+  breeding.size = c(380, 0),
+  selfing.mating = TRUE
+)
+```
+
+## Example 3: Crossbreeding Setup {#sec-example-crossbreeding}
+
+Two-breed cross with breed-specific QTLs:
+
+```{r}
+#| eval: false
+
+# Breed A
+pop <- creating.diploid(
+  nsnp = 5000, nindi = 100,
+  founder.pool = 1,
+  name.cohort = "Breed_A",
+  n.additive = 0  # Add traits later
+)
+
+# Breed B
+pop <- creating.diploid(
+  population = pop,
+  nsnp = 5000, nindi = 100,
+  founder.pool = 2,
+  name.cohort = "Breed_B",
+  freq = "diff"  # Different allele frequencies
+)
+
+# Trait only in Breed A
+pop <- creating.trait(pop, n.additive = 100, trait.pool = 1)
+
+# Trait only in Breed B
+pop <- creating.trait(pop, n.additive = 100, trait.pool = 2)
+
+# Get QTL effects
+qtl_eff <- get.qtl.effects(pop)
+
+# Combine into joint trait
+combined_effects <- rbind(qtl_eff[[1]][[1]], qtl_eff[[1]][[2]])
+
+pop <- creating.trait(
+  pop,
+  real.bv.add = combined_effects,
+  replace.traits = TRUE,
+  trait.name = "Combined"
+)
+
+# Cross the breeds
+pop <- breeding.diploid(
+  pop,
+  selection.m.cohorts = "Breed_A",
+  selection.f.cohorts = "Breed_B",
+  breeding.size = c(100, 100),
+  name.cohort = "F1_Cross"
+)
+
+# Visualize breed composition
+pools <- get.pool(pop, gen = 3, plot = TRUE)
+```
+
+## Example 4: Maternal Effects {#sec-example-maternal}
+
+Birth weight with direct and maternal components:
+
+```{r}
+#| eval: false
+
+# Create two traits: direct and maternal
+pop <- creating.diploid(
+  nsnp = 5000,
+  nindi = 200,
+  n.additive = c(100, 100),
+  var.target = c(100, 20),
+  trait.cor = matrix(c(1, 0.5, 0.5, 1), nrow = 2),
+  is.maternal = c(FALSE, TRUE),
+  trait.name = c("Direct", "Maternal")
+)
+
+# Combine into observed trait
+pop <- add.combi(
+  pop,
+  trait = 3,
+  combi.weights = c(1, 1),
+  trait.name = "BirthWeight"
+)
+
+# Generate offspring
+pop <- breeding.diploid(pop, breeding.size = c(100, 100))
+
+# Check: maternal trait depends on dam's genotype
+bvs <- get.bv(pop, gen = 2)
+pedi <- get.pedigree(pop, gen = 2)
+head(cbind(pedi[, 3], bvs[2, ]))  # Dam ID vs maternal BV
+```
+
+## Example 5: Import VCF + Create Trait {#sec-example-vcf-import}
+
+```{r}
+#| eval: false
+
+# Import real genotypes
+pop <- creating.diploid(
+  vcf = "holstein_1000genomes.vcf.gz",
+  vcf.maxsnp = 50000,
+  vcf.maxindi = 500
+)
+
+# Add simulated trait
+pop <- creating.trait(
+  pop,
+  n.additive = 200,
+  n.dominant = 30,
+  var.target = 100,
+  mean.target = 8000,
+  trait.name = "MilkYield"
+)
+
+# Generate LD structure
+pop <- founder.simulation(
+  pop,
+  generations = 100,
+  breeding.size = 300
+)
+```
+
+## Example 6: Hard Sweep (Selection Signature) {#sec-example-hard-sweep}
+
+Simulate past selection:
+
+```{r}
+#| eval: false
+
+# Create base population
+pop <- creating.diploid(
+  nsnp = 10000,
+  nindi = 200,
+  chr.nr = 5,
+  n.additive = 100,
+  var.target = 1
+)
+
+# Simulate 50 generations of STRONG selection
+pop <- founder.simulation(
+  pop,
+  generations = 50,
+  breeding.size = 200,
+  selection.criteria = "bv",
+  selection.size = c(5, 5),      # Top 2.5%!
+  phenotyping = "all",
+  heritability = 0.8
+)
+
+# Now selective sweep visible in allele frequencies
+qtls <- get.qtl(pop)
+freq_gen1 <- get.allele.freq(pop, gen = 1, snp = qtls[[1]])
+freq_gen51 <- get.allele.freq(pop, gen = 51, snp = qtls[[1]])
+
+cbind(freq_gen1, freq_gen51)  # QTL frequencies changed
+```
+
+## Example 7: GxE (Genotype-by-Environment) {#sec-example-gxe}
+
+```{r}
+#| eval: false
+
+# Manual approach: Create correlated "traits" for each environment
+pop <- creating.diploid(
+  nsnp = 5000,
+  nindi = 200,
+  n.additive = c(100, 100),
+  trait.cor = matrix(c(1, 0.6, 0.6, 1), nrow = 2),  # Moderate correlation
+  trait.name = c("Env1", "Env2")
+)
+
+# Automated GxE model
+pop <- creating.diploid(
+  nsnp = 5000,
+  nindi = 200,
+  n.additive = 100,
+  gxe.model = TRUE,
+  gxe.covariance = matrix(c(1, 0.6, 0.6, 1.2), nrow = 2)
+)
+```
+
+## Example 8: Import PLINK Files {#sec-example-plink}
+
+```{r}
+#| eval: false
+
+# Read PLINK .ped and .map files
+ped_data <- read.pedmap(
+  path_ped = "mydata.ped",
+  path_map = "mydata.map"
+)
+
+# Create population
+pop <- creating.diploid(
+  dataset = ped_data$dataset,
+  map = ped_data$map,
+  n.additive = 150,
+  trait.name = "ImportedTrait"
+)
+```
+
+## Summary
+
+These examples demonstrate:
+
+- ✅ Inbred line creation (DH vs selfing)
+- ✅ MAGIC population schemes
+- ✅ Crossbreeding with breed-specific QTLs
+- ✅ Maternal effects modeling
+- ✅ VCF/PLINK data import
+- ✅ Selection signatures
+- ✅ Genotype-by-environment interactions
+
+## What's Next?
+
+With populations created, let's simulate **breeding actions** - selection, mating, and culling.
+
+Continue to [Chapter 8: Selection Strategies](08-selection-strategies.qmd)!
+

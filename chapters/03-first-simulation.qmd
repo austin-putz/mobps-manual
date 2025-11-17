@@ -1,0 +1,429 @@
+# Your First Simulation {#sec-first-simulation}
+
+## Learning Objectives
+
+By the end of this chapter, you will be able to:
+
+- Create a complete breeding program simulation from scratch
+- Phenotype and genotype individuals
+- Perform genomic prediction
+- Select superior individuals
+- Generate offspring from selected parents
+- Analyze genetic gain and inbreeding
+
+## The Complete Workflow
+
+Let's simulate a realistic breeding program with:
+
+- 100 founder animals
+- Genomic selection based on GBLUP
+- 10 generations of selection
+- Analysis of genetic gain and diversity
+
+## Step 1: Load MoBPS
+
+```{r}
+#| eval: false
+
+# Load the package
+library(MoBPS)
+
+# Optional: Set seed for reproducibility
+set.seed(12345)
+```
+
+## Step 2: Create Founder Population {#sec-create-founders}
+
+```{r}
+#| eval: false
+
+# Create a founder population
+population <- creating.diploid(
+  nsnp = 10000,                # 10,000 SNP markers
+  nindi = 100,                 # 100 individuals (50 male, 50 female)
+  chr.nr = 5,                  # 5 chromosomes
+  chromosome.length = 2,       # 2 Morgan each (10M total)
+  n.additive = 100,            # 100 additive QTLs
+  n.dominant = 20,             # 20 dominant QTLs
+  share.genotyped = 1,         # 100% genotyped
+  var.target = 1,              # Genetic variance = 1
+  name.cohort = "Founders"     # Name this cohort
+)
+```
+
+**What did we just create?**
+
+- A population with realistic genomic structure (5 chromosomes)
+- 100 animals with 10,000 SNPs each
+- A complex trait with both additive and dominance effects
+- All individuals are genotyped (ready for genomic selection)
+
+## Step 3: Generate Phenotypes {#sec-phenotype}
+
+```{r}
+#| eval: false
+
+# Phenotype all individuals in generation 1
+population <- breeding.diploid(
+  population,
+  phenotyping = "all",         # Phenotype everyone
+  phenotyping.gen = 1,         # From generation 1
+  heritability = 0.5           # h² = 0.5 (moderate heritability)
+)
+```
+
+**What happened?**
+
+- Phenotypes were simulated for all 100 founders
+- Residual variance was automatically calculated to achieve h² = 0.5
+- Phenotypes = True Breeding Value + Environmental Effect
+
+## Step 4: Genomic Prediction {#sec-prediction}
+
+```{r}
+#| eval: false
+
+# Perform genomic prediction (GBLUP)
+population <- breeding.diploid(
+  population,
+  bve = TRUE,                  # Calculate breeding value estimates
+  bve.gen = 1                  # Use generation 1 as training set
+)
+```
+
+**What happened?**
+
+- A genomic relationship matrix (G) was calculated
+- Breeding values were estimated using the internal GBLUP
+- Each individual now has an estimated breeding value (EBV)
+
+:::{.callout-note}
+## Internal BVE Method
+
+The `bve = TRUE` uses MoBPS's internal GBLUP assuming **known heritability**. For more realistic scenarios, use external software like `rrBLUP`, `BGLR`, or `BLUPF90` (covered in [Chapter 13](#sec-genomic-prediction)).
+:::
+
+## Step 5: Selection of Parents {#sec-selection}
+
+```{r}
+#| eval: false
+
+# Select top individuals as parents
+population <- breeding.diploid(
+  population,
+  selection.size = c(10, 10),         # 10 males, 10 females
+  selection.criteria = "bve",         # Select on estimated BV
+  selection.m.cohorts = "Founders",   # Males from Founders
+  selection.f.cohorts = "Founders",   # Females from Founders
+  breeding.size = c(50, 50),          # Generate 50M + 50F offspring
+  name.cohort = "Generation_2"        # Name the offspring
+)
+```
+
+**What happened?**
+
+- The top 10 males (by EBV) were selected as sires
+- The top 10 females (by EBV) were selected as dams
+- 100 offspring (50 male, 50 female) were created via random mating
+- Selection intensity: 10% of males, 10% of females
+
+## Step 6: Repeat for Multiple Generations {#sec-repeat}
+
+```{r}
+#| eval: false
+
+# Simulate 10 generations
+for (gen in 2:10) {
+
+  # Phenotype the current generation
+  population <- breeding.diploid(
+    population,
+    phenotyping = "all",
+    phenotyping.gen = gen,
+    heritability = 0.5
+  )
+
+  # Update genomic predictions using all data
+  population <- breeding.diploid(
+    population,
+    bve = TRUE,
+    bve.gen = 1:gen                   # Cumulative training set
+  )
+
+  # Select and breed
+  population <- breeding.diploid(
+    population,
+    selection.size = c(10, 10),
+    selection.criteria = "bve",
+    selection.gen = gen,               # Select from current generation
+    breeding.size = c(50, 50),
+    name.cohort = paste0("Generation_", gen+1)
+  )
+}
+```
+
+**What's happening in the loop?**
+
+1. Each generation is phenotyped
+2. Predictions are updated with cumulative data (generations 1 to current)
+3. Top 10 males and 10 females are selected
+4. 100 offspring are produced
+
+## Step 7: Analyze Results {#sec-analyze}
+
+### Genetic Gain
+
+```{r}
+#| eval: false
+
+# Plot breeding value trends
+bv.development(population)
+```
+
+This creates a plot showing:
+- Mean breeding value by generation
+- Genetic gain over time
+- Standard deviation within generation
+
+### Extract Breeding Values
+
+```{r}
+#| eval: false
+
+# Get true breeding values for all generations
+bv_all <- get.bv(population, gen = 1:11)
+
+# Calculate mean BV per generation
+mean_bv <- apply(bv_all, 2, mean)
+mean_bv
+
+# Calculate genetic gain from generation 1 to 11
+genetic_gain <- mean_bv[11] - mean_bv[1]
+cat("Total genetic gain:", round(genetic_gain, 3), "genetic SD\n")
+```
+
+### Inbreeding Analysis
+
+```{r}
+#| eval: false
+
+# Calculate genomic inbreeding for generation 11
+inbreeding_gen11 <- inbreeding.emp(population, gen = 11)
+mean(inbreeding_gen11)
+
+# Track inbreeding across generations
+inbreeding_trend <- numeric(11)
+for (gen in 1:11) {
+  inbreeding_trend[gen] <- mean(inbreeding.emp(population, gen = gen))
+}
+
+# Plot inbreeding trend
+plot(1:11, inbreeding_trend,
+     type = "b",
+     xlab = "Generation",
+     ylab = "Mean Inbreeding Coefficient",
+     main = "Inbreeding Over Time",
+     col = "red", lwd = 2)
+```
+
+### Kinship Between Individuals
+
+```{r}
+#| eval: false
+
+# Calculate kinship matrix for generation 11
+kinship_matrix <- kinship.emp(population, gen = 11)
+
+# Average kinship (off-diagonal elements)
+n <- nrow(kinship_matrix)
+avg_kinship <- sum(kinship_matrix - diag(diag(kinship_matrix))) / (n * (n - 1))
+cat("Average kinship in gen 11:", round(avg_kinship, 4), "\n")
+```
+
+### Population Structure (PCA)
+
+```{r}
+#| eval: false
+
+# PCA of generations 1, 5, and 11
+get.pca(population, gen = c(1, 5, 11))
+```
+
+This creates a PCA plot showing how the population has diverged from founders.
+
+## Complete Script
+
+Here's the entire simulation in one script:
+
+```{r}
+#| eval: false
+
+library(MoBPS)
+set.seed(12345)
+
+# 1. Create founders
+population <- creating.diploid(
+  nsnp = 10000, nindi = 100, chr.nr = 5, chromosome.length = 2,
+  n.additive = 100, n.dominant = 20, share.genotyped = 1,
+  var.target = 1, name.cohort = "Founders"
+)
+
+# 2. Phenotype founders
+population <- breeding.diploid(
+  population, phenotyping = "all", phenotyping.gen = 1, heritability = 0.5
+)
+
+# 3. Initial genomic prediction
+population <- breeding.diploid(population, bve = TRUE, bve.gen = 1)
+
+# 4. Create first offspring generation
+population <- breeding.diploid(
+  population, selection.size = c(10, 10), selection.criteria = "bve",
+  selection.m.cohorts = "Founders", selection.f.cohorts = "Founders",
+  breeding.size = c(50, 50), name.cohort = "Generation_2"
+)
+
+# 5. Repeat for 9 more generations
+for (gen in 2:10) {
+  population <- breeding.diploid(
+    population, phenotyping = "all", phenotyping.gen = gen, heritability = 0.5
+  )
+  population <- breeding.diploid(population, bve = TRUE, bve.gen = 1:gen)
+  population <- breeding.diploid(
+    population, selection.size = c(10, 10), selection.criteria = "bve",
+    selection.gen = gen, breeding.size = c(50, 50),
+    name.cohort = paste0("Generation_", gen+1)
+  )
+}
+
+# 6. Analyze results
+bv.development(population)
+bv_all <- get.bv(population, gen = 1:11)
+mean_bv <- apply(bv_all, 2, mean)
+cat("Genetic gain:", round(mean_bv[11] - mean_bv[1], 3), "\n")
+
+inbreeding_gen11 <- inbreeding.emp(population, gen = 11)
+cat("Mean inbreeding gen 11:", round(mean(inbreeding_gen11), 4), "\n")
+```
+
+## Understanding the Results
+
+### Expected Outcomes
+
+After 10 generations of selection with these parameters, you should see:
+
+- **Genetic gain:** ~2-4 genetic standard deviations
+- **Inbreeding:** ~5-15% (due to small effective population size)
+- **Selection response:** Decreasing per generation (plateauing)
+- **Prediction accuracy:** Improving with cumulative training data
+
+### Why These Results?
+
+1. **Strong selection** (10% selected) = high genetic gain
+2. **Small Ne** (10 males) = rapid inbreeding accumulation
+3. **Moderate h²** (0.5) = good response to selection
+4. **Finite genome** = some exhaustion of genetic variance
+
+## Variations to Try
+
+Modify the simulation to explore different scenarios:
+
+### Higher Selection Intensity
+
+```{r}
+#| eval: false
+
+# More extreme selection
+selection.size = c(5, 5)  # Top 5% of each sex
+```
+
+### Larger Population
+
+```{r}
+#| eval: false
+
+# Reduce inbreeding
+nindi = 500,                # 500 founders
+selection.size = c(25, 25),  # But still select top 10%
+breeding.size = c(250, 250)  # Maintain pop size
+```
+
+### Multiple Traits
+
+```{r}
+#| eval: false
+
+# Add a second trait
+n.additive = c(100, 80),           # Trait 1 & 2
+trait.cor = matrix(c(1, -0.3,      # Negative correlation
+                      -0.3, 1), nrow = 2)
+```
+
+### Different Mating Strategies
+
+```{r}
+#| eval: false
+
+# Avoid inbreeding
+avoid.mating.halfsib = TRUE,
+avoid.mating.fullsib = TRUE
+```
+
+## Common Issues and Solutions
+
+:::{.callout-warning}
+## "Not enough males/females"
+
+**Problem:** Selection.size too large for available individuals.
+
+**Solution:** Check population size:
+```{r}
+#| eval: false
+get.size(population, gen = 2)
+```
+Ensure `selection.size` doesn't exceed population size.
+:::
+
+:::{.callout-warning}
+## "No phenotypes available"
+
+**Problem:** Forgot to phenotype before BVE.
+
+**Solution:** Always phenotype before prediction:
+```{r}
+#| eval: false
+population <- breeding.diploid(population,
+                                phenotyping = "all",
+                                heritability = 0.5)
+```
+:::
+
+:::{.callout-tip}
+## Speeding Up Simulations
+
+For large-scale simulations:
+- Reduce `nsnp` (1000 SNPs often sufficient)
+- Use `miraculix` package for fast matrix operations
+- Set `copy.breeding.values = FALSE` to reduce memory
+:::
+
+## Summary
+
+In this chapter, you:
+
+- ✅ Created a complete breeding program simulation
+- ✅ Implemented genomic selection with GBLUP
+- ✅ Tracked genetic gain over 10 generations
+- ✅ Analyzed inbreeding and population structure
+- ✅ Learned the core MoBPS workflow
+
+## What's Next?
+
+Now that you can run a basic simulation, let's dive deeper into each component:
+
+- **Part 2:** Learn how to create more realistic founder populations with LD structure, import real data, and design complex trait architectures
+- **[Chapter 4](#sec-creating-populations):** Advanced population creation
+- **[Chapter 5](#sec-trait-architecture):** Sophisticated trait modeling
+
+Continue to [Chapter 4: Creating Populations](04-creating-populations.qmd)!
+

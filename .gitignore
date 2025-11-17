@@ -1,0 +1,25 @@
+# Quarto build outputs
+_book/
+*.html
+*.pdf
+/.quarto/
+
+# R files
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+*.Rproj
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.log
+*.aux
+*.out
+*.toc
+*-knit.md
+*.knit.md
+*.utf8.md

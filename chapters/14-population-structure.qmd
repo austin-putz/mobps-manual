@@ -1,0 +1,69 @@
+# Population Structure Analysis {#sec-population-structure}
+
+## Inbreeding Coefficients
+
+```{r}
+#| eval: false
+# Pedigree-based
+inb_ped <- inbreeding.exp(pop, gen = 5)
+
+# Genomic
+inb_gen <- inbreeding.emp(pop, gen = 5)
+
+mean(inb_ped)
+mean(inb_gen)
+```
+
+## Kinship Matrices
+
+```{r}
+#| eval: false
+# Expected (pedigree)
+K_exp <- kinship.exp(pop, gen = c(5, 6))
+
+# Empirical (genomic)
+K_emp <- kinship.emp(pop, gen = c(5, 6))
+
+# Average kinship
+mean(K_emp[upper.tri(K_emp)])
+```
+
+## PCA Analysis
+
+```{r}
+#| eval: false
+# Visualize population structure
+get.pca(pop, gen = 1:10, pca.color.breeding = TRUE)
+```
+
+## Admixture Analysis
+
+```{r}
+#| eval: false
+# K=3 ancestral populations
+get.admixture(pop, gen = 5, K = 3, plot = TRUE)
+```
+
+## Dendrograms
+
+```{r}
+#| eval: false
+# Hierarchical clustering
+get.dendrogram(pop, gen = 5, type = "kinship")
+```
+
+## Effective Population Size
+
+```{r}
+#| eval: false
+Ne <- get.effective.size(pop, gen = 5)
+print(Ne)
+```
+
+## Summary
+- Inbreeding and kinship analysis
+- PCA and admixture visualization
+- Effective population size
+
+Continue to [Chapter 15: Data Export/Import](15-data-export-import.qmd)!
+

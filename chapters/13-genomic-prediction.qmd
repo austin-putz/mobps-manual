@@ -1,0 +1,75 @@
+# Genomic Prediction {#sec-genomic-prediction}
+
+## Internal GBLUP (Known h²)
+
+```{r}
+#| eval: false
+pop <- breeding.diploid(
+  pop,
+  bve = TRUE,
+  bve.gen = 1:5,
+  heritability = 0.5     # Must provide h²
+)
+```
+
+## rrBLUP Package
+
+```{r}
+#| eval: false
+pop <- breeding.diploid(
+  pop,
+  bve = TRUE,
+  bve.gen = 1:5,
+  bve.rrblup = TRUE     # Uses rrBLUP::mixed.solve
+)
+```
+
+## Bayesian Methods (BGLR)
+
+```{r}
+#| eval: false
+pop <- breeding.diploid(
+  pop,
+  bve = TRUE,
+  bve.gen = 1:5,
+  bve.bglr = TRUE,
+  bglr.model = "BayesB"   # BayesA, BayesB, BayesC, etc.
+)
+```
+
+## BLUPF90
+
+```{r}
+#| eval: false
+pop <- breeding.diploid(
+  pop,
+  bve = TRUE,
+  bve.gen = 1:5,
+  bve.blupf90 = TRUE,
+  blupf90.path = "/path/to/blupf90"
+)
+```
+
+## Cross-Validation
+
+```{r}
+#| eval: false
+# Assess prediction accuracy
+accuracy <- analyze.bv(
+  pop,
+  gen = 5,
+  cohorts = "TestSet",
+  bve.gen = 1:4         # Training set
+)
+
+print(accuracy$correlation)  # Accuracy
+print(accuracy$bias)          # Bias
+```
+
+## Summary
+- Multiple BVE methods
+- Integration with R packages and external software
+- Accuracy assessment
+
+Continue to [Chapter 14: Population Structure](14-population-structure.qmd)!
+

@@ -1,0 +1,151 @@
+# Breeding Program Simulation {#sec-breeding-simulation}
+
+## Complete Breeding Cycle
+
+```{r}
+#| eval: false
+
+# Typical cycle
+pop <- breeding.diploid(
+  pop,
+  # 1. Phenotype
+  phenotyping = "all",
+  phenotyping.gen = 5,
+  heritability = 0.5,
+
+  # 2. Genotype (if needed)
+  genotyping.gen = 5,
+  share.genotyped = 0.8,
+
+  # 3. Predict breeding values
+  bve = TRUE,
+  bve.gen = 1:5,
+
+  # 4. Select parents
+  selection.criteria = "bve",
+  selection.size = c(10, 20),
+  selection.gen = 5,
+
+  # 5. Mate and create offspring
+  breeding.size = c(50, 50),
+  name.cohort = "Gen6"
+)
+```
+
+## Multi-Stage Selection
+
+```{r}
+#| eval: false
+
+# Stage 1: Phenotypic pre-selection
+pop <- breeding.diploid(
+  pop,
+  phenotyping = "all",
+  phenotyping.gen = 3,
+  heritability = 0.3
+)
+
+pop <- set.class(pop, gen = 3, class = 1)  # Mark all as candidates
+
+# Select top 50% phenotypically
+pheno <- get.pheno(pop, gen = 3)
+cutoff <- quantile(pheno, 0.5)
+# ... mark individuals above cutoff as class 2 ...
+
+# Stage 2: Genotype and genomic selection on survivors
+pop <- breeding.diploid(
+  pop,
+  genotyping.gen = 3,
+  genotyping.class = 2,     # Only genotype class 2
+  bve = TRUE,
+  selection.criteria = "bve",
+  selection.class = 2,       # Select from class 2
+  selection.size = c(10, 10),
+  breeding.size = c(100, 100)
+)
+```
+
+## Progeny Testing
+
+```{r}
+#| eval: false
+
+# Year 1: Create test progeny
+pop <- breeding.diploid(
+  pop,
+  selection.m.gen = 5,
+  selection.f.gen = 5,
+  selection.size = c(50, 50),
+  breeding.size = c(500, 500),    # Many test progeny
+  name.cohort = "TestProgeny"
+)
+
+# Year 2: Phenotype progeny
+pop <- breeding.diploid(
+  pop,
+  phenotyping.cohorts = "TestProgeny",
+  phenotyping = "all",
+  heritability = 0.5
+)
+
+# Calculate parent averages from progeny
+pop <- breeding.diploid(
+  pop,
+  bve = TRUE,
+  bve.gen = 6  # Use progeny phenotypes
+)
+
+# Year 3: Select bulls based on daughter performance
+pop <- breeding.diploid(
+  pop,
+  selection.criteria = "bve",
+  selection.m.gen = 5,      # Original candidate bulls
+  selection.size = c(5, 20),
+  breeding.size = c(100, 100)
+)
+```
+
+## Nucleus Breeding Program
+
+```{r}
+#| eval: false
+
+# Create nucleus
+pop <- creating.diploid(
+  nsnp = 10000, nindi = 100,
+  n.additive = 100,
+  name.cohort = "Nucleus"
+)
+
+# Nucleus selection (intensive)
+pop <- breeding.diploid(
+  pop,
+  phenotyping.cohorts = "Nucleus",
+  heritability = 0.5,
+  bve = TRUE,
+  selection.criteria = "bve",
+  selection.size = c(5, 10),
+  breeding.size = c(50, 50),
+  name.cohort = "Nucleus_Gen2"
+)
+
+# Commercial multiplier (uses nucleus genetics)
+pop <- breeding.diploid(
+  pop,
+  selection.m.cohorts = "Nucleus_Gen2",
+  selection.f.cohorts = "Nucleus",    # Or commercial dams
+  selection.size = c(10, 100),
+  breeding.size = c(500, 500),
+  name.cohort = "Commercial"
+)
+```
+
+## Summary
+
+- Complete breeding cycles
+- Multi-stage selection
+- Progeny testing schemes
+- Nucleus breeding programs
+
+Continue to [Chapter 11: Plant vs Animal Breeding](11-plant-vs-animal.qmd)!
+

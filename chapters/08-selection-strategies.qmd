@@ -1,0 +1,172 @@
+# Selection Strategies {#sec-selection-strategies}
+
+## Overview
+
+Selection is controlled through `breeding.diploid()` parameters. Key options:
+
+- `selection.criteria` - What to select on
+- `selection.size` - How many to select
+- `selection.m.gen` / `selection.f.gen` - Which generations
+- `selection.index` - Multi-trait selection
+
+## Random Selection
+
+```{r}
+#| eval: false
+
+pop <- breeding.diploid(
+  pop,
+  selection.criteria = "random",
+  selection.size = c(20, 20),
+  breeding.size = c(100, 100)
+)
+```
+
+## Phenotypic Selection
+
+```{r}
+#| eval: false
+
+# Phenotype first
+pop <- breeding.diploid(pop, phenotyping = "all", heritability = 0.5)
+
+# Select on phenotypes
+pop <- breeding.diploid(
+  pop,
+  selection.criteria = "pheno",
+  selection.size = c(10, 10),
+  breeding.size = c(50, 50)
+)
+```
+
+## Genomic Selection (BVE)
+
+```{r}
+#| eval: false
+
+# Calculate BVEs
+pop <- breeding.diploid(pop, bve = TRUE, bve.gen = 1:3)
+
+# Select on estimated breeding values
+pop <- breeding.diploid(
+  pop,
+  selection.criteria = "bve",
+  selection.size = c(10, 10),
+  breeding.size = c(50, 50)
+)
+```
+
+## Selection on True Breeding Values
+
+```{r}
+#| eval: false
+
+# Select on known BVs (simulation only!)
+pop <- breeding.diploid(
+  pop,
+  selection.criteria = "bv",
+  selection.size = c(5, 5),
+  breeding.size = c(100, 100)
+)
+```
+
+## Multi-Trait Selection Index
+
+```{r}
+#| eval: false
+
+# Define economic weights
+pop <- breeding.diploid(
+  pop,
+  selection.criteria = "bve",
+  selection.index = c(1, 10, 5),  # Weights for traits 1,2,3
+  selection.size = c(10, 10),
+  breeding.size = c(50, 50)
+)
+```
+
+## Truncation Selection with Variable Intensity
+
+```{r}
+#| eval: false
+
+# Select top males, more females
+pop <- breeding.diploid(
+  pop,
+  selection.criteria = "bve",
+  selection.size = c(5, 20),     # 5% males, 20% females
+  selection.m.gen = 4,
+  selection.f.gen = 4,
+  breeding.size = c(50, 50)
+)
+```
+
+## Threshold Selection
+
+```{r}
+#| eval: false
+
+# Only individuals above threshold
+pop <- breeding.diploid(
+  pop,
+  selection.criteria = "bve",
+  selection.m.threshold = 105,   # BVE > 105
+  selection.f.threshold = 100,   # BVE > 100
+  breeding.size = c(50, 50)
+)
+```
+
+## Optimal Genetic Contribution (OGC)
+
+Balance genetic gain with diversity:
+
+```{r}
+#| eval: false
+
+# Requires optiSel package
+library(optiSel)
+
+pop <- breeding.diploid(
+  pop,
+  selection.algorithm = "ogc",
+  ogc.target.inbreeding = 0.01,  # Max 1% inbreeding increase
+  selection.size = c(20, 20),
+  breeding.size = c(100, 100)
+)
+```
+
+## Custom Selection Function
+
+```{r}
+#| eval: false
+
+# Define custom selection
+my_selector <- function(population, gen, sex) {
+  bv <- get.bv(population, gen = gen, sex = sex)
+  pheno <- get.pheno(population, gen = gen, sex = sex)
+
+  # Custom criterion: BV + 0.5*pheno
+  score <- bv[1,] + 0.5 * pheno[1,]
+
+  # Return indices of selected individuals
+  return(order(score, decreasing = TRUE)[1:10])
+}
+
+# Use in breeding
+pop <- breeding.diploid(
+  pop,
+  selection.m.function = my_selector,
+  selection.f.function = my_selector,
+  breeding.size = c(50, 50)
+)
+```
+
+## Summary
+
+- Random, phenotypic, genomic, and true BV selection
+- Multi-trait selection indices
+- Threshold and OGC methods
+- Custom selection functions
+
+Continue to [Chapter 9: Mating Designs](09-mating-designs.qmd)!
+

@@ -1,0 +1,71 @@
+# Function Reference Quick Guide {#sec-function-reference}
+
+## Core Functions
+
+| Function | Purpose |
+|----------|---------|
+| `creating.diploid()` | Create founder population |
+| `breeding.diploid()` | Simulate breeding actions |
+| `creating.trait()` | Add traits to population |
+
+## Extraction Functions (get.*)
+
+| Function | Returns |
+|----------|---------|
+| `get.bv()` | True breeding values |
+| `get.bve()` | Estimated breeding values |
+| `get.pheno()` | Phenotypes |
+| `get.geno()` | Genotypes (0/1/2 matrix) |
+| `get.haplo()` | Haplotypes |
+| `get.pedigree()` | Pedigree (ID, Sire, Dam) |
+| `get.map()` | Genetic map |
+| `get.qtl()` | QTL positions |
+
+## Analysis Functions
+
+| Function | Purpose |
+|----------|---------|
+| `kinship.emp()` | Genomic kinship matrix |
+| `kinship.exp()` | Pedigree kinship matrix |
+| `inbreeding.emp()` | Genomic inbreeding |
+| `inbreeding.exp()` | Pedigree inbreeding |
+| `get.pca()` | PCA plot |
+| `get.admixture()` | Admixture analysis |
+| `bv.development()` | Genetic trend plot |
+| `analyze.bv()` | Prediction accuracy |
+
+## Utility Functions
+
+| Function | Purpose |
+|----------|---------|
+| `summary()` | Population summary |
+| `get.size()` | Number of individuals |
+| `set.class()` | Assign class to individuals |
+| `clean.up()` | Free memory |
+| `new.base.generation()` | Reset generation numbering |
+
+## Export Functions
+
+| Function | Purpose |
+|----------|---------|
+| `get.vcf()` | Export VCF file |
+| `get.plink()` | Export PLINK files |
+| `get.pedmap()` | Export ped/map files |
+
+## For Full Documentation
+
+```{r}
+#| eval: false
+
+# Function help
+?creating.diploid
+?breeding.diploid
+
+# Package help
+help(package = "MoBPS")
+```
+
+## Summary
+
+Quick reference for common MoBPS functions. See the full manual for complete parameter lists and details.
+

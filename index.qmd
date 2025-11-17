@@ -1,0 +1,74 @@
+# Welcome {.unnumbered}
+
+Welcome to the **MoBPS Cookbook** - a practical, hands-on guide to using the Modular Breeding Program Simulator!
+
+## What is MoBPS?
+
+MoBPS (Modular Breeding Program Simulator) is a powerful R package for stochastic simulation of breeding programs. Whether you're working with:
+
+- **Animal breeding** (dairy cattle, pigs, chickens, etc.)
+- **Plant breeding** (maize, wheat, crops with selfing/DH)
+- **Conservation programs**
+- **Research on breeding strategies**
+
+MoBPS provides the flexibility and tools you need to simulate, analyze, and optimize breeding schemes.
+
+## About This Cookbook
+
+Unlike traditional reference manuals, this **cookbook** is designed to:
+
+- ✅ **Show you HOW** to accomplish specific tasks
+- ✅ **Provide working examples** you can copy and adapt
+- ✅ **Build progressively** from simple to complex scenarios
+- ✅ **Focus on practical workflows** rather than exhaustive parameter lists
+
+## Who Should Use This Book?
+
+This cookbook is for:
+
+- **Beginners** learning MoBPS for the first time
+- **Practitioners** designing breeding programs
+- **Researchers** evaluating breeding strategies
+- **Students** studying quantitative genetics and breeding
+
+## How to Use This Book
+
+The book is organized into 5 main parts:
+
+1. **Getting Started** - Installation, core concepts, your first simulation
+2. **Building Populations & Traits** - Creating realistic founder populations
+3. **Selection, Mating & Breeding** - Simulating breeding programs
+4. **Genotyping & Genomic Analysis** - Working with SNP data and predictions
+5. **Advanced Topics & Reference** - Expert techniques and function references
+
+**Recommended approach:**
+- Start with Part 1 if you're new to MoBPS
+- Use Ctrl+F / Search to find specific topics
+- Run the code examples in your own R session
+- Modify examples to fit your needs
+
+## Getting Help
+
+If you get stuck:
+
+- 📧 Contact Torsten Pook: [Torsten.pook@wur.nl](mailto:Torsten.pook@wur.nl)
+- 🌐 Visit [www.mobps.de](https://www.mobps.de)
+- 📦 GitHub repository: [github.com/tpook92/MoBPS](https://github.com/tpook92/MoBPS)
+
+## Authors
+
+**MoBPS Development Team:**
+
+- Torsten Pook (Wageningen University & Research)
+- Martin Schlather (University of Mannheim)
+- Henner Simianer (University of Göttingen)
+
+---
+
+**Ready to get started?** Head to [Chapter 1: Introduction](chapters/01-introduction.qmd) or jump to any topic using the navigation menu!
+
+:::{.callout-note}
+## The MoBPS Name
+MoBPS is named after a pug (German: "Mops")! The development team has a soft spot for this friendly breed.
+:::
+

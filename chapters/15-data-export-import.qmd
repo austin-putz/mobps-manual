@@ -1,0 +1,73 @@
+# Data Export & Import {#sec-data-export-import}
+
+## Export Genotypes
+
+### VCF Format
+```{r}
+#| eval: false
+get.vcf(pop, gen = 5, path = "generation5.vcf")
+```
+
+### PLINK Format
+```{r}
+#| eval: false
+get.plink(pop, gen = 5, path = "generation5")  # Creates .bed/.bim/.fam
+get.pedmap(pop, gen = 5, path = "generation5") # Creates .ped/.map
+```
+
+## Export Pedigrees
+
+```{r}
+#| eval: false
+# Standard pedigree (ID, Sire, Dam)
+ped <- get.pedigree(pop, gen = 5)
+write.csv(ped, "pedigree.csv")
+
+# Extended pedigree (more info)
+ped2 <- get.pedigree2(pop, gen = 5)  # Includes sex, cohort, etc.
+```
+
+## Export Phenotypes
+
+```{r}
+#| eval: false
+pheno <- get.pheno(pop, gen = 1:5)
+write.csv(t(pheno), "phenotypes.csv")
+```
+
+## Export Breeding Values
+
+```{r}
+#| eval: false
+bv <- get.bv(pop, gen = 1:10)
+bve <- get.bve(pop, gen = 1:10)
+
+data_export <- data.frame(
+  ID = colnames(bv),
+  TrueBV = bv[1,],
+  EstimatedBV = bve[1,]
+)
+write.csv(data_export, "breeding_values.csv")
+```
+
+## Import External BVEs
+
+```{r}
+#| eval: false
+# Calculate BVEs externally, then import
+external_bve <- read.csv("external_predictions.csv")
+
+pop <- insert.bve(
+  pop,
+  bve = external_bve$EBV,
+  gen = 5
+)
+```
+
+## Summary
+- Export to VCF, PLINK formats
+- Pedigree and phenotype export
+- Import external predictions
+
+Continue to [Chapter 16: Performance & Memory](16-performance-memory.qmd)!
+

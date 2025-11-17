@@ -1,0 +1,549 @@
+# Creating Founder Populations {#sec-creating-populations}
+
+## Learning Objectives
+
+By the end of this chapter, you will be able to:
+
+- Generate simulated genomic data with different patterns
+- Import real genomic data (VCF, PLINK formats)
+- Set up genetic maps and chromosome structures
+- Control allele frequencies and genetic diversity
+- Create multiple breeds/populations
+
+## Overview of `creating.diploid()`
+
+The `creating.diploid()` function is your starting point for every MoBPS simulation. It creates the **founder population** with:
+
+- Genomic data (markers/haplotypes)
+- Genetic map (chromosomes, positions)
+- Trait architecture (QTLs, effects)
+- Population structure (cohorts, sex, pools)
+
+## Generating Simulated Data {#sec-simulated-data}
+
+### Basic Random Population
+
+The simplest approach: generate random genotypes.
+
+```{r}
+#| eval: false
+
+# Create a simple founder population
+population <- creating.diploid(
+  nsnp = 5000,          # 5,000 SNP markers
+  nindi = 200,          # 200 individuals
+  n.additive = 100      # 100 QTLs
+)
+```
+
+**Default behavior:**
+- Single chromosome (5 Morgan length)
+- Random genotypes with allele frequency ~ Uniform(0, 1)
+- 50% male, 50% female
+- All individuals diploid and unrelated
+
+### Controlling Allele Frequencies
+
+Allele frequencies dramatically affect genetic architecture:
+
+```{r}
+#| eval: false
+
+# Uniform allele frequencies (default)
+pop_uniform <- creating.diploid(
+  nsnp = 1000,
+  nindi = 100,
+  beta_shape1 = 1,      # Beta(1,1) = Uniform(0,1)
+  beta_shape2 = 1
+)
+
+# Common variants (higher MAF)
+pop_common <- creating.diploid(
+  nsnp = 1000,
+  nindi = 100,
+  beta_shape1 = 2,      # Beta(2,2) concentrates near 0.5
+  beta_shape2 = 2
+)
+
+# Rare variants (low MAF)
+pop_rare <- creating.diploid(
+  nsnp = 1000,
+  nindi = 100,
+  beta_shape1 = 0.5,    # Beta(0.5,0.5) concentrates near 0 and 1
+  beta_shape2 = 0.5
+)
+```
+
+![Allele frequency distributions from Beta(α, β)](https://en.wikipedia.org/wiki/Beta_distribution)
+
+:::{.callout-tip}
+## Realistic Allele Frequencies
+
+Real populations often have many rare variants and fewer common variants. Use `beta_shape1 = 0.3, beta_shape2 = 1.5` to approximate this.
+:::
+
+### Initialization Modes
+
+Control starting genotypes with `dataset` parameter:
+
+```{r}
+#| eval: false
+
+# Mode 1: All zeros (000.../000...)
+pop_zero <- creating.diploid(nsnp = 1000, nindi = 100,
+                              dataset = "all0")
+
+# Mode 2: Fully heterozygous (000.../111...)
+pop_het <- creating.diploid(nsnp = 1000, nindi = 100,
+                             dataset = "allhetero")
+
+# Mode 3: Random (default, X₁X₂X₃.../X₄X₅X₆...)
+pop_random <- creating.diploid(nsnp = 1000, nindi = 100,
+                                dataset = "random")
+
+# Mode 4: Homozygous random (X₁X₂X₃.../X₁X₂X₃... same haplotypes)
+pop_homo <- creating.diploid(nsnp = 1000, nindi = 100,
+                              dataset = "homorandom")
+```
+
+**When to use each mode:**
+
+- `"random"` - General purpose, unrelated founders
+- `"homorandom"` - Create inbred lines or DH lines
+- `"allhetero"` - Maximum heterozygosity (F1s)
+- `"all0"` - Specific starting conditions or testing
+
+## Chromosome Structure {#sec-chromosomes}
+
+### Single vs. Multiple Chromosomes
+
+```{r}
+#| eval: false
+
+# Single chromosome (default)
+pop_single <- creating.diploid(
+  nsnp = 5000,
+  chromosome.length = 5  # 5 Morgan
+)
+
+# Multiple chromosomes
+pop_multi <- creating.diploid(
+  nsnp = 10000,
+  chr.nr = c(2000, 2000, 3000, 3000),  # SNPs per chromosome
+  chromosome.length = c(2, 2, 1.5, 1.5) # Length in Morgan
+)
+```
+
+**Consequences of chromosome structure:**
+- More chromosomes = more recombination = faster LD decay
+- Longer chromosomes = stronger linkage between distant markers
+- Realistic structure improves simulation accuracy
+
+### Using Template Species Maps
+
+MoBPS includes common species maps:
+
+```{r}
+#| eval: false
+
+# Cattle map
+pop_cattle <- creating.diploid(
+  nsnp = 50000,
+  nindi = 100,
+  template.chip = "cattle"   # 29 autosomes
+)
+
+# Other available templates
+template.chip = "pig"       # Sus scrofa
+template.chip = "chicken"   # Gallus gallus
+template.chip = "sheep"     # Ovis aries
+template.chip = "maize"     # Zea mays
+```
+
+These provide realistic:
+- Number of chromosomes
+- Relative chromosome lengths (in Morgan)
+- Approximate recombination rates
+
+:::{.callout-note}
+## What Templates DON'T Include
+
+Templates provide chromosome **structure only**, not:
+- Real marker positions (SNPs are evenly spaced)
+- Real allele frequencies
+- Real LD patterns
+
+For these, import real data (see next section).
+:::
+
+### Custom Genetic Maps
+
+Provide a full genetic map:
+
+```{r}
+#| eval: false
+
+# Create a custom map
+# Columns: chr, snp_name, position_Morgan, position_bp, allele_freq
+my_map <- data.frame(
+  chr = c(1, 1, 1, 2, 2, 2),
+  snp = c("rs001", "rs002", "rs003", "rs004", "rs005", "rs006"),
+  pos_M = c(0.0, 0.5, 1.0, 0.0, 0.3, 0.6),
+  pos_bp = c(1000, 50000000, 100000000, 1000, 30000000, 60000000),
+  freq = c(0.2, 0.5, 0.8, 0.1, 0.45, 0.7)
+)
+
+# Use the map
+population <- creating.diploid(
+  map = my_map,
+  nindi = 100,
+  n.additive = 50
+)
+```
+
+## Importing Real Data {#sec-import-real-data}
+
+### From VCF Files
+
+VCF (Variant Call Format) is standard for genomic data:
+
+```{r}
+#| eval: false
+
+# Import VCF file
+population <- creating.diploid(
+  vcf = "path/to/genotypes.vcf",  # Or .vcf.gz
+  n.additive = 100,
+  vcf.maxsnp = 10000,             # Optional: limit SNPs
+  vcf.maxindi = 500               # Optional: limit individuals
+)
+```
+
+**What gets imported:**
+- Phased or unphased genotypes
+- Chromosome numbers
+- Base pair positions
+- Marker names (rsIDs)
+
+### From PLINK Files
+
+PLINK (.ped/.map or .bed/.bim/.fam) is also widely used:
+
+```{r}
+#| eval: false
+
+# Import .ped and .map files
+ped_data <- read.pedmap("path/to/data.ped", "path/to/data.map")
+
+# Create population from imported data
+population <- creating.diploid(
+  dataset = ped_data$dataset,  # Genotype matrix
+  map = ped_data$map,           # Genetic map
+  n.additive = 100
+)
+```
+
+### Converting Genotypes to Haplotypes
+
+Imported genotype data needs proper format:
+
+```{r}
+#| eval: false
+
+# If you have a genotype matrix (individuals × SNPs coded 0/1/2)
+# Convert to haplotype format for MoBPS
+
+# Example: genotype matrix
+geno_matrix <- matrix(sample(0:2, 1000, replace = TRUE),
+                      nrow = 10, ncol = 100)  # 10 indi, 100 SNPs
+
+# Convert: each individual becomes 2 haplotypes
+haplo_matrix <- matrix(0, nrow = ncol(geno_matrix), ncol = 2 * nrow(geno_matrix))
+
+for (i in 1:nrow(geno_matrix)) {
+  for (j in 1:ncol(geno_matrix)) {
+    if (geno_matrix[i,j] == 0) {
+      haplo_matrix[j, 2*i-1] <- 0
+      haplo_matrix[j, 2*i] <- 0
+    } else if (geno_matrix[i,j] == 1) {
+      haplo_matrix[j, 2*i-1] <- 0
+      haplo_matrix[j, 2*i] <- 1
+    } else {  # == 2
+      haplo_matrix[j, 2*i-1] <- 1
+      haplo_matrix[j, 2*i] <- 1
+    }
+  }
+}
+
+# Use in MoBPS
+population <- creating.diploid(
+  dataset = haplo_matrix,
+  n.additive = 20
+)
+```
+
+## Sex Ratio Control {#sec-sex-control}
+
+### Controlling Sex Proportions
+
+```{r}
+#| eval: false
+
+# Equal sex ratio (default)
+pop_equal <- creating.diploid(nsnp = 1000, nindi = 100,
+                               sex.quota = 0.5)  # 50% female
+
+# More females
+pop_female <- creating.diploid(nsnp = 1000, nindi = 100,
+                                sex.quota = 0.7)  # 70% female
+
+# Specify exactly
+pop_exact <- creating.diploid(
+  nsnp = 1000,
+  nindi = 100,
+  sex.s = c(rep(1, 30), rep(2, 70))  # 30 males, 70 females
+)
+```
+
+### One-Sex Mode
+
+For plants or situations where sex doesn't matter:
+
+```{r}
+#| eval: false
+
+# All individuals in same group
+population <- creating.diploid(
+  nsnp = 1000,
+  nindi = 200,
+  one.sex.mode = TRUE  # Deactivate two-sex system
+)
+```
+
+## Creating Multiple Breeds/Populations {#sec-multiple-breeds}
+
+### Sequential Addition
+
+Create distinct founder populations:
+
+```{r}
+#| eval: false
+
+# Create breed 1
+population <- creating.diploid(
+  nsnp = 5000,
+  nindi = 100,
+  n.additive = 100,
+  founder.pool = 1,           # Mark as pool 1
+  name.cohort = "Breed_A"
+)
+
+# Add breed 2 (different allele frequencies)
+population <- creating.diploid(
+  population = population,    # Add to existing population
+  nsnp = 5000,
+  nindi = 100,
+  n.additive = 100,
+  founder.pool = 2,           # Mark as pool 2
+  name.cohort = "Breed_B",
+  freq = "diff"               # Different frequencies
+)
+```
+
+**Uses for founder pools:**
+- Model crossbreeding programs
+- Track breed composition (admixture)
+- Assign breed-specific QTL effects
+- Study heterosis
+
+### Adding Chromosomes
+
+Add additional chromosomes to existing population:
+
+```{r}
+#| eval: false
+
+# Start with chromosome 1
+pop <- creating.diploid(nsnp = 1000, nindi = 100)
+
+# Add chromosome 2
+pop <- creating.diploid(
+  population = pop,
+  nsnp = 1500,
+  add.chromosome = TRUE  # Add, don't replace
+)
+```
+
+## Marker Positions {#sec-marker-positions}
+
+### Even Spacing (Default)
+
+```{r}
+#| eval: false
+
+# Markers evenly distributed
+pop <- creating.diploid(
+  nsnp = 1000,
+  chromosome.length = 5  # Spread evenly over 5M
+)
+```
+
+**Best for:** Fast computation, when exact positions don't matter.
+
+### From Base Pairs
+
+Convert physical positions to Morgan:
+
+```{r}
+#| eval: false
+
+# Provide base pair positions
+bp_positions <- seq(1, 100000000, length.out = 5000)  # 100 Mb
+
+pop <- creating.diploid(
+  nsnp = 5000,
+  bp = bp_positions,
+  bpcm.conversion = 1000000   # 1 Mb = 1 cM (typical for mammals)
+)
+```
+
+**Common conversion rates:**
+- Mammals: 1,000,000 bp/cM (= 100,000,000 bp/Morgan)
+- Chicken: 300,000 bp/cM (= 30,000,000 bp/Morgan)
+- Varies by species and chromosome!
+
+### Directly in Morgan
+
+```{r}
+#| eval: false
+
+# Provide positions in Morgan directly
+positions_M <- c(0.0, 0.01, 0.05, 0.1, 0.15, ...)  # Custom positions
+
+pop <- creating.diploid(
+  nsnp = 1000,
+  snp.position = positions_M,
+  position.scaling = FALSE  # Don't rescale
+)
+```
+
+## Advanced Options {#sec-advanced-options}
+
+### Genotyping Arrays
+
+Simulate partial genotyping (chip data):
+
+```{r}
+#| eval: false
+
+# Not all SNPs genotyped
+pop <- creating.diploid(
+  nsnp = 50000,          # 50K total SNPs
+  nindi = 1000,
+  genotyped.s = rep(c(1, 0, 0, 0), 12500),  # Every 4th SNP genotyped
+  share.genotyped = 0.8  # 80% of individuals genotyped
+)
+```
+
+**Uses:**
+- Model cost of genotyping
+- Test effects of marker density
+- Simulate imputation scenarios
+
+### Size Scaling
+
+When founders are related (real data), scale effective size:
+
+```{r}
+#| eval: false
+
+pop <- creating.diploid(
+  vcf = "real_data.vcf",
+  size.scaling = 0.7  # Effective size is 70% of actual
+)
+```
+
+This affects:
+- Calculations of expected inbreeding
+- Expected relationships
+- Effective population size estimates
+
+## Practical Examples {#sec-examples-pop}
+
+### Example 1: Cattle Population
+
+```{r}
+#| eval: false
+
+# Realistic cattle breeding population
+cattle <- creating.diploid(
+  nsnp = 50000,
+  nindi = 500,
+  template.chip = "cattle",
+  n.additive = 100,
+  n.dominant = 20,
+  beta_shape1 = 0.5,      # Some rare variants
+  beta_shape2 = 1.2,
+  share.genotyped = 0.8,   # 80% genotyped
+  sex.quota = 0.7,         # More females (dairy)
+  var.target = 100,
+  name.cohort = "HolsteinFounders"
+)
+```
+
+### Example 2: Maize Inbred Lines
+
+```{r}
+#| eval: false
+
+# Fully homozygous inbred lines
+maize <- creating.diploid(
+  nsnp = 10000,
+  nindi = 20,
+  template.chip = "maize",
+  dataset = "homorandom",  # Homozygous
+  one.sex.mode = TRUE,      # No sexes
+  n.additive = 200,
+  name.cohort = "InbredLines"
+)
+```
+
+### Example 3: Crossbreeding Setup
+
+```{r}
+#| eval: false
+
+# Breed A
+cross_pop <- creating.diploid(
+  nsnp = 10000, nindi = 100, n.additive = 100,
+  founder.pool = 1, name.cohort = "BreedA",
+  beta_shape1 = 2, beta_shape2 = 2  # Common variants
+)
+
+# Breed B (different frequencies)
+cross_pop <- creating.diploid(
+  population = cross_pop,
+  nsnp = 10000, nindi = 100, n.additive = 100,
+  founder.pool = 2, name.cohort = "BreedB",
+  beta_shape1 = 0.8, beta_shape2 = 2,  # Rare variants
+  freq = "diff"  # Independent frequencies from Breed A
+)
+```
+
+## Summary
+
+Key concepts from this chapter:
+
+- ✅ `creating.diploid()` initializes founder populations
+- ✅ Control genomic structure (chromosomes, positions, allele frequencies)
+- ✅ Import real data from VCF/PLINK or simulate data
+- ✅ Use species templates for realistic chromosome structure
+- ✅ Create multiple breeds with founder pools
+- ✅ Control sex ratios and population composition
+
+## What's Next?
+
+Now that you can create populations, let's design the **trait architecture** - the genetic basis of the traits you want to select on.
+
+Continue to [Chapter 5: Trait Architecture](05-trait-architecture.qmd)!
+

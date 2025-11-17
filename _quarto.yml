@@ -1,0 +1,63 @@
+project:
+  type: book
+  output-dir: _book
+
+book:
+  title: "MoBPS Cookbook"
+  subtitle: "A Practical Guide to Modular Breeding Program Simulator"
+  author: "MoBPS Development Team"
+  date: today
+  chapters:
+    - index.qmd
+    - part: "Getting Started"
+      chapters:
+        - chapters/01-introduction.qmd
+        - chapters/02-core-concepts.qmd
+        - chapters/03-first-simulation.qmd
+    - part: "Building Populations & Traits"
+      chapters:
+        - chapters/04-creating-populations.qmd
+        - chapters/05-trait-architecture.qmd
+        - chapters/06-advanced-population-setup.qmd
+        - chapters/07-population-examples.qmd
+    - part: "Selection, Mating & Breeding"
+      chapters:
+        - chapters/08-selection-strategies.qmd
+        - chapters/09-mating-designs.qmd
+        - chapters/10-breeding-simulation.qmd
+        - chapters/11-plant-vs-animal.qmd
+    - part: "Genotyping & Genomic Analysis"
+      chapters:
+        - chapters/12-snp-panels.qmd
+        - chapters/13-genomic-prediction.qmd
+        - chapters/14-population-structure.qmd
+    - part: "Advanced Topics & Reference"
+      chapters:
+        - chapters/15-data-export-import.qmd
+        - chapters/16-performance-memory.qmd
+        - chapters/17-function-reference.qmd
+    - references.qmd
+
+bibliography: references.bib
+
+format:
+  html:
+    theme: cosmo
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    code-fold: false
+    code-tools: true
+    code-copy: true
+    link-external-newwindow: true
+  pdf:
+    documentclass: book
+    toc: true
+    number-sections: true
+    colorlinks: true
+
+execute:
+  echo: true
+  warning: false
+  message: false
+  cache: false

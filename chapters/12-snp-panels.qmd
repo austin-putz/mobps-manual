@@ -1,0 +1,56 @@
+# SNP Panels & Genotyping {#sec-snp-panels}
+
+## Partial Genotyping
+
+```{r}
+#| eval: false
+# Only genotype 80% of individuals
+pop <- breeding.diploid(
+  pop,
+  genotyping.gen = 3,
+  share.genotyped = 0.8
+)
+
+# Check who's genotyped
+genotyped_status <- get.genotyped(pop, gen = 3)
+```
+
+## Genotyping Arrays (Chips)
+
+```{r}
+#| eval: false
+# Define which SNPs are on chip
+chip_snps <- seq(1, 50000, by = 10)  # Every 10th SNP
+
+pop <- creating.diploid(
+  nsnp = 50000,
+  nindi = 500,
+  genotyped.s = rep(0, 50000)  # Start with none genotyped
+)
+
+# Set chip SNPs as genotyped
+pop$info$snp$genotyped[chip_snps] <- 1
+```
+
+## Genotyping Costs
+
+```{r}
+#| eval: false
+# Track costs
+costs <- compute.costs.cohorts(
+  pop,
+  cohorts = "Gen5",
+  cost.genotyping = 50,      # $50 per sample
+  cost.phenotyping = 200     # $200 per phenotype
+)
+
+print(costs$total.costs)
+```
+
+## Summary
+- Partial genotyping strategies
+- SNP chip simulation
+- Cost tracking
+
+Continue to [Chapter 13: Genomic Prediction](13-genomic-prediction.qmd)!
+

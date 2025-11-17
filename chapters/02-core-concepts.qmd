@@ -1,0 +1,409 @@
+# Core Concepts {#sec-core-concepts}
+
+## Learning Objectives
+
+By the end of this chapter, you will understand:
+
+- The gen/database/cohorts system for grouping individuals
+- How sex is handled in MoBPS
+- The structure of the population object
+- How time flows through generations
+- Key terminology and concepts
+
+## Individual Grouping {#sec-grouping}
+
+One of the biggest challenges in breeding simulation is having the flexibility to perform operations on **specific groups** of individuals. MoBPS provides three powerful ways to select groups:
+
+1. **Generations** (`gen`) - Select all individuals from specific generation(s)
+2. **Cohorts** (`cohorts`) - Select named groups with specific characteristics
+3. **Database** (`database`) - Precise selection by generation, sex, and individual range
+
+### Understanding Generations (`gen`)
+
+Every time you create offspring with `breeding.diploid()`, they are assigned to a **new generation**. Generations are numbered sequentially starting from 1.
+
+```{r}
+#| eval: false
+
+# Create founder population (generation 1)
+population <- creating.diploid(nsnp = 1000, nindi = 100)
+
+# Create generation 2
+population <- breeding.diploid(population,
+                               selection.size = c(10, 10),
+                               breeding.size = c(50, 50))
+
+# Select generation 2
+bv_gen2 <- get.bv(population, gen = 2)
+
+# Select multiple generations
+bv_multi <- get.bv(population, gen = 2:5)  # Generations 2, 3, 4, 5
+```
+
+**Key points:**
+- Generations track **when** individuals were born
+- Useful for age-structured populations
+- Easy to analyze trends over time
+
+### Named Groups: Cohorts {#sec-cohorts}
+
+**Cohorts** are named groups of individuals you define. They're incredibly useful for tracking:
+
+- Different selection lines (e.g., "HighYield", "LowFat")
+- Breeding groups (e.g., "NucleusHerd", "CommercialLine")
+- Treatment groups (e.g., "Tested", "Controls")
+
+```{r}
+#| eval: false
+
+# Create offspring and assign to named cohort
+population <- breeding.diploid(
+  population,
+  selection.size = c(10, 10),
+  breeding.size = c(50, 50),
+  name.cohort = "SelectedLine"  # Give this group a name
+)
+
+# Later, select only this cohort
+bv_selected <- get.bv(population, cohorts = "SelectedLine")
+
+# Select multiple cohorts
+multi_cohorts <- get.bv(population,
+                         cohorts = c("SelectedLine", "ControlLine"))
+```
+
+**Best practices:**
+- Use descriptive names: "TopSires", "TestGroup1", "Line_A"
+- Keep naming consistent across simulations
+- Use cohorts when generation number alone isn't enough
+
+### Precise Selection: Database {#sec-database}
+
+The **database** parameter gives you surgical precision. It's a matrix where each row specifies:
+
+1. **Generation** number
+2. **Sex** (1 = male, 2 = female)
+3. **First individual** to include (optional)
+4. **Last individual** to include (optional)
+
+```{r}
+#| eval: false
+
+# Select males 1-20 from generation 3
+database <- matrix(c(3, 1, 1, 20), ncol = 4)
+males <- get.bv(population, database = database)
+
+# Select multiple groups
+database <- rbind(
+  c(3, 1, 1, 20),    # Males 1-20 from gen 3
+  c(4, 2, 5, 15),    # Females 5-15 from gen 4
+  c(5, 1, NA, NA)    # All males from gen 5
+)
+subset <- get.bv(population, database = database)
+```
+
+**When to use database:**
+- Need specific individual ranges
+- Complex selection criteria
+- Combining multiple precise selections
+
+### Combining Selection Methods
+
+You can mix and match these methods:
+
+```{r}
+#| eval: false
+
+# Select from generations 4-5, specific males from gen 3, AND a cohort
+database <- matrix(c(3, 1, 21, 50), ncol = 4)
+
+bv <- get.bv(population,
+             gen = 4:5,              # All of gen 4 & 5
+             database = database,     # Males 21-50 from gen 3
+             cohorts = "Founders")    # Plus the Founders cohort
+```
+
+This gives you incredible flexibility to work with exactly the individuals you need!
+
+## Sex Handling {#sec-sex}
+
+MoBPS has a flexible approach to sex:
+
+### Traditional Two-Sex Systems
+
+By default, individuals are assigned male (1) or female (2):
+
+```{r}
+#| eval: false
+
+# Control sex ratio in founders
+population <- creating.diploid(
+  nsnp = 1000,
+  nindi = 100,
+  sex.quota = 0.5  # 50% female
+)
+
+# Or specify exactly
+population <- creating.diploid(
+  nsnp = 1000,
+  nindi = 100,
+  sex.s = c(rep(1, 40), rep(2, 60))  # 40 males, 60 females
+)
+```
+
+### Flexible Sex Usage
+
+**Important:** Sex assignments are **not binding** for breeding operations!
+
+- An individual stored as "female" can be used as father
+- Useful for plant breeding where sex may not be fixed
+- Useful for modeling hermaphrodites or aquaculture
+
+### One-Sex Mode
+
+For organisms without meaningful sex distinctions:
+
+```{r}
+#| eval: false
+
+# Deactivate two-sex system
+population <- creating.diploid(
+  nsnp = 1000,
+  nindi = 100,
+  one.sex.mode = TRUE  # All individuals in "sex 1"
+)
+```
+
+This automatically adjusts `breeding.size`, `selection.size`, etc. to work with a single group.
+
+### Using Sex as Structure
+
+Even in plants, you can use "sex" to organize populations:
+
+- Sex 1 = Gene pool A
+- Sex 2 = Gene pool B
+
+This provides convenient structure for tracking different groups!
+
+## The Population Object {#sec-population-object}
+
+The population object is the **heart of MoBPS**. It's an R list containing everything about your breeding program.
+
+### Main Components
+
+The population object has two major sections:
+
+```{r}
+#| eval: false
+
+# Examine structure
+names(population)
+# [1] "info"     "breeding"
+
+# General information
+names(population$info)
+# QTL effects, genetic maps, trait info, etc.
+
+# Individual-level data
+names(population$breeding)
+# Genotypes, phenotypes, pedigrees by generation
+```
+
+### What's Stored?
+
+**In `$info` (population-level):**
+- Genetic map (chromosome structure, marker positions)
+- QTL effects and locations
+- Trait names and architectures
+- Correlation structures
+- Fixed effects
+
+**In `$breeding` (individual-level):**
+- Genotypes/haplotypes for each individual
+- Breeding values (true genetic values)
+- Phenotypes (observed values)
+- Pedigree information
+- Genotyping status
+- Cohort assignments
+
+### Accessing the Population Object
+
+While you *can* access elements directly, it's better to use `get.*()` functions:
+
+```{r}
+#| eval: false
+
+# DON'T DO THIS (fragile, complex):
+bv <- population$breeding[[2]][[1]][[6]]
+
+# DO THIS INSTEAD (clear, robust):
+bv <- get.bv(population, gen = 2)
+```
+
+**Available getter functions:**
+- `get.bv()` - Breeding values
+- `get.pheno()` - Phenotypes
+- `get.geno()` - Genotypes
+- `get.pedigree()` - Pedigree
+- `get.map()` - Genetic map
+- Many more! (See [Chapter 17](#sec-function-reference))
+
+## Classes: Advanced Grouping {#sec-classes}
+
+**Classes** provide another layer of organization:
+
+```{r}
+#| eval: false
+
+# Assign individuals to class 1
+population <- set.class(population,
+                        gen = 2,
+                        class = 1)
+
+# Only phenotype class 1
+population <- breeding.diploid(
+  population,
+  phenotyping.gen = 2,
+  phenotyping.class = 1  # Only these get phenotyped
+)
+```
+
+**Special classes:**
+- Class 0 (default): Normal active individuals
+- Class -1: Culled/dead animals (automatically assigned)
+- Class 1+: User-defined groups
+
+Use classes for:
+- Active vs. culled animals
+- Test groups vs. controls
+- Multiple herds/flocks with different management
+
+## Time and Generation Flow {#sec-time-flow}
+
+Understanding how time works in MoBPS is crucial:
+
+### Sequential Generations
+
+Each `breeding.diploid()` call creates the **next generation**:
+
+```{r}
+#| eval: false
+
+# Gen 1: Founders
+pop <- creating.diploid(nsnp = 1000, nindi = 100)
+
+# Gen 2: First offspring
+pop <- breeding.diploid(pop,
+                        selection.size = c(10, 10),
+                        breeding.size = c(50, 50))
+
+# Gen 3: Second offspring generation
+pop <- breeding.diploid(pop,
+                        selection.size = c(10, 10),
+                        breeding.size = c(50, 50))
+```
+
+Generation numbers are **automatic** and **sequential**.
+
+### Overlapping Generations
+
+You can have overlapping generations by selecting parents from multiple generations:
+
+```{r}
+#| eval: false
+
+# Use individuals from generation 2 AND 3 as parents
+pop <- breeding.diploid(pop,
+                        selection.m.gen = 2,      # Males from gen 2
+                        selection.f.gen = 3,      # Females from gen 3
+                        breeding.size = c(50, 50))
+```
+
+This creates **generation 4** from a mix of gen 2 and 3 parents.
+
+### Age Structure
+
+MoBPS doesn't explicitly track age, but you can model it:
+
+- Use **generations** as age cohorts
+- Use **cohorts** to track birth years
+- Select parents from specific generations to control age
+
+See Section 6.20 in the full manual for detailed age structure examples.
+
+## Genetic Pools and Crossbreeding {#sec-pools}
+
+**Founder pools** track the origin of genome segments:
+
+```{r}
+#| eval: false
+
+# Create two founder populations
+pop1 <- creating.diploid(nsnp = 1000, nindi = 50,
+                         founder.pool = 1)  # Pool 1
+
+pop2 <- creating.diploid(nsnp = 1000, nindi = 50,
+                         founder.pool = 2)  # Pool 2
+```
+
+**Why use pools?**
+- Track breed composition in crossbreeding
+- Assign breed-specific QTL effects
+- Analyze admixture and introgression
+- Model heterosis and breed complementarity
+
+You can later query which parts of the genome came from which pool using `get.pool()`.
+
+## Key Terminology Recap
+
+| Term | Definition |
+|------|------------|
+| **Generation** | Time point when individuals were born (sequential) |
+| **Cohort** | Named group of individuals with similar characteristics |
+| **Database** | Precise selection by gen, sex, and individual range |
+| **Class** | Category for management actions (0=active, -1=culled, 1+=custom) |
+| **Sex** | Male (1) or female (2), flexibly used |
+| **Pool** | Founder population origin for tracking breed composition |
+| **Population object** | R list containing all simulation data |
+
+## Practical Tips
+
+:::{.callout-tip}
+## Start Simple
+Don't try to use all features at once! Start with just `gen` for selecting individuals, then add cohorts and classes as needed.
+:::
+
+:::{.callout-tip}
+## Naming Conventions
+Use consistent naming:
+- Cohorts: "Line_A", "Test_2024", "HighYield"
+- Variables: `pop` or `population` for the population object
+- Clear generation references in comments
+:::
+
+:::{.callout-warning}
+## Don't Lose Your Population Object!
+Always save important population objects:
+```{r}
+#| eval: false
+saveRDS(population, "my_population_gen10.rds")
+# Later:
+population <- readRDS("my_population_gen10.rds")
+```
+:::
+
+## Summary
+
+- **Three selection systems:** gen (generations), cohorts (named groups), database (precise)
+- **Flexible sex:** Can be biological sex, gene pools, or organizational structure
+- **Population object:** Central data structure storing all simulation information
+- **Classes:** Additional grouping for management (0=active, -1=culled, custom)
+- **Generations flow sequentially:** Each `breeding.diploid()` creates the next generation
+- **Pools track origins:** Useful for crossbreeding and admixture
+
+## What's Next?
+
+Now that you understand the core concepts, let's put them into practice!
+
+In [Chapter 3: Your First Simulation](03-first-simulation.qmd), you'll create a complete breeding program from start to finish.
+

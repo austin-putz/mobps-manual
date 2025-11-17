@@ -1,0 +1,232 @@
+# Advanced Population Setup {#sec-advanced-population-setup}
+
+## Learning Objectives
+
+- Generate realistic LD structure with `founder.simulation()`
+- Import and use real genomic/phenotypic data
+- Create populations with selection signatures
+- Model population history
+
+## Creating Realistic LD Structure {#sec-ld-structure}
+
+Real populations have **linkage disequilibrium (LD)** from historical selection and drift. The `founder.simulation()` function creates this automatically:
+
+```{r}
+#| eval: false
+
+# Create population with realistic LD
+population <- creating.diploid(nsnp = 10000, nindi = 100)
+
+population <- founder.simulation(
+  population,
+  generations = 100,        # 100 generations of random mating
+  breeding.size = 200,      # Population size per generation
+  mutation.rate = 0.0001    # Mutation rate per site
+)
+```
+
+**What happens:**
+- Simulates historical random mating
+- Creates realistic LD decay with distance
+- Generates allele frequency spectrum
+- Produces heterozygosity patterns
+
+### Controlling LD Levels
+
+```{r}
+#| eval: false
+
+# Low LD (large historical population)
+pop_low_ld <- founder.simulation(
+  creating.diploid(nsnp = 5000, nindi = 100),
+  generations = 1000,
+  breeding.size = 1000
+)
+
+# High LD (bottleneck)
+pop_high_ld <- founder.simulation(
+  creating.diploid(nsnp = 5000, nindi = 100),
+  generations = 100,
+  breeding.size = 20        # Small Ne = high LD
+)
+```
+
+## Modeling Selection Signatures {#sec-selection-signatures}
+
+Simulate hard sweeps (selective sweeps):
+
+```{r}
+#| eval: false
+
+# Create population
+pop <- creating.diploid(
+  nsnp = 10000,
+  nindi = 200,
+  chr.nr = 1,
+  n.additive = 100
+)
+
+# Historical selection on trait 1
+pop <- founder.simulation(
+  pop,
+  generations = 50,
+  breeding.size = 200,
+  selection.criteria = "bv",     # Select on breeding values
+  selection.size = c(20, 20),    # Strong selection
+  selection.m.gen = "all",
+  selection.f.gen = "all"
+)
+```
+
+**Creates:**
+- Reduced diversity around selected QTLs
+- Extended haplotype homozygosity
+- Realistic post-selection LD patterns
+
+## Importing Real Phenotypic Data {#sec-import-pheno}
+
+Use real phenotypes to estimate trait architecture:
+
+```{r}
+#| eval: false
+
+# Example: Load data from MoBPS example population
+data(ex_pop)
+
+# Extract information
+pheno <- get.pheno(ex_pop, gen = 1:5)
+geno <- get.geno(ex_pop, gen = 1:5)
+map <- get.map(ex_pop, use.snp.nr = TRUE)
+
+# Estimate marker effects from data
+estimated_effects <- effect.estimate.add(geno, pheno, map)
+
+# Create new population with estimated architecture
+population <- creating.diploid(
+  dataset = get.haplo(ex_pop, gen = 1),
+  map = map,
+  real.bv.add = estimated_effects
+)
+```
+
+**Workflow:**
+1. Import real genotypes + phenotypes
+2. Estimate marker effects (GWAS/GBLUP)
+3. Use estimated effects in simulation
+
+## Creating Age-Structured Populations {#sec-age-structure}
+
+Model overlapping generations:
+
+```{r}
+#| eval: false
+
+# Create founders (year 0)
+pop <- creating.diploid(
+  nsnp = 5000, nindi = 100,
+  n.additive = 100,
+  name.cohort = "Year_0"
+)
+
+# Year 1: Some old + new animals
+pop <- breeding.diploid(
+  pop,
+  selection.m.cohorts = "Year_0",
+  selection.f.cohorts = "Year_0",
+  selection.size = c(20, 40),    # Keep some old animals
+  breeding.size = c(30, 60),     # Plus new calves
+  name.cohort = "Year_1"
+)
+
+# Select from BOTH cohorts in Year 2
+pop <- breeding.diploid(
+  pop,
+  selection.m.cohorts = c("Year_0", "Year_1"),
+  selection.f.cohorts = c("Year_0", "Year_1"),
+  selection.size = c(20, 40),
+  breeding.size = c(30, 60),
+  name.cohort = "Year_2"
+)
+```
+
+**Applications:**
+- Dairy cattle (multi-parity cows)
+- Progeny testing schemes
+- Conservation programs
+
+## Multi-Stage Pedigree Simulation {#sec-pedigree-simulation}
+
+Create populations from pedigree structure only:
+
+```{r}
+#| eval: false
+
+# Generate pedigree-based population
+pop <- pedigree.simulation(
+  population = creating.diploid(nsnp = 1000, nindi = 10),
+  breeding.size = 100,
+  generations = 5,
+  selection.size = c(5, 10)
+)
+```
+
+**Use cases:**
+- Quick exploration without full genomics
+- Very large pedigrees
+- When genotypes not needed
+
+## Example: Import VCF + GWAS Results {#sec-example-vcf-gwas}
+
+Complete workflow with real data:
+
+```{r}
+#| eval: false
+
+# Step 1: Import VCF file
+pop <- creating.diploid(
+  vcf = "path/to/cattle_genotypes.vcf.gz",
+  vcf.maxsnp = 50000,     # Limit to 50K SNPs
+  vcf.maxindi = 1000      # Limit to 1000 animals
+)
+
+# Step 2: Load phenotypes (from external file)
+pheno_data <- read.csv("phenotypes.csv")
+# Assume columns: AnimalID, Trait1, Trait2, Trait3
+
+# Step 3: Match phenotypes to individuals
+# (You'll need to map VCF sample IDs to phenotype IDs)
+
+# Step 4: Estimate effects using your favorite method
+# Example with rrBLUP
+library(rrBLUP)
+geno_matrix <- get.geno(pop, gen = 1)
+effects <- mixed.solve(pheno_data$Trait1, Z = t(geno_matrix))
+
+# Step 5: Create trait architecture from estimated effects
+qtl_effects <- cbind(
+  1:length(effects$u),  # SNP number
+  1,                    # Chromosome (placeholder)
+  -effects$u,           # Effect for allele 0
+  0,                    # Effect for allele 1
+  effects$u             # Effect for allele 2
+)
+
+pop <- creating.trait(
+  pop,
+  real.bv.add = qtl_effects,
+  trait.name = "EstimatedTrait"
+)
+
+# Now ready to simulate breeding program!
+```
+
+## Summary
+
+- ✅ `founder.simulation()` creates realistic LD structure
+- ✅ Model selection signatures and population history
+- ✅ Import real data (genotypes, phenotypes, GWAS results)
+- ✅ Create age-structured populations
+- ✅ Flexible approaches for complex scenarios
+
+Continue to [Chapter 7: Population Examples](07-population-examples.qmd)!
+

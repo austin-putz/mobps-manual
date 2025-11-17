@@ -1,0 +1,298 @@
+# Introduction to MoBPS {#sec-introduction}
+
+## Learning Objectives
+
+By the end of this chapter, you will:
+
+- Understand what MoBPS is and what it can do
+- Know how to install MoBPS and its dependencies
+- Be able to load the package and verify installation
+- Understand the basic workflow of a MoBPS simulation
+
+## What is MoBPS?
+
+**MoBPS** (Modular Breeding Program Simulator) is an R package for stochastic simulation of breeding programs. It provides a flexible framework to:
+
+- **Create** realistic founder populations with complex genetic architectures
+- **Simulate** multiple generations of breeding actions (selection, mating, culling)
+- **Analyze** genetic gain, diversity, inbreeding, and population structure
+- **Compare** different breeding strategies
+- **Optimize** breeding programs for specific goals
+
+### Why Simulate Breeding Programs?
+
+Breeding program simulation allows you to:
+
+1. **Test strategies** before implementing them in reality
+2. **Understand trade-offs** between genetic gain and diversity
+3. **Optimize selection** and mating decisions
+4. **Predict long-term** outcomes over many generations
+5. **Train** future breeders in a risk-free environment
+
+### Key Features
+
+MoBPS offers exceptional flexibility:
+
+- ✅ Works with **both plant and animal breeding**
+- ✅ Supports **single or multiple traits**
+- ✅ Handles **additive, dominance, and epistatic effects**
+- ✅ Simulates **realistic genomic data** or uses real data
+- ✅ Integrates with **external prediction software** (BLUP, GBLUP, Bayesian)
+- ✅ Provides **rich visualization** and analysis tools
+- ✅ Scales from small experiments to **large commercial programs**
+
+## Installation {#sec-installation}
+
+### System Requirements
+
+MoBPS requires:
+
+- **R version 3.0 or higher** (R 4.0+ recommended)
+- For large-scale simulations: `RandomFieldsUtils` and `miraculix` (optional but highly recommended)
+
+### Step 1: Platform-Specific Prerequisites
+
+#### Windows Users
+
+Some Windows systems require **Rtools**:
+
+1. Download from: <https://cran.r-project.org/bin/windows/Rtools/>
+2. Install the version matching your R version
+3. Verify with: `pkgbuild::find_rtools()`
+
+#### Mac Users
+
+Some Mac systems require **gfortran/homebrew**:
+
+1. Download from: <https://mac.r-project.org/tools/>
+2. Follow installation instructions for your macOS version
+
+#### Linux Users
+
+Usually no special prerequisites needed. Ensure build tools are installed:
+
+```bash
+# Ubuntu/Debian
+sudo apt-get install build-essential gfortran
+
+# Fedora/RHEL
+sudo dnf install gcc-gfortran
+```
+
+### Step 2: Install Performance Packages (Optional but Recommended)
+
+For **significant performance improvements** in large simulations:
+
+```{r}
+#| eval: false
+
+# Install devtools if not already installed
+if (!require("devtools")) install.packages("devtools")
+
+# Install RandomFieldsUtils (install this FIRST)
+devtools::install_github("tpook92/RandomFieldsUtils")
+
+# Then install miraculix (install SECOND)
+devtools::install_github("tpook92/miraculix")
+```
+
+**Important:**
+- Install `RandomFieldsUtils` **before** `miraculix`
+- Use compatible versions (both v1.6.0.2 recommended)
+- These packages dramatically speed up genomic computations
+
+### Step 3: Install MoBPS
+
+Install the latest MoBPS from GitHub (recommended over CRAN for latest features):
+
+```{r}
+#| eval: false
+
+# Install MoBPS from GitHub
+devtools::install_github("tpook92/MoBPS", subdir="pkg")
+```
+
+**Why GitHub over CRAN?**
+- GitHub has the latest features and bug fixes
+- Regular updates and improvements
+- CRAN version may be outdated (last update: November 2021)
+
+### Step 4: Install Genetic Maps (Optional)
+
+For working with real species data:
+
+```{r}
+#| eval: false
+
+# Install MoBPS maps package (includes Ensembl maps)
+devtools::install_github("tpook92/MoBPS", subdir="pkg-maps")
+```
+
+This package includes genetic maps for common species from Ensembl.
+
+### Step 5: Verify Installation
+
+Load the package and check version:
+
+```{r}
+#| eval: false
+
+# Load MoBPS
+library(MoBPS)
+
+# Check version
+packageVersion("MoBPS")
+
+# Should see something like: '1.13.0' or higher
+```
+
+### Additional Packages
+
+MoBPS can integrate with various prediction software. These are **optional** and only needed for specific analyses:
+
+```{r}
+#| eval: false
+
+# For genomic prediction
+install.packages("rrBLUP")    # GBLUP
+install.packages("BGLR")      # Bayesian methods
+install.packages("sommer")    # Mixed models
+
+# For visualization
+install.packages("ggplot2")   # Advanced plotting
+install.packages("viridis")   # Color palettes
+```
+
+## Basic Workflow Overview {#sec-workflow}
+
+Every MoBPS simulation follows the same basic structure:
+
+### 1. Create a Founder Population
+
+Use `creating.diploid()` to initialize your population:
+
+```{r}
+#| eval: false
+
+population <- creating.diploid(
+  nsnp = 1000,          # Number of SNP markers
+  nindi = 100,          # Number of individuals
+  n.additive = 100,     # Number of QTLs
+  mean.target = 100     # Mean breeding value
+)
+```
+
+### 2. Simulate Breeding Actions
+
+Use `breeding.diploid()` to perform selection, mating, and other actions:
+
+```{r}
+#| eval: false
+
+population <- breeding.diploid(
+  population,
+  selection.size = c(10, 10),  # 10 males, 10 females
+  breeding.size = c(50, 50)     # Generate 50 male, 50 female offspring
+)
+```
+
+### 3. Extract and Analyze Results
+
+Use `get.*()` functions to extract information:
+
+```{r}
+#| eval: false
+
+# Get breeding values
+bv <- get.bv(population, gen = 2)
+
+# Get phenotypes
+pheno <- get.pheno(population, gen = 2)
+
+# Calculate inbreeding
+inbreeding <- inbreeding.exp(population, gen = 2)
+```
+
+### 4. Visualize Results
+
+Use built-in plotting functions:
+
+```{r}
+#| eval: false
+
+# Track genetic gain
+bv.development(population)
+
+# PCA plot
+get.pca(population, gen = 1:5)
+
+# Kinship development
+kinship.development(population, gen = 1:5)
+```
+
+## The Population Object
+
+The core of MoBPS is the **population object** (usually called `population` or `pop`):
+
+- It's an **R list** containing all simulation data
+- Stores genotypes, phenotypes, pedigrees, trait architectures
+- Updated by each `breeding.diploid()` call
+- Can be saved/loaded for reproducibility
+
+Think of it as a **complete database** of your breeding program.
+
+## Getting Help
+
+### Within R
+
+```{r}
+#| eval: false
+
+# Function documentation
+?creating.diploid
+?breeding.diploid
+
+# See all MoBPS functions
+help(package = "MoBPS")
+```
+
+### Online Resources
+
+- **GitHub:** <https://github.com/tpook92/MoBPS>
+- **Web Interface:** <https://www.mobps.de>
+- **Email Support:** Torsten.pook@wur.nl
+
+### Important Notes
+
+:::{.callout-warning}
+## Take Simulation Results with Caution!
+
+MoBPS won't stop you from making biologically impossible settings (e.g., collecting milk records from bulls). Always validate your simulation setup makes biological sense!
+:::
+
+:::{.callout-tip}
+## Don't Get Overwhelmed!
+
+MoBPS has many parameters, but you only need a few for most simulations. Start simple, then add complexity as needed. Use Ctrl+F to search the documentation for specific features.
+:::
+
+## What's Next?
+
+In the next chapter, we'll dive into **core concepts** that are essential for understanding how MoBPS works:
+
+- Individual grouping (generations, databases, cohorts)
+- The population list structure
+- How traits are represented
+- Time flow in simulations
+
+Let's continue to [Chapter 2: Core Concepts](02-core-concepts.qmd)!
+
+## Summary
+
+- MoBPS is a flexible R package for breeding program simulation
+- Install from GitHub for latest features
+- Optional performance packages (`miraculix`) are highly recommended
+- Basic workflow: Create → Breed → Analyze → Visualize
+- The population object stores all your simulation data
+- Help is available through documentation and direct contact
+

@@ -1,0 +1,61 @@
+# Plant vs Animal Breeding {#sec-plant-vs-animal}
+
+## Plant-Specific Features
+
+### Selfing
+```{r}
+#| eval: false
+pop <- breeding.diploid(pop, selfing.mating = TRUE, breeding.size = c(200, 0))
+```
+
+### Doubled Haploids (DH)
+```{r}
+#| eval: false
+pop <- breeding.diploid(pop, dh.mating = TRUE, breeding.size = c(200, 0))
+```
+
+### Cloning
+```{r}
+#| eval: false
+pop <- breeding.diploid(pop, copy.individual.m = 10, breeding.size = c(1000, 0))
+```
+
+### One-Sex Mode
+```{r}
+#| eval: false
+pop <- creating.diploid(nsnp = 5000, nindi = 200, one.sex.mode = TRUE)
+```
+
+## Animal-Specific Features
+
+### Litter Size Control
+```{r}
+#| eval: false
+pop <- breeding.diploid(
+  pop,
+  selection.size = c(10, 20),
+  litter.size = 8,              # 8 piglets per litter
+  breeding.size = c(160, 160)   # 20 litters
+)
+```
+
+### Multiple Parities
+```{r}
+#| eval: false
+# Sows have multiple litters
+for (parity in 1:3) {
+  pop <- breeding.diploid(
+    pop,
+    selection.f.gen = 5,        # Same females each time
+    selection.m.gen = 6,        # New males
+    breeding.size = c(100, 100)
+  )
+}
+```
+
+## Summary
+- Plants: selfing, DH, cloning, no sex
+- Animals: litter size, multiple parities
+
+Continue to [Chapter 12: SNP Panels](12-snp-panels.qmd)!
+

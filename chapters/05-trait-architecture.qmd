@@ -1,0 +1,468 @@
+# Trait Architecture {#sec-trait-architecture}
+
+## Learning Objectives
+
+- Design simple and complex trait architectures
+- Model additive, dominance, and epistatic effects
+- Create correlated traits
+- Add maternal/paternal effects
+- Implement breed-specific QTLs
+
+## Overview
+
+**Trait architecture** defines the genetic basis of traits:
+- Which markers are QTLs
+- Effect sizes of each QTL
+- Types of genetic effects (additive, dominance, epistasis)
+- Correlations between traits
+
+MoBPS provides both **automated** and **custom** approaches.
+
+## Automated Trait Generation {#sec-auto-traits}
+
+### Simple Additive Trait
+
+```{r}
+#| eval: false
+
+population <- creating.diploid(
+  nsnp = 10000,
+  nindi = 200,
+  n.additive = 100,      # 100 additive QTLs
+  var.target = 1,        # Genetic variance = 1
+  mean.target = 100      # Mean breeding value = 100
+)
+```
+
+**What happens:**
+- 100 random SNPs chosen as QTLs
+- Effects drawn from Normal(0, σ²)
+- Automatically scaled to target variance
+
+### Adding Dominance
+
+```{r}
+#| eval: false
+
+population <- creating.diploid(
+  nsnp = 10000,
+  nindi = 200,
+  n.additive = 100,
+  n.dominant = 20,       # 20 loci with dominance
+  var.additive = 0.8,    # 80% of variance from additive
+  var.dominant = 0.2     # 20% from dominance
+)
+```
+
+**Dominance effect modeling:**
+- Random loci chosen for dominance
+- Effects: genotype 0, 1, 2 each get independent effect
+- Can specify `dominant.only.positive = TRUE` for heterosis modeling
+
+### Epistatic Effects
+
+```{r}
+#| eval: false
+
+population <- creating.diploid(
+  nsnp = 10000,
+  nindi = 200,
+  n.additive = 80,
+  n.qualitative = 10,    # Qualitative epistasis (ordered)
+  n.quantitative = 5     # Quantitative epistasis (unordered)
+)
+```
+
+**Epistasis types:**
+
+1. **Qualitative:** 00 < 01 < 02 < 10 < 11 < 12 < 20 < 21 < 22 (ordered, selection always beneficial)
+2. **Quantitative:** Mix of positive/negative interactions
+
+### Effect Size Distributions
+
+```{r}
+#| eval: false
+
+# Gaussian effects (default)
+pop_gaussian <- creating.diploid(
+  nsnp = 5000, nindi = 200, n.additive = 100,
+  effect.distribution = "gaussian"
+)
+
+# Gamma distribution (for skewed effects)
+pop_gamma <- creating.diploid(
+  nsnp = 5000, nindi = 200, n.additive = 100,
+  effect.distribution = "gamma",
+  gamma.shape1 = 0.4,    # Shape parameter
+  gamma.shape2 = 1.66    # Rate parameter
+)
+
+# Equal effects
+pop_equal <- creating.diploid(
+  nsnp = 5000, nindi = 200,
+  n.equal.additive = 50,           # 50 QTLs
+  effect.size.equal.add = 0.5      # Each effect = 0.5
+)
+```
+
+## Multiple Traits {#sec-multiple-traits}
+
+### Independent Traits
+
+```{r}
+#| eval: false
+
+population <- creating.diploid(
+  nsnp = 10000,
+  nindi = 200,
+  n.additive = c(100, 80, 120),    # 3 traits
+  var.target = c(1, 1.5, 0.8),     # Different variances
+  trait.name = c("Yield", "Quality", "Disease_Resistance")
+)
+```
+
+### Correlated Traits
+
+```{r}
+#| eval: false
+
+# Define correlation matrix
+cor_matrix <- matrix(c(
+  1.0,  0.5, -0.3,   # Yield
+  0.5,  1.0, -0.2,   # Quality
+ -0.3, -0.2,  1.0    # Disease Resistance
+), nrow = 3, byrow = TRUE)
+
+population <- creating.diploid(
+  nsnp = 10000,
+  nindi = 200,
+  n.additive = c(100, 100, 100),
+  trait.cor = cor_matrix,          # Correlations
+  trait.name = c("Yield", "Quality", "Disease_Resistance")
+)
+```
+
+**How it works:**
+- Same markers used as QTLs for correlated traits
+- Effects drawn from multivariate normal distribution
+- Correlations independent of LD structure
+
+:::{.callout-warning}
+## Correlation vs. Covariance
+
+MoBPS uses **correlation** matrices, not covariance matrices. Standardize your traits first!
+:::
+
+## Custom Trait Architecture {#sec-custom-traits}
+
+### Single-Locus Effects (real.bv.add)
+
+Specify exactly which SNPs are QTLs and their effects:
+
+```{r}
+#| eval: false
+
+# Create custom effects matrix
+# Columns: SNP_number, chromosome, effect_0, effect_1, effect_2
+custom_effects <- rbind(
+  c(120,  1, -1.0,  0.0,  1.0),   # Additive effect
+  c(42,   5,  0.0,  0.0,  2.0),   # Recessive
+  c(17,  22,  0.1,  0.1,  0.1)    # No effect (neutral)
+)
+
+population <- creating.diploid(
+  nsnp = 10000,
+  nindi = 200,
+  real.bv.add = custom_effects
+)
+```
+
+**Effect coding:**
+- Column 1: SNP number (1 to nsnp)
+- Column 2: Chromosome number
+- Columns 3-5: Effects for genotypes 0, 1, 2
+
+### Two-Locus Epistasis (real.bv.mult)
+
+```{r}
+#| eval: false
+
+# Epistatic interaction between two loci
+# 9 effects for all genotype combinations
+epistatic_effects <- rbind(
+  c(144, 1, 145, 1,  # SNPs 144 and 145 on chr 1
+    1.0, 0.0, 0.0,   # Effects when SNP1 = 0
+    0.0, 0.0, 0.0,   # Effects when SNP1 = 1
+    0.0, 0.0, 0.0),  # Effects when SNP1 = 2
+  c(4, 3, 188, 5,    # SNP 4 on chr 3, SNP 188 on chr 5
+    0.37, 0.16, 1.35,
+    1.99, 1.58, 2.51,
+    0.38, 2.12, 0.98)
+)
+
+population <- creating.diploid(
+  nsnp = 10000,
+  nindi = 200,
+  real.bv.mult = epistatic_effects
+)
+```
+
+### Multi-Locus Epistasis (real.bv.dice)
+
+For effects involving 3+ loci:
+
+```{r}
+#| eval: false
+
+# Complex epistatic network
+dice_list <- list(
+  # First network: 3 SNPs
+  location = list(
+    matrix(c(11, 1,
+             12, 1,
+             16, 2), ncol = 2, byrow = TRUE)
+  ),
+  # Effects for all 27 combinations (3^3)
+  effects = list(
+    runif(27, -1, 1)  # Random effects
+  )
+)
+
+population <- creating.diploid(
+  nsnp = 10000,
+  nindi = 200,
+  real.bv.dice = dice_list
+)
+```
+
+## Special Trait Types {#sec-special-traits}
+
+### Maternal/Paternal Effects
+
+```{r}
+#| eval: false
+
+# Trait influenced by mother's genotype
+population <- creating.diploid(
+  nsnp = 5000,
+  nindi = 100,
+  n.additive = c(100, 50),
+  is.maternal = c(FALSE, TRUE),  # Trait 2 is maternal
+  trait.name = c("Direct", "Maternal")
+)
+
+# Combine into single trait
+population <- add.combi(
+  population,
+  trait = 3,
+  combi.weights = c(0.7, 0.3),  # 70% direct, 30% maternal
+  trait.name = "Combined"
+)
+```
+
+**Use cases:**
+- Birth weight (maternal nutrition)
+- Milk production (maternal effects on calves)
+- Egg quality (maternal contribution)
+
+### Breed-Specific QTLs
+
+Model QTLs that only have effects in specific breeds:
+
+```{r}
+#| eval: false
+
+# Create two breeds
+pop <- creating.diploid(
+  nsnp = 5000, nindi = 100,
+  founder.pool = 1,
+  name.cohort = "Breed_A"
+)
+
+pop <- creating.diploid(
+  population = pop, nsnp = 5000, nindi = 100,
+  founder.pool = 2,
+  name.cohort = "Breed_B"
+)
+
+# Add trait only active in breed A
+pop <- creating.trait(
+  pop,
+  n.additive = 100,
+  trait.pool = 1  # Only affects pool 1 (Breed A)
+)
+```
+
+### Non-QTL Polygenic Traits
+
+Simulate infinitesimal model:
+
+```{r}
+#| eval: false
+
+population <- creating.diploid(
+  nsnp = 10000,
+  nindi = 200,
+  n.traits = 2,              # Total traits
+  n.additive = 100,          # Trait 1 has QTLs
+  polygenic.variance = 1     # Trait 2 is polygenic
+)
+```
+
+**Trait 2 characteristics:**
+- Based on parental average + inbreeding
+- No specific QTLs
+- Useful for: very highly polygenic traits
+
+## Adding Traits to Existing Populations {#sec-add-traits}
+
+Use `creating.trait()` to add traits after population creation:
+
+```{r}
+#| eval: false
+
+# Create population
+pop <- creating.diploid(nsnp = 10000, nindi = 200)
+
+# Later, add a new trait
+pop <- creating.trait(
+  pop,
+  n.additive = 80,
+  n.dominant = 20,
+  trait.name = "NewTrait"
+)
+```
+
+**Why add traits later?**
+- Different traits need different architectures
+- Want to replace/update trait definitions
+- Building complex multi-trait models step-by-step
+
+## Combining Traits {#sec-combine-traits}
+
+Create composite traits from existing traits:
+
+```{r}
+#| eval: false
+
+# Create base traits
+pop <- creating.diploid(
+  nsnp = 5000, nindi = 200,
+  n.additive = c(100, 80, 60),
+  trait.name = c("Milk", "Fat", "Protein")
+)
+
+# Create selection index
+pop <- add.combi(
+  pop,
+  trait = 4,  # New trait number
+  combi.weights = c(1, 10, 5),  # Economic weights
+  trait.name = "EconomicIndex"
+)
+```
+
+## Trait Standardization {#sec-standardization}
+
+Ensure traits have desired mean and variance:
+
+```{r}
+#| eval: false
+
+population <- bv.standardization(
+  population,
+  trait = 1,              # Which trait
+  mean.target = 100,      # Target mean
+  var.target = 1,         # Target variance
+  set.zero = TRUE         # Force 0 allele effect = 0
+)
+```
+
+**When to use:**
+- After custom trait specification
+- To compare traits on same scale
+- Before economic index creation
+
+## Practical Examples {#sec-examples-traits}
+
+### Example 1: Dairy Cattle (Multiple Traits)
+
+```{r}
+#| eval: false
+
+# Correlated production traits
+cor_matrix <- matrix(c(
+  1.0,  0.6,  0.5,   # Milk
+  0.6,  1.0,  0.7,   # Fat
+  0.5,  0.7,  1.0    # Protein
+), nrow = 3, byrow = TRUE)
+
+dairy <- creating.diploid(
+  nsnp = 50000,
+  nindi = 500,
+  template.chip = "cattle",
+  n.additive = c(200, 150, 150),
+  n.dominant = c(20, 10, 10),
+  trait.cor = cor_matrix,
+  var.target = c(2000, 50, 30),
+  mean.target = c(8000, 350, 320),
+  trait.name = c("Milk_kg", "Fat_kg", "Protein_kg")
+)
+```
+
+### Example 2: Maize Hybrid Performance
+
+```{r}
+#| eval: false
+
+# Model heterosis with dominance
+maize <- creating.diploid(
+  nsnp = 10000,
+  nindi = 20,
+  template.chip = "maize",
+  dataset = "homorandom",      # Inbred lines
+  n.additive = 200,
+  n.dominant = 50,
+  dominant.only.positive = TRUE,  # Heterosis = positive dominance
+  var.additive = 0.7,
+  var.dominant = 0.3,
+  trait.name = "GrainYield"
+)
+```
+
+### Example 3: Disease Resistance (Binary Trait)
+
+```{r}
+#| eval: false
+
+# Create underlying continuous trait
+pop <- creating.diploid(
+  nsnp = 5000, nindi = 500,
+  n.additive = 50,
+  mean.target = 0,
+  var.target = 1,
+  trait.name = "Liability"
+)
+
+# Apply threshold transformation
+pop <- creating.phenotypic.transform(
+  pop,
+  trait = 1,
+  trafo.function = function(x) { return(x > 0) }  # 50% prevalence
+)
+```
+
+## Summary
+
+- ✅ Automated trait generation for common architectures
+- ✅ Custom effects for precise control
+- ✅ Multiple correlated traits supported
+- ✅ Dominance and epistasis modeling
+- ✅ Special traits: maternal, breed-specific, polygenic
+- ✅ Flexible trait combination and standardization
+
+## What's Next?
+
+With realistic populations and traits, let's build more complex scenarios with LD structure and data import.
+
+Continue to [Chapter 6: Advanced Population Setup](06-advanced-population-setup.qmd)!
+
