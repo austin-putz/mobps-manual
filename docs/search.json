@@ -1,0 +1,1794 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "MoBPS Cookbook",
+    "section": "",
+    "text": "Welcome\nWelcome to the MoBPS Cookbook - a practical, hands-on guide to using the Modular Breeding Program Simulator!",
+    "crumbs": [
+      "Welcome"
+    ]
+  },
+  {
+    "objectID": "index.html#what-is-mobps",
+    "href": "index.html#what-is-mobps",
+    "title": "MoBPS Cookbook",
+    "section": "What is MoBPS?",
+    "text": "What is MoBPS?\nMoBPS (Modular Breeding Program Simulator) is a powerful R package for stochastic simulation of breeding programs. Whether you’re working with:\n\nAnimal breeding (dairy cattle, pigs, chickens, etc.)\nPlant breeding (maize, wheat, crops with selfing/DH)\nConservation programs\nResearch on breeding strategies\n\nMoBPS provides the flexibility and tools you need to simulate, analyze, and optimize breeding schemes.",
+    "crumbs": [
+      "Welcome"
+    ]
+  },
+  {
+    "objectID": "index.html#about-this-cookbook",
+    "href": "index.html#about-this-cookbook",
+    "title": "MoBPS Cookbook",
+    "section": "About This Cookbook",
+    "text": "About This Cookbook\nUnlike traditional reference manuals, this cookbook is designed to:\n\n✅ Show you HOW to accomplish specific tasks\n✅ Provide working examples you can copy and adapt\n✅ Build progressively from simple to complex scenarios\n✅ Focus on practical workflows rather than exhaustive parameter lists",
+    "crumbs": [
+      "Welcome"
+    ]
+  },
+  {
+    "objectID": "index.html#who-should-use-this-book",
+    "href": "index.html#who-should-use-this-book",
+    "title": "MoBPS Cookbook",
+    "section": "Who Should Use This Book?",
+    "text": "Who Should Use This Book?\nThis cookbook is for:\n\nBeginners learning MoBPS for the first time\nPractitioners designing breeding programs\nResearchers evaluating breeding strategies\nStudents studying quantitative genetics and breeding",
+    "crumbs": [
+      "Welcome"
+    ]
+  },
+  {
+    "objectID": "index.html#how-to-use-this-book",
+    "href": "index.html#how-to-use-this-book",
+    "title": "MoBPS Cookbook",
+    "section": "How to Use This Book",
+    "text": "How to Use This Book\nThe book is organized into 5 main parts:\n\nGetting Started - Installation, core concepts, your first simulation\nBuilding Populations & Traits - Creating realistic founder populations\nSelection, Mating & Breeding - Simulating breeding programs\nGenotyping & Genomic Analysis - Working with SNP data and predictions\nAdvanced Topics & Reference - Expert techniques and function references\n\nRecommended approach: - Start with Part 1 if you’re new to MoBPS - Use Ctrl+F / Search to find specific topics - Run the code examples in your own R session - Modify examples to fit your needs",
+    "crumbs": [
+      "Welcome"
+    ]
+  },
+  {
+    "objectID": "index.html#getting-help",
+    "href": "index.html#getting-help",
+    "title": "MoBPS Cookbook",
+    "section": "Getting Help",
+    "text": "Getting Help\nIf you get stuck:\n\n📧 Contact Torsten Pook: Torsten.pook@wur.nl\n🌐 Visit www.mobps.de\n📦 GitHub repository: github.com/tpook92/MoBPS",
+    "crumbs": [
+      "Welcome"
+    ]
+  },
+  {
+    "objectID": "index.html#authors",
+    "href": "index.html#authors",
+    "title": "MoBPS Cookbook",
+    "section": "Authors",
+    "text": "Authors\nMoBPS Development Team:\n\nTorsten Pook (Wageningen University & Research)\nMartin Schlather (University of Mannheim)\nHenner Simianer (University of Göttingen)\n\n\nReady to get started? Head to Chapter 1: Introduction or jump to any topic using the navigation menu!\n\n\n\n\n\n\nNoteThe MoBPS Name\n\n\n\nMoBPS is named after a pug (German: “Mops”)! The development team has a soft spot for this friendly breed.",
+    "crumbs": [
+      "Welcome"
+    ]
+  },
+  {
+    "objectID": "chapters/01-introduction.html",
+    "href": "chapters/01-introduction.html",
+    "title": "1  Introduction to MoBPS",
+    "section": "",
+    "text": "1.1 Learning Objectives\nBy the end of this chapter, you will:",
+    "crumbs": [
+      "Getting Started",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introduction to MoBPS</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/01-introduction.html#learning-objectives",
+    "href": "chapters/01-introduction.html#learning-objectives",
+    "title": "1  Introduction to MoBPS",
+    "section": "",
+    "text": "Understand what MoBPS is and what it can do\nKnow how to install MoBPS and its dependencies\nBe able to load the package and verify installation\nUnderstand the basic workflow of a MoBPS simulation",
+    "crumbs": [
+      "Getting Started",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introduction to MoBPS</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/01-introduction.html#what-is-mobps",
+    "href": "chapters/01-introduction.html#what-is-mobps",
+    "title": "1  Introduction to MoBPS",
+    "section": "1.2 What is MoBPS?",
+    "text": "1.2 What is MoBPS?\nMoBPS (Modular Breeding Program Simulator) is an R package for stochastic simulation of breeding programs. It provides a flexible framework to:\n\nCreate realistic founder populations with complex genetic architectures\nSimulate multiple generations of breeding actions (selection, mating, culling)\nAnalyze genetic gain, diversity, inbreeding, and population structure\nCompare different breeding strategies\nOptimize breeding programs for specific goals\n\n\n1.2.1 Why Simulate Breeding Programs?\nBreeding program simulation allows you to:\n\nTest strategies before implementing them in reality\nUnderstand trade-offs between genetic gain and diversity\nOptimize selection and mating decisions\nPredict long-term outcomes over many generations\nTrain future breeders in a risk-free environment\n\n\n\n1.2.2 Key Features\nMoBPS offers exceptional flexibility:\n\n✅ Works with both plant and animal breeding\n✅ Supports single or multiple traits\n✅ Handles additive, dominance, and epistatic effects\n✅ Simulates realistic genomic data or uses real data\n✅ Integrates with external prediction software (BLUP, GBLUP, Bayesian)\n✅ Provides rich visualization and analysis tools\n✅ Scales from small experiments to large commercial programs",
+    "crumbs": [
+      "Getting Started",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introduction to MoBPS</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/01-introduction.html#sec-installation",
+    "href": "chapters/01-introduction.html#sec-installation",
+    "title": "1  Introduction to MoBPS",
+    "section": "1.3 Installation",
+    "text": "1.3 Installation\n\n1.3.1 System Requirements\nMoBPS requires:\n\nR version 3.0 or higher (R 4.0+ recommended)\nFor large-scale simulations: RandomFieldsUtils and miraculix (optional but highly recommended)\n\n\n\n1.3.2 Step 1: Platform-Specific Prerequisites\n\n1.3.2.1 Windows Users\nSome Windows systems require Rtools:\n\nDownload from: https://cran.r-project.org/bin/windows/Rtools/\nInstall the version matching your R version\nVerify with: pkgbuild::find_rtools()\n\n\n\n1.3.2.2 Mac Users\nSome Mac systems require gfortran/homebrew:\n\nDownload from: https://mac.r-project.org/tools/\nFollow installation instructions for your macOS version\n\n\n\n1.3.2.3 Linux Users\nUsually no special prerequisites needed. Ensure build tools are installed:\n# Ubuntu/Debian\nsudo apt-get install build-essential gfortran\n\n# Fedora/RHEL\nsudo dnf install gcc-gfortran\n\n\n\n1.3.3 Step 2: Install Performance Packages (Optional but Recommended)\nFor significant performance improvements in large simulations:\n\n# Install devtools if not already installed\nif (!require(\"devtools\")) install.packages(\"devtools\")\n\n# Install RandomFieldsUtils (install this FIRST)\ndevtools::install_github(\"tpook92/RandomFieldsUtils\")\n\n# Then install miraculix (install SECOND)\ndevtools::install_github(\"tpook92/miraculix\")\n\nImportant: - Install RandomFieldsUtils before miraculix - Use compatible versions (both v1.6.0.2 recommended) - These packages dramatically speed up genomic computations\n\n\n1.3.4 Step 3: Install MoBPS\nInstall the latest MoBPS from GitHub (recommended over CRAN for latest features):\n\n# Install MoBPS from GitHub\ndevtools::install_github(\"tpook92/MoBPS\", subdir=\"pkg\")\n\nWhy GitHub over CRAN? - GitHub has the latest features and bug fixes - Regular updates and improvements - CRAN version may be outdated (last update: November 2021)\n\n\n1.3.5 Step 4: Install Genetic Maps (Optional)\nFor working with real species data:\n\n# Install MoBPS maps package (includes Ensembl maps)\ndevtools::install_github(\"tpook92/MoBPS\", subdir=\"pkg-maps\")\n\nThis package includes genetic maps for common species from Ensembl.\n\n\n1.3.6 Step 5: Verify Installation\nLoad the package and check version:\n\n# Load MoBPS\nlibrary(MoBPS)\n\n# Check version\npackageVersion(\"MoBPS\")\n\n# Should see something like: '1.13.0' or higher\n\n\n\n1.3.7 Additional Packages\nMoBPS can integrate with various prediction software. These are optional and only needed for specific analyses:\n\n# For genomic prediction\ninstall.packages(\"rrBLUP\")    # GBLUP\ninstall.packages(\"BGLR\")      # Bayesian methods\ninstall.packages(\"sommer\")    # Mixed models\n\n# For visualization\ninstall.packages(\"ggplot2\")   # Advanced plotting\ninstall.packages(\"viridis\")   # Color palettes",
+    "crumbs": [
+      "Getting Started",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introduction to MoBPS</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/01-introduction.html#sec-workflow",
+    "href": "chapters/01-introduction.html#sec-workflow",
+    "title": "1  Introduction to MoBPS",
+    "section": "1.4 Basic Workflow Overview",
+    "text": "1.4 Basic Workflow Overview\nEvery MoBPS simulation follows the same basic structure:\n\n1.4.1 1. Create a Founder Population\nUse creating.diploid() to initialize your population:\n\npopulation &lt;- creating.diploid(\n  nsnp = 1000,          # Number of SNP markers\n  nindi = 100,          # Number of individuals\n  n.additive = 100,     # Number of QTLs\n  mean.target = 100     # Mean breeding value\n)\n\n\n\n1.4.2 2. Simulate Breeding Actions\nUse breeding.diploid() to perform selection, mating, and other actions:\n\npopulation &lt;- breeding.diploid(\n  population,\n  selection.size = c(10, 10),  # 10 males, 10 females\n  breeding.size = c(50, 50)     # Generate 50 male, 50 female offspring\n)\n\n\n\n1.4.3 3. Extract and Analyze Results\nUse get.*() functions to extract information:\n\n# Get breeding values\nbv &lt;- get.bv(population, gen = 2)\n\n# Get phenotypes\npheno &lt;- get.pheno(population, gen = 2)\n\n# Calculate inbreeding\ninbreeding &lt;- inbreeding.exp(population, gen = 2)\n\n\n\n1.4.4 4. Visualize Results\nUse built-in plotting functions:\n\n# Track genetic gain\nbv.development(population)\n\n# PCA plot\nget.pca(population, gen = 1:5)\n\n# Kinship development\nkinship.development(population, gen = 1:5)",
+    "crumbs": [
+      "Getting Started",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introduction to MoBPS</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/01-introduction.html#the-population-object",
+    "href": "chapters/01-introduction.html#the-population-object",
+    "title": "1  Introduction to MoBPS",
+    "section": "1.5 The Population Object",
+    "text": "1.5 The Population Object\nThe core of MoBPS is the population object (usually called population or pop):\n\nIt’s an R list containing all simulation data\nStores genotypes, phenotypes, pedigrees, trait architectures\nUpdated by each breeding.diploid() call\nCan be saved/loaded for reproducibility\n\nThink of it as a complete database of your breeding program.",
+    "crumbs": [
+      "Getting Started",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introduction to MoBPS</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/01-introduction.html#getting-help",
+    "href": "chapters/01-introduction.html#getting-help",
+    "title": "1  Introduction to MoBPS",
+    "section": "1.6 Getting Help",
+    "text": "1.6 Getting Help\n\n1.6.1 Within R\n\n# Function documentation\n?creating.diploid\n?breeding.diploid\n\n# See all MoBPS functions\nhelp(package = \"MoBPS\")\n\n\n\n1.6.2 Online Resources\n\nGitHub: https://github.com/tpook92/MoBPS\nWeb Interface: https://www.mobps.de\nEmail Support: Torsten.pook@wur.nl\n\n\n\n1.6.3 Important Notes\n\n\n\n\n\n\nWarningTake Simulation Results with Caution!\n\n\n\nMoBPS won’t stop you from making biologically impossible settings (e.g., collecting milk records from bulls). Always validate your simulation setup makes biological sense!\n\n\n\n\n\n\n\n\nTipDon’t Get Overwhelmed!\n\n\n\nMoBPS has many parameters, but you only need a few for most simulations. Start simple, then add complexity as needed. Use Ctrl+F to search the documentation for specific features.",
+    "crumbs": [
+      "Getting Started",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introduction to MoBPS</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/01-introduction.html#whats-next",
+    "href": "chapters/01-introduction.html#whats-next",
+    "title": "1  Introduction to MoBPS",
+    "section": "1.7 What’s Next?",
+    "text": "1.7 What’s Next?\nIn the next chapter, we’ll dive into core concepts that are essential for understanding how MoBPS works:\n\nIndividual grouping (generations, databases, cohorts)\nThe population list structure\nHow traits are represented\nTime flow in simulations\n\nLet’s continue to Chapter 2: Core Concepts!",
+    "crumbs": [
+      "Getting Started",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introduction to MoBPS</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/01-introduction.html#summary",
+    "href": "chapters/01-introduction.html#summary",
+    "title": "1  Introduction to MoBPS",
+    "section": "1.8 Summary",
+    "text": "1.8 Summary\n\nMoBPS is a flexible R package for breeding program simulation\nInstall from GitHub for latest features\nOptional performance packages (miraculix) are highly recommended\nBasic workflow: Create → Breed → Analyze → Visualize\nThe population object stores all your simulation data\nHelp is available through documentation and direct contact",
+    "crumbs": [
+      "Getting Started",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introduction to MoBPS</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/02-core-concepts.html",
+    "href": "chapters/02-core-concepts.html",
+    "title": "2  Core Concepts",
+    "section": "",
+    "text": "2.1 Learning Objectives\nBy the end of this chapter, you will understand:",
+    "crumbs": [
+      "Getting Started",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Core Concepts</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/02-core-concepts.html#learning-objectives",
+    "href": "chapters/02-core-concepts.html#learning-objectives",
+    "title": "2  Core Concepts",
+    "section": "",
+    "text": "The gen/database/cohorts system for grouping individuals\nHow sex is handled in MoBPS\nThe structure of the population object\nHow time flows through generations\nKey terminology and concepts",
+    "crumbs": [
+      "Getting Started",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Core Concepts</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/02-core-concepts.html#sec-grouping",
+    "href": "chapters/02-core-concepts.html#sec-grouping",
+    "title": "2  Core Concepts",
+    "section": "2.2 Individual Grouping",
+    "text": "2.2 Individual Grouping\nOne of the biggest challenges in breeding simulation is having the flexibility to perform operations on specific groups of individuals. MoBPS provides three powerful ways to select groups:\n\nGenerations (gen) - Select all individuals from specific generation(s)\nCohorts (cohorts) - Select named groups with specific characteristics\nDatabase (database) - Precise selection by generation, sex, and individual range\n\n\n2.2.1 Understanding Generations (gen)\nEvery time you create offspring with breeding.diploid(), they are assigned to a new generation. Generations are numbered sequentially starting from 1.\n\n# Create founder population (generation 1)\npopulation &lt;- creating.diploid(nsnp = 1000, nindi = 100)\n\n# Create generation 2\npopulation &lt;- breeding.diploid(population,\n                               selection.size = c(10, 10),\n                               breeding.size = c(50, 50))\n\n# Select generation 2\nbv_gen2 &lt;- get.bv(population, gen = 2)\n\n# Select multiple generations\nbv_multi &lt;- get.bv(population, gen = 2:5)  # Generations 2, 3, 4, 5\n\nKey points: - Generations track when individuals were born - Useful for age-structured populations - Easy to analyze trends over time\n\n\n2.2.2 Named Groups: Cohorts\nCohorts are named groups of individuals you define. They’re incredibly useful for tracking:\n\nDifferent selection lines (e.g., “HighYield”, “LowFat”)\nBreeding groups (e.g., “NucleusHerd”, “CommercialLine”)\nTreatment groups (e.g., “Tested”, “Controls”)\n\n\n# Create offspring and assign to named cohort\npopulation &lt;- breeding.diploid(\n  population,\n  selection.size = c(10, 10),\n  breeding.size = c(50, 50),\n  name.cohort = \"SelectedLine\"  # Give this group a name\n)\n\n# Later, select only this cohort\nbv_selected &lt;- get.bv(population, cohorts = \"SelectedLine\")\n\n# Select multiple cohorts\nmulti_cohorts &lt;- get.bv(population,\n                         cohorts = c(\"SelectedLine\", \"ControlLine\"))\n\nBest practices: - Use descriptive names: “TopSires”, “TestGroup1”, “Line_A” - Keep naming consistent across simulations - Use cohorts when generation number alone isn’t enough\n\n\n2.2.3 Precise Selection: Database\nThe database parameter gives you surgical precision. It’s a matrix where each row specifies:\n\nGeneration number\nSex (1 = male, 2 = female)\nFirst individual to include (optional)\nLast individual to include (optional)\n\n\n# Select males 1-20 from generation 3\ndatabase &lt;- matrix(c(3, 1, 1, 20), ncol = 4)\nmales &lt;- get.bv(population, database = database)\n\n# Select multiple groups\ndatabase &lt;- rbind(\n  c(3, 1, 1, 20),    # Males 1-20 from gen 3\n  c(4, 2, 5, 15),    # Females 5-15 from gen 4\n  c(5, 1, NA, NA)    # All males from gen 5\n)\nsubset &lt;- get.bv(population, database = database)\n\nWhen to use database: - Need specific individual ranges - Complex selection criteria - Combining multiple precise selections\n\n\n2.2.4 Combining Selection Methods\nYou can mix and match these methods:\n\n# Select from generations 4-5, specific males from gen 3, AND a cohort\ndatabase &lt;- matrix(c(3, 1, 21, 50), ncol = 4)\n\nbv &lt;- get.bv(population,\n             gen = 4:5,              # All of gen 4 & 5\n             database = database,     # Males 21-50 from gen 3\n             cohorts = \"Founders\")    # Plus the Founders cohort\n\nThis gives you incredible flexibility to work with exactly the individuals you need!",
+    "crumbs": [
+      "Getting Started",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Core Concepts</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/02-core-concepts.html#sec-sex",
+    "href": "chapters/02-core-concepts.html#sec-sex",
+    "title": "2  Core Concepts",
+    "section": "2.3 Sex Handling",
+    "text": "2.3 Sex Handling\nMoBPS has a flexible approach to sex:\n\n2.3.1 Traditional Two-Sex Systems\nBy default, individuals are assigned male (1) or female (2):\n\n# Control sex ratio in founders\npopulation &lt;- creating.diploid(\n  nsnp = 1000,\n  nindi = 100,\n  sex.quota = 0.5  # 50% female\n)\n\n# Or specify exactly\npopulation &lt;- creating.diploid(\n  nsnp = 1000,\n  nindi = 100,\n  sex.s = c(rep(1, 40), rep(2, 60))  # 40 males, 60 females\n)\n\n\n\n2.3.2 Flexible Sex Usage\nImportant: Sex assignments are not binding for breeding operations!\n\nAn individual stored as “female” can be used as father\nUseful for plant breeding where sex may not be fixed\nUseful for modeling hermaphrodites or aquaculture\n\n\n\n2.3.3 One-Sex Mode\nFor organisms without meaningful sex distinctions:\n\n# Deactivate two-sex system\npopulation &lt;- creating.diploid(\n  nsnp = 1000,\n  nindi = 100,\n  one.sex.mode = TRUE  # All individuals in \"sex 1\"\n)\n\nThis automatically adjusts breeding.size, selection.size, etc. to work with a single group.\n\n\n2.3.4 Using Sex as Structure\nEven in plants, you can use “sex” to organize populations:\n\nSex 1 = Gene pool A\nSex 2 = Gene pool B\n\nThis provides convenient structure for tracking different groups!",
+    "crumbs": [
+      "Getting Started",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Core Concepts</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/02-core-concepts.html#sec-population-object",
+    "href": "chapters/02-core-concepts.html#sec-population-object",
+    "title": "2  Core Concepts",
+    "section": "2.4 The Population Object",
+    "text": "2.4 The Population Object\nThe population object is the heart of MoBPS. It’s an R list containing everything about your breeding program.\n\n2.4.1 Main Components\nThe population object has two major sections:\n\n# Examine structure\nnames(population)\n# [1] \"info\"     \"breeding\"\n\n# General information\nnames(population$info)\n# QTL effects, genetic maps, trait info, etc.\n\n# Individual-level data\nnames(population$breeding)\n# Genotypes, phenotypes, pedigrees by generation\n\n\n\n2.4.2 What’s Stored?\nIn $info (population-level): - Genetic map (chromosome structure, marker positions) - QTL effects and locations - Trait names and architectures - Correlation structures - Fixed effects\nIn $breeding (individual-level): - Genotypes/haplotypes for each individual - Breeding values (true genetic values) - Phenotypes (observed values) - Pedigree information - Genotyping status - Cohort assignments\n\n\n2.4.3 Accessing the Population Object\nWhile you can access elements directly, it’s better to use get.*() functions:\n\n# DON'T DO THIS (fragile, complex):\nbv &lt;- population$breeding[[2]][[1]][[6]]\n\n# DO THIS INSTEAD (clear, robust):\nbv &lt;- get.bv(population, gen = 2)\n\nAvailable getter functions: - get.bv() - Breeding values - get.pheno() - Phenotypes - get.geno() - Genotypes - get.pedigree() - Pedigree - get.map() - Genetic map - Many more! (See Chapter 17)",
+    "crumbs": [
+      "Getting Started",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Core Concepts</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/02-core-concepts.html#sec-classes",
+    "href": "chapters/02-core-concepts.html#sec-classes",
+    "title": "2  Core Concepts",
+    "section": "2.5 Classes: Advanced Grouping",
+    "text": "2.5 Classes: Advanced Grouping\nClasses provide another layer of organization:\n\n# Assign individuals to class 1\npopulation &lt;- set.class(population,\n                        gen = 2,\n                        class = 1)\n\n# Only phenotype class 1\npopulation &lt;- breeding.diploid(\n  population,\n  phenotyping.gen = 2,\n  phenotyping.class = 1  # Only these get phenotyped\n)\n\nSpecial classes: - Class 0 (default): Normal active individuals - Class -1: Culled/dead animals (automatically assigned) - Class 1+: User-defined groups\nUse classes for: - Active vs. culled animals - Test groups vs. controls - Multiple herds/flocks with different management",
+    "crumbs": [
+      "Getting Started",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Core Concepts</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/02-core-concepts.html#sec-time-flow",
+    "href": "chapters/02-core-concepts.html#sec-time-flow",
+    "title": "2  Core Concepts",
+    "section": "2.6 Time and Generation Flow",
+    "text": "2.6 Time and Generation Flow\nUnderstanding how time works in MoBPS is crucial:\n\n2.6.1 Sequential Generations\nEach breeding.diploid() call creates the next generation:\n\n# Gen 1: Founders\npop &lt;- creating.diploid(nsnp = 1000, nindi = 100)\n\n# Gen 2: First offspring\npop &lt;- breeding.diploid(pop,\n                        selection.size = c(10, 10),\n                        breeding.size = c(50, 50))\n\n# Gen 3: Second offspring generation\npop &lt;- breeding.diploid(pop,\n                        selection.size = c(10, 10),\n                        breeding.size = c(50, 50))\n\nGeneration numbers are automatic and sequential.\n\n\n2.6.2 Overlapping Generations\nYou can have overlapping generations by selecting parents from multiple generations:\n\n# Use individuals from generation 2 AND 3 as parents\npop &lt;- breeding.diploid(pop,\n                        selection.m.gen = 2,      # Males from gen 2\n                        selection.f.gen = 3,      # Females from gen 3\n                        breeding.size = c(50, 50))\n\nThis creates generation 4 from a mix of gen 2 and 3 parents.\n\n\n2.6.3 Age Structure\nMoBPS doesn’t explicitly track age, but you can model it:\n\nUse generations as age cohorts\nUse cohorts to track birth years\nSelect parents from specific generations to control age\n\nSee Section 6.20 in the full manual for detailed age structure examples.",
+    "crumbs": [
+      "Getting Started",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Core Concepts</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/02-core-concepts.html#sec-pools",
+    "href": "chapters/02-core-concepts.html#sec-pools",
+    "title": "2  Core Concepts",
+    "section": "2.7 Genetic Pools and Crossbreeding",
+    "text": "2.7 Genetic Pools and Crossbreeding\nFounder pools track the origin of genome segments:\n\n# Create two founder populations\npop1 &lt;- creating.diploid(nsnp = 1000, nindi = 50,\n                         founder.pool = 1)  # Pool 1\n\npop2 &lt;- creating.diploid(nsnp = 1000, nindi = 50,\n                         founder.pool = 2)  # Pool 2\n\nWhy use pools? - Track breed composition in crossbreeding - Assign breed-specific QTL effects - Analyze admixture and introgression - Model heterosis and breed complementarity\nYou can later query which parts of the genome came from which pool using get.pool().",
+    "crumbs": [
+      "Getting Started",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Core Concepts</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/02-core-concepts.html#key-terminology-recap",
+    "href": "chapters/02-core-concepts.html#key-terminology-recap",
+    "title": "2  Core Concepts",
+    "section": "2.8 Key Terminology Recap",
+    "text": "2.8 Key Terminology Recap\n\n\n\n\n\n\n\nTerm\nDefinition\n\n\n\n\nGeneration\nTime point when individuals were born (sequential)\n\n\nCohort\nNamed group of individuals with similar characteristics\n\n\nDatabase\nPrecise selection by gen, sex, and individual range\n\n\nClass\nCategory for management actions (0=active, -1=culled, 1+=custom)\n\n\nSex\nMale (1) or female (2), flexibly used\n\n\nPool\nFounder population origin for tracking breed composition\n\n\nPopulation object\nR list containing all simulation data",
+    "crumbs": [
+      "Getting Started",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Core Concepts</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/02-core-concepts.html#practical-tips",
+    "href": "chapters/02-core-concepts.html#practical-tips",
+    "title": "2  Core Concepts",
+    "section": "2.9 Practical Tips",
+    "text": "2.9 Practical Tips\n\n\n\n\n\n\nTipStart Simple\n\n\n\nDon’t try to use all features at once! Start with just gen for selecting individuals, then add cohorts and classes as needed.\n\n\n\n\n\n\n\n\nTipNaming Conventions\n\n\n\nUse consistent naming: - Cohorts: “Line_A”, “Test_2024”, “HighYield” - Variables: pop or population for the population object - Clear generation references in comments\n\n\n\n\n\n\n\n\nWarningDon’t Lose Your Population Object!\n\n\n\nAlways save important population objects:\n\nsaveRDS(population, \"my_population_gen10.rds\")\n# Later:\npopulation &lt;- readRDS(\"my_population_gen10.rds\")",
+    "crumbs": [
+      "Getting Started",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Core Concepts</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/02-core-concepts.html#summary",
+    "href": "chapters/02-core-concepts.html#summary",
+    "title": "2  Core Concepts",
+    "section": "2.10 Summary",
+    "text": "2.10 Summary\n\nThree selection systems: gen (generations), cohorts (named groups), database (precise)\nFlexible sex: Can be biological sex, gene pools, or organizational structure\nPopulation object: Central data structure storing all simulation information\nClasses: Additional grouping for management (0=active, -1=culled, custom)\nGenerations flow sequentially: Each breeding.diploid() creates the next generation\nPools track origins: Useful for crossbreeding and admixture",
+    "crumbs": [
+      "Getting Started",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Core Concepts</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/02-core-concepts.html#whats-next",
+    "href": "chapters/02-core-concepts.html#whats-next",
+    "title": "2  Core Concepts",
+    "section": "2.11 What’s Next?",
+    "text": "2.11 What’s Next?\nNow that you understand the core concepts, let’s put them into practice!\nIn Chapter 3: Your First Simulation, you’ll create a complete breeding program from start to finish.",
+    "crumbs": [
+      "Getting Started",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Core Concepts</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/03-first-simulation.html",
+    "href": "chapters/03-first-simulation.html",
+    "title": "3  Your First Simulation",
+    "section": "",
+    "text": "3.1 Learning Objectives\nBy the end of this chapter, you will be able to:",
+    "crumbs": [
+      "Getting Started",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Your First Simulation</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/03-first-simulation.html#learning-objectives",
+    "href": "chapters/03-first-simulation.html#learning-objectives",
+    "title": "3  Your First Simulation",
+    "section": "",
+    "text": "Create a complete breeding program simulation from scratch\nPhenotype and genotype individuals\nPerform genomic prediction\nSelect superior individuals\nGenerate offspring from selected parents\nAnalyze genetic gain and inbreeding",
+    "crumbs": [
+      "Getting Started",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Your First Simulation</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/03-first-simulation.html#the-complete-workflow",
+    "href": "chapters/03-first-simulation.html#the-complete-workflow",
+    "title": "3  Your First Simulation",
+    "section": "3.2 The Complete Workflow",
+    "text": "3.2 The Complete Workflow\nLet’s simulate a realistic breeding program with:\n\n100 founder animals\nGenomic selection based on GBLUP\n10 generations of selection\nAnalysis of genetic gain and diversity",
+    "crumbs": [
+      "Getting Started",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Your First Simulation</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/03-first-simulation.html#step-1-load-mobps",
+    "href": "chapters/03-first-simulation.html#step-1-load-mobps",
+    "title": "3  Your First Simulation",
+    "section": "3.3 Step 1: Load MoBPS",
+    "text": "3.3 Step 1: Load MoBPS\n\n# Load the package\nlibrary(MoBPS)\n\n# Optional: Set seed for reproducibility\nset.seed(12345)",
+    "crumbs": [
+      "Getting Started",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Your First Simulation</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/03-first-simulation.html#sec-create-founders",
+    "href": "chapters/03-first-simulation.html#sec-create-founders",
+    "title": "3  Your First Simulation",
+    "section": "3.4 Step 2: Create Founder Population",
+    "text": "3.4 Step 2: Create Founder Population\n\n# Create a founder population\npopulation &lt;- creating.diploid(\n  nsnp = 10000,                # 10,000 SNP markers\n  nindi = 100,                 # 100 individuals (50 male, 50 female)\n  chr.nr = 5,                  # 5 chromosomes\n  chromosome.length = 2,       # 2 Morgan each (10M total)\n  n.additive = 100,            # 100 additive QTLs\n  n.dominant = 20,             # 20 dominant QTLs\n  share.genotyped = 1,         # 100% genotyped\n  var.target = 1,              # Genetic variance = 1\n  name.cohort = \"Founders\"     # Name this cohort\n)\n\nWhat did we just create?\n\nA population with realistic genomic structure (5 chromosomes)\n100 animals with 10,000 SNPs each\nA complex trait with both additive and dominance effects\nAll individuals are genotyped (ready for genomic selection)",
+    "crumbs": [
+      "Getting Started",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Your First Simulation</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/03-first-simulation.html#sec-phenotype",
+    "href": "chapters/03-first-simulation.html#sec-phenotype",
+    "title": "3  Your First Simulation",
+    "section": "3.5 Step 3: Generate Phenotypes",
+    "text": "3.5 Step 3: Generate Phenotypes\n\n# Phenotype all individuals in generation 1\npopulation &lt;- breeding.diploid(\n  population,\n  phenotyping = \"all\",         # Phenotype everyone\n  phenotyping.gen = 1,         # From generation 1\n  heritability = 0.5           # h² = 0.5 (moderate heritability)\n)\n\nWhat happened?\n\nPhenotypes were simulated for all 100 founders\nResidual variance was automatically calculated to achieve h² = 0.5\nPhenotypes = True Breeding Value + Environmental Effect",
+    "crumbs": [
+      "Getting Started",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Your First Simulation</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/03-first-simulation.html#sec-prediction",
+    "href": "chapters/03-first-simulation.html#sec-prediction",
+    "title": "3  Your First Simulation",
+    "section": "3.6 Step 4: Genomic Prediction",
+    "text": "3.6 Step 4: Genomic Prediction\n\n# Perform genomic prediction (GBLUP)\npopulation &lt;- breeding.diploid(\n  population,\n  bve = TRUE,                  # Calculate breeding value estimates\n  bve.gen = 1                  # Use generation 1 as training set\n)\n\nWhat happened?\n\nA genomic relationship matrix (G) was calculated\nBreeding values were estimated using the internal GBLUP\nEach individual now has an estimated breeding value (EBV)\n\n\n\n\n\n\n\nNoteInternal BVE Method\n\n\n\nThe bve = TRUE uses MoBPS’s internal GBLUP assuming known heritability. For more realistic scenarios, use external software like rrBLUP, BGLR, or BLUPF90 (covered in Chapter 13).",
+    "crumbs": [
+      "Getting Started",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Your First Simulation</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/03-first-simulation.html#sec-selection",
+    "href": "chapters/03-first-simulation.html#sec-selection",
+    "title": "3  Your First Simulation",
+    "section": "3.7 Step 5: Selection of Parents",
+    "text": "3.7 Step 5: Selection of Parents\n\n# Select top individuals as parents\npopulation &lt;- breeding.diploid(\n  population,\n  selection.size = c(10, 10),         # 10 males, 10 females\n  selection.criteria = \"bve\",         # Select on estimated BV\n  selection.m.cohorts = \"Founders\",   # Males from Founders\n  selection.f.cohorts = \"Founders\",   # Females from Founders\n  breeding.size = c(50, 50),          # Generate 50M + 50F offspring\n  name.cohort = \"Generation_2\"        # Name the offspring\n)\n\nWhat happened?\n\nThe top 10 males (by EBV) were selected as sires\nThe top 10 females (by EBV) were selected as dams\n100 offspring (50 male, 50 female) were created via random mating\nSelection intensity: 10% of males, 10% of females",
+    "crumbs": [
+      "Getting Started",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Your First Simulation</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/03-first-simulation.html#sec-repeat",
+    "href": "chapters/03-first-simulation.html#sec-repeat",
+    "title": "3  Your First Simulation",
+    "section": "3.8 Step 6: Repeat for Multiple Generations",
+    "text": "3.8 Step 6: Repeat for Multiple Generations\n\n# Simulate 10 generations\nfor (gen in 2:10) {\n\n  # Phenotype the current generation\n  population &lt;- breeding.diploid(\n    population,\n    phenotyping = \"all\",\n    phenotyping.gen = gen,\n    heritability = 0.5\n  )\n\n  # Update genomic predictions using all data\n  population &lt;- breeding.diploid(\n    population,\n    bve = TRUE,\n    bve.gen = 1:gen                   # Cumulative training set\n  )\n\n  # Select and breed\n  population &lt;- breeding.diploid(\n    population,\n    selection.size = c(10, 10),\n    selection.criteria = \"bve\",\n    selection.gen = gen,               # Select from current generation\n    breeding.size = c(50, 50),\n    name.cohort = paste0(\"Generation_\", gen+1)\n  )\n}\n\nWhat’s happening in the loop?\n\nEach generation is phenotyped\nPredictions are updated with cumulative data (generations 1 to current)\nTop 10 males and 10 females are selected\n100 offspring are produced",
+    "crumbs": [
+      "Getting Started",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Your First Simulation</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/03-first-simulation.html#sec-analyze",
+    "href": "chapters/03-first-simulation.html#sec-analyze",
+    "title": "3  Your First Simulation",
+    "section": "3.9 Step 7: Analyze Results",
+    "text": "3.9 Step 7: Analyze Results\n\n3.9.1 Genetic Gain\n\n# Plot breeding value trends\nbv.development(population)\n\nThis creates a plot showing: - Mean breeding value by generation - Genetic gain over time - Standard deviation within generation\n\n\n3.9.2 Extract Breeding Values\n\n# Get true breeding values for all generations\nbv_all &lt;- get.bv(population, gen = 1:11)\n\n# Calculate mean BV per generation\nmean_bv &lt;- apply(bv_all, 2, mean)\nmean_bv\n\n# Calculate genetic gain from generation 1 to 11\ngenetic_gain &lt;- mean_bv[11] - mean_bv[1]\ncat(\"Total genetic gain:\", round(genetic_gain, 3), \"genetic SD\\n\")\n\n\n\n3.9.3 Inbreeding Analysis\n\n# Calculate genomic inbreeding for generation 11\ninbreeding_gen11 &lt;- inbreeding.emp(population, gen = 11)\nmean(inbreeding_gen11)\n\n# Track inbreeding across generations\ninbreeding_trend &lt;- numeric(11)\nfor (gen in 1:11) {\n  inbreeding_trend[gen] &lt;- mean(inbreeding.emp(population, gen = gen))\n}\n\n# Plot inbreeding trend\nplot(1:11, inbreeding_trend,\n     type = \"b\",\n     xlab = \"Generation\",\n     ylab = \"Mean Inbreeding Coefficient\",\n     main = \"Inbreeding Over Time\",\n     col = \"red\", lwd = 2)\n\n\n\n3.9.4 Kinship Between Individuals\n\n# Calculate kinship matrix for generation 11\nkinship_matrix &lt;- kinship.emp(population, gen = 11)\n\n# Average kinship (off-diagonal elements)\nn &lt;- nrow(kinship_matrix)\navg_kinship &lt;- sum(kinship_matrix - diag(diag(kinship_matrix))) / (n * (n - 1))\ncat(\"Average kinship in gen 11:\", round(avg_kinship, 4), \"\\n\")\n\n\n\n3.9.5 Population Structure (PCA)\n\n# PCA of generations 1, 5, and 11\nget.pca(population, gen = c(1, 5, 11))\n\nThis creates a PCA plot showing how the population has diverged from founders.",
+    "crumbs": [
+      "Getting Started",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Your First Simulation</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/03-first-simulation.html#complete-script",
+    "href": "chapters/03-first-simulation.html#complete-script",
+    "title": "3  Your First Simulation",
+    "section": "3.10 Complete Script",
+    "text": "3.10 Complete Script\nHere’s the entire simulation in one script:\n\nlibrary(MoBPS)\nset.seed(12345)\n\n# 1. Create founders\npopulation &lt;- creating.diploid(\n  nsnp = 10000, nindi = 100, chr.nr = 5, chromosome.length = 2,\n  n.additive = 100, n.dominant = 20, share.genotyped = 1,\n  var.target = 1, name.cohort = \"Founders\"\n)\n\n# 2. Phenotype founders\npopulation &lt;- breeding.diploid(\n  population, phenotyping = \"all\", phenotyping.gen = 1, heritability = 0.5\n)\n\n# 3. Initial genomic prediction\npopulation &lt;- breeding.diploid(population, bve = TRUE, bve.gen = 1)\n\n# 4. Create first offspring generation\npopulation &lt;- breeding.diploid(\n  population, selection.size = c(10, 10), selection.criteria = \"bve\",\n  selection.m.cohorts = \"Founders\", selection.f.cohorts = \"Founders\",\n  breeding.size = c(50, 50), name.cohort = \"Generation_2\"\n)\n\n# 5. Repeat for 9 more generations\nfor (gen in 2:10) {\n  population &lt;- breeding.diploid(\n    population, phenotyping = \"all\", phenotyping.gen = gen, heritability = 0.5\n  )\n  population &lt;- breeding.diploid(population, bve = TRUE, bve.gen = 1:gen)\n  population &lt;- breeding.diploid(\n    population, selection.size = c(10, 10), selection.criteria = \"bve\",\n    selection.gen = gen, breeding.size = c(50, 50),\n    name.cohort = paste0(\"Generation_\", gen+1)\n  )\n}\n\n# 6. Analyze results\nbv.development(population)\nbv_all &lt;- get.bv(population, gen = 1:11)\nmean_bv &lt;- apply(bv_all, 2, mean)\ncat(\"Genetic gain:\", round(mean_bv[11] - mean_bv[1], 3), \"\\n\")\n\ninbreeding_gen11 &lt;- inbreeding.emp(population, gen = 11)\ncat(\"Mean inbreeding gen 11:\", round(mean(inbreeding_gen11), 4), \"\\n\")",
+    "crumbs": [
+      "Getting Started",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Your First Simulation</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/03-first-simulation.html#understanding-the-results",
+    "href": "chapters/03-first-simulation.html#understanding-the-results",
+    "title": "3  Your First Simulation",
+    "section": "3.11 Understanding the Results",
+    "text": "3.11 Understanding the Results\n\n3.11.1 Expected Outcomes\nAfter 10 generations of selection with these parameters, you should see:\n\nGenetic gain: ~2-4 genetic standard deviations\nInbreeding: ~5-15% (due to small effective population size)\nSelection response: Decreasing per generation (plateauing)\nPrediction accuracy: Improving with cumulative training data\n\n\n\n3.11.2 Why These Results?\n\nStrong selection (10% selected) = high genetic gain\nSmall Ne (10 males) = rapid inbreeding accumulation\nModerate h² (0.5) = good response to selection\nFinite genome = some exhaustion of genetic variance",
+    "crumbs": [
+      "Getting Started",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Your First Simulation</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/03-first-simulation.html#variations-to-try",
+    "href": "chapters/03-first-simulation.html#variations-to-try",
+    "title": "3  Your First Simulation",
+    "section": "3.12 Variations to Try",
+    "text": "3.12 Variations to Try\nModify the simulation to explore different scenarios:\n\n3.12.1 Higher Selection Intensity\n\n# More extreme selection\nselection.size = c(5, 5)  # Top 5% of each sex\n\n\n\n3.12.2 Larger Population\n\n# Reduce inbreeding\nnindi = 500,                # 500 founders\nselection.size = c(25, 25),  # But still select top 10%\nbreeding.size = c(250, 250)  # Maintain pop size\n\n\n\n3.12.3 Multiple Traits\n\n# Add a second trait\nn.additive = c(100, 80),           # Trait 1 & 2\ntrait.cor = matrix(c(1, -0.3,      # Negative correlation\n                      -0.3, 1), nrow = 2)\n\n\n\n3.12.4 Different Mating Strategies\n\n# Avoid inbreeding\navoid.mating.halfsib = TRUE,\navoid.mating.fullsib = TRUE",
+    "crumbs": [
+      "Getting Started",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Your First Simulation</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/03-first-simulation.html#common-issues-and-solutions",
+    "href": "chapters/03-first-simulation.html#common-issues-and-solutions",
+    "title": "3  Your First Simulation",
+    "section": "3.13 Common Issues and Solutions",
+    "text": "3.13 Common Issues and Solutions\n\n\n\n\n\n\nWarning“Not enough males/females”\n\n\n\nProblem: Selection.size too large for available individuals.\nSolution: Check population size:\n\nget.size(population, gen = 2)\n\nEnsure selection.size doesn’t exceed population size.\n\n\n\n\n\n\n\n\nWarning“No phenotypes available”\n\n\n\nProblem: Forgot to phenotype before BVE.\nSolution: Always phenotype before prediction:\n\npopulation &lt;- breeding.diploid(population,\n                                phenotyping = \"all\",\n                                heritability = 0.5)\n\n\n\n\n\n\n\n\n\nTipSpeeding Up Simulations\n\n\n\nFor large-scale simulations: - Reduce nsnp (1000 SNPs often sufficient) - Use miraculix package for fast matrix operations - Set copy.breeding.values = FALSE to reduce memory",
+    "crumbs": [
+      "Getting Started",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Your First Simulation</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/03-first-simulation.html#summary",
+    "href": "chapters/03-first-simulation.html#summary",
+    "title": "3  Your First Simulation",
+    "section": "3.14 Summary",
+    "text": "3.14 Summary\nIn this chapter, you:\n\n✅ Created a complete breeding program simulation\n✅ Implemented genomic selection with GBLUP\n✅ Tracked genetic gain over 10 generations\n✅ Analyzed inbreeding and population structure\n✅ Learned the core MoBPS workflow",
+    "crumbs": [
+      "Getting Started",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Your First Simulation</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/03-first-simulation.html#whats-next",
+    "href": "chapters/03-first-simulation.html#whats-next",
+    "title": "3  Your First Simulation",
+    "section": "3.15 What’s Next?",
+    "text": "3.15 What’s Next?\nNow that you can run a basic simulation, let’s dive deeper into each component:\n\nPart 2: Learn how to create more realistic founder populations with LD structure, import real data, and design complex trait architectures\nChapter 4: Advanced population creation\nChapter 5: Sophisticated trait modeling\n\nContinue to Chapter 4: Creating Populations!",
+    "crumbs": [
+      "Getting Started",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Your First Simulation</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/04-creating-populations.html",
+    "href": "chapters/04-creating-populations.html",
+    "title": "4  Creating Founder Populations",
+    "section": "",
+    "text": "4.1 Learning Objectives\nBy the end of this chapter, you will be able to:",
+    "crumbs": [
+      "Building Populations & Traits",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Creating Founder Populations</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/04-creating-populations.html#learning-objectives",
+    "href": "chapters/04-creating-populations.html#learning-objectives",
+    "title": "4  Creating Founder Populations",
+    "section": "",
+    "text": "Generate simulated genomic data with different patterns\nImport real genomic data (VCF, PLINK formats)\nSet up genetic maps and chromosome structures\nControl allele frequencies and genetic diversity\nCreate multiple breeds/populations",
+    "crumbs": [
+      "Building Populations & Traits",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Creating Founder Populations</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/04-creating-populations.html#overview-of-creating.diploid",
+    "href": "chapters/04-creating-populations.html#overview-of-creating.diploid",
+    "title": "4  Creating Founder Populations",
+    "section": "4.2 Overview of creating.diploid()",
+    "text": "4.2 Overview of creating.diploid()\nThe creating.diploid() function is your starting point for every MoBPS simulation. It creates the founder population with:\n\nGenomic data (markers/haplotypes)\nGenetic map (chromosomes, positions)\nTrait architecture (QTLs, effects)\nPopulation structure (cohorts, sex, pools)",
+    "crumbs": [
+      "Building Populations & Traits",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Creating Founder Populations</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/04-creating-populations.html#sec-simulated-data",
+    "href": "chapters/04-creating-populations.html#sec-simulated-data",
+    "title": "4  Creating Founder Populations",
+    "section": "4.3 Generating Simulated Data",
+    "text": "4.3 Generating Simulated Data\n\n4.3.1 Basic Random Population\nThe simplest approach: generate random genotypes.\n\n# Create a simple founder population\npopulation &lt;- creating.diploid(\n  nsnp = 5000,          # 5,000 SNP markers\n  nindi = 200,          # 200 individuals\n  n.additive = 100      # 100 QTLs\n)\n\nDefault behavior: - Single chromosome (5 Morgan length) - Random genotypes with allele frequency ~ Uniform(0, 1) - 50% male, 50% female - All individuals diploid and unrelated\n\n\n4.3.2 Controlling Allele Frequencies\nAllele frequencies dramatically affect genetic architecture:\n\n# Uniform allele frequencies (default)\npop_uniform &lt;- creating.diploid(\n  nsnp = 1000,\n  nindi = 100,\n  beta_shape1 = 1,      # Beta(1,1) = Uniform(0,1)\n  beta_shape2 = 1\n)\n\n# Common variants (higher MAF)\npop_common &lt;- creating.diploid(\n  nsnp = 1000,\n  nindi = 100,\n  beta_shape1 = 2,      # Beta(2,2) concentrates near 0.5\n  beta_shape2 = 2\n)\n\n# Rare variants (low MAF)\npop_rare &lt;- creating.diploid(\n  nsnp = 1000,\n  nindi = 100,\n  beta_shape1 = 0.5,    # Beta(0.5,0.5) concentrates near 0 and 1\n  beta_shape2 = 0.5\n)\n\n\n\n\nAllele frequency distributions from Beta(α, β)\n\n\n\n\n\n\n\n\nTipRealistic Allele Frequencies\n\n\n\nReal populations often have many rare variants and fewer common variants. Use beta_shape1 = 0.3, beta_shape2 = 1.5 to approximate this.\n\n\n\n\n4.3.3 Initialization Modes\nControl starting genotypes with dataset parameter:\n\n# Mode 1: All zeros (000.../000...)\npop_zero &lt;- creating.diploid(nsnp = 1000, nindi = 100,\n                              dataset = \"all0\")\n\n# Mode 2: Fully heterozygous (000.../111...)\npop_het &lt;- creating.diploid(nsnp = 1000, nindi = 100,\n                             dataset = \"allhetero\")\n\n# Mode 3: Random (default, X₁X₂X₃.../X₄X₅X₆...)\npop_random &lt;- creating.diploid(nsnp = 1000, nindi = 100,\n                                dataset = \"random\")\n\n# Mode 4: Homozygous random (X₁X₂X₃.../X₁X₂X₃... same haplotypes)\npop_homo &lt;- creating.diploid(nsnp = 1000, nindi = 100,\n                              dataset = \"homorandom\")\n\nWhen to use each mode:\n\n\"random\" - General purpose, unrelated founders\n\"homorandom\" - Create inbred lines or DH lines\n\"allhetero\" - Maximum heterozygosity (F1s)\n\"all0\" - Specific starting conditions or testing",
+    "crumbs": [
+      "Building Populations & Traits",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Creating Founder Populations</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/04-creating-populations.html#sec-chromosomes",
+    "href": "chapters/04-creating-populations.html#sec-chromosomes",
+    "title": "4  Creating Founder Populations",
+    "section": "4.4 Chromosome Structure",
+    "text": "4.4 Chromosome Structure\n\n4.4.1 Single vs. Multiple Chromosomes\n\n# Single chromosome (default)\npop_single &lt;- creating.diploid(\n  nsnp = 5000,\n  chromosome.length = 5  # 5 Morgan\n)\n\n# Multiple chromosomes\npop_multi &lt;- creating.diploid(\n  nsnp = 10000,\n  chr.nr = c(2000, 2000, 3000, 3000),  # SNPs per chromosome\n  chromosome.length = c(2, 2, 1.5, 1.5) # Length in Morgan\n)\n\nConsequences of chromosome structure: - More chromosomes = more recombination = faster LD decay - Longer chromosomes = stronger linkage between distant markers - Realistic structure improves simulation accuracy\n\n\n4.4.2 Using Template Species Maps\nMoBPS includes common species maps:\n\n# Cattle map\npop_cattle &lt;- creating.diploid(\n  nsnp = 50000,\n  nindi = 100,\n  template.chip = \"cattle\"   # 29 autosomes\n)\n\n# Other available templates\ntemplate.chip = \"pig\"       # Sus scrofa\ntemplate.chip = \"chicken\"   # Gallus gallus\ntemplate.chip = \"sheep\"     # Ovis aries\ntemplate.chip = \"maize\"     # Zea mays\n\nThese provide realistic: - Number of chromosomes - Relative chromosome lengths (in Morgan) - Approximate recombination rates\n\n\n\n\n\n\nNoteWhat Templates DON’T Include\n\n\n\nTemplates provide chromosome structure only, not: - Real marker positions (SNPs are evenly spaced) - Real allele frequencies - Real LD patterns\nFor these, import real data (see next section).\n\n\n\n\n4.4.3 Custom Genetic Maps\nProvide a full genetic map:\n\n# Create a custom map\n# Columns: chr, snp_name, position_Morgan, position_bp, allele_freq\nmy_map &lt;- data.frame(\n  chr = c(1, 1, 1, 2, 2, 2),\n  snp = c(\"rs001\", \"rs002\", \"rs003\", \"rs004\", \"rs005\", \"rs006\"),\n  pos_M = c(0.0, 0.5, 1.0, 0.0, 0.3, 0.6),\n  pos_bp = c(1000, 50000000, 100000000, 1000, 30000000, 60000000),\n  freq = c(0.2, 0.5, 0.8, 0.1, 0.45, 0.7)\n)\n\n# Use the map\npopulation &lt;- creating.diploid(\n  map = my_map,\n  nindi = 100,\n  n.additive = 50\n)",
+    "crumbs": [
+      "Building Populations & Traits",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Creating Founder Populations</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/04-creating-populations.html#sec-import-real-data",
+    "href": "chapters/04-creating-populations.html#sec-import-real-data",
+    "title": "4  Creating Founder Populations",
+    "section": "4.5 Importing Real Data",
+    "text": "4.5 Importing Real Data\n\n4.5.1 From VCF Files\nVCF (Variant Call Format) is standard for genomic data:\n\n# Import VCF file\npopulation &lt;- creating.diploid(\n  vcf = \"path/to/genotypes.vcf\",  # Or .vcf.gz\n  n.additive = 100,\n  vcf.maxsnp = 10000,             # Optional: limit SNPs\n  vcf.maxindi = 500               # Optional: limit individuals\n)\n\nWhat gets imported: - Phased or unphased genotypes - Chromosome numbers - Base pair positions - Marker names (rsIDs)\n\n\n4.5.2 From PLINK Files\nPLINK (.ped/.map or .bed/.bim/.fam) is also widely used:\n\n# Import .ped and .map files\nped_data &lt;- read.pedmap(\"path/to/data.ped\", \"path/to/data.map\")\n\n# Create population from imported data\npopulation &lt;- creating.diploid(\n  dataset = ped_data$dataset,  # Genotype matrix\n  map = ped_data$map,           # Genetic map\n  n.additive = 100\n)\n\n\n\n4.5.3 Converting Genotypes to Haplotypes\nImported genotype data needs proper format:\n\n# If you have a genotype matrix (individuals × SNPs coded 0/1/2)\n# Convert to haplotype format for MoBPS\n\n# Example: genotype matrix\ngeno_matrix &lt;- matrix(sample(0:2, 1000, replace = TRUE),\n                      nrow = 10, ncol = 100)  # 10 indi, 100 SNPs\n\n# Convert: each individual becomes 2 haplotypes\nhaplo_matrix &lt;- matrix(0, nrow = ncol(geno_matrix), ncol = 2 * nrow(geno_matrix))\n\nfor (i in 1:nrow(geno_matrix)) {\n  for (j in 1:ncol(geno_matrix)) {\n    if (geno_matrix[i,j] == 0) {\n      haplo_matrix[j, 2*i-1] &lt;- 0\n      haplo_matrix[j, 2*i] &lt;- 0\n    } else if (geno_matrix[i,j] == 1) {\n      haplo_matrix[j, 2*i-1] &lt;- 0\n      haplo_matrix[j, 2*i] &lt;- 1\n    } else {  # == 2\n      haplo_matrix[j, 2*i-1] &lt;- 1\n      haplo_matrix[j, 2*i] &lt;- 1\n    }\n  }\n}\n\n# Use in MoBPS\npopulation &lt;- creating.diploid(\n  dataset = haplo_matrix,\n  n.additive = 20\n)",
+    "crumbs": [
+      "Building Populations & Traits",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Creating Founder Populations</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/04-creating-populations.html#sec-sex-control",
+    "href": "chapters/04-creating-populations.html#sec-sex-control",
+    "title": "4  Creating Founder Populations",
+    "section": "4.6 Sex Ratio Control",
+    "text": "4.6 Sex Ratio Control\n\n4.6.1 Controlling Sex Proportions\n\n# Equal sex ratio (default)\npop_equal &lt;- creating.diploid(nsnp = 1000, nindi = 100,\n                               sex.quota = 0.5)  # 50% female\n\n# More females\npop_female &lt;- creating.diploid(nsnp = 1000, nindi = 100,\n                                sex.quota = 0.7)  # 70% female\n\n# Specify exactly\npop_exact &lt;- creating.diploid(\n  nsnp = 1000,\n  nindi = 100,\n  sex.s = c(rep(1, 30), rep(2, 70))  # 30 males, 70 females\n)\n\n\n\n4.6.2 One-Sex Mode\nFor plants or situations where sex doesn’t matter:\n\n# All individuals in same group\npopulation &lt;- creating.diploid(\n  nsnp = 1000,\n  nindi = 200,\n  one.sex.mode = TRUE  # Deactivate two-sex system\n)",
+    "crumbs": [
+      "Building Populations & Traits",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Creating Founder Populations</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/04-creating-populations.html#sec-multiple-breeds",
+    "href": "chapters/04-creating-populations.html#sec-multiple-breeds",
+    "title": "4  Creating Founder Populations",
+    "section": "4.7 Creating Multiple Breeds/Populations",
+    "text": "4.7 Creating Multiple Breeds/Populations\n\n4.7.1 Sequential Addition\nCreate distinct founder populations:\n\n# Create breed 1\npopulation &lt;- creating.diploid(\n  nsnp = 5000,\n  nindi = 100,\n  n.additive = 100,\n  founder.pool = 1,           # Mark as pool 1\n  name.cohort = \"Breed_A\"\n)\n\n# Add breed 2 (different allele frequencies)\npopulation &lt;- creating.diploid(\n  population = population,    # Add to existing population\n  nsnp = 5000,\n  nindi = 100,\n  n.additive = 100,\n  founder.pool = 2,           # Mark as pool 2\n  name.cohort = \"Breed_B\",\n  freq = \"diff\"               # Different frequencies\n)\n\nUses for founder pools: - Model crossbreeding programs - Track breed composition (admixture) - Assign breed-specific QTL effects - Study heterosis\n\n\n4.7.2 Adding Chromosomes\nAdd additional chromosomes to existing population:\n\n# Start with chromosome 1\npop &lt;- creating.diploid(nsnp = 1000, nindi = 100)\n\n# Add chromosome 2\npop &lt;- creating.diploid(\n  population = pop,\n  nsnp = 1500,\n  add.chromosome = TRUE  # Add, don't replace\n)",
+    "crumbs": [
+      "Building Populations & Traits",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Creating Founder Populations</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/04-creating-populations.html#sec-marker-positions",
+    "href": "chapters/04-creating-populations.html#sec-marker-positions",
+    "title": "4  Creating Founder Populations",
+    "section": "4.8 Marker Positions",
+    "text": "4.8 Marker Positions\n\n4.8.1 Even Spacing (Default)\n\n# Markers evenly distributed\npop &lt;- creating.diploid(\n  nsnp = 1000,\n  chromosome.length = 5  # Spread evenly over 5M\n)\n\nBest for: Fast computation, when exact positions don’t matter.\n\n\n4.8.2 From Base Pairs\nConvert physical positions to Morgan:\n\n# Provide base pair positions\nbp_positions &lt;- seq(1, 100000000, length.out = 5000)  # 100 Mb\n\npop &lt;- creating.diploid(\n  nsnp = 5000,\n  bp = bp_positions,\n  bpcm.conversion = 1000000   # 1 Mb = 1 cM (typical for mammals)\n)\n\nCommon conversion rates: - Mammals: 1,000,000 bp/cM (= 100,000,000 bp/Morgan) - Chicken: 300,000 bp/cM (= 30,000,000 bp/Morgan) - Varies by species and chromosome!\n\n\n4.8.3 Directly in Morgan\n\n# Provide positions in Morgan directly\npositions_M &lt;- c(0.0, 0.01, 0.05, 0.1, 0.15, ...)  # Custom positions\n\npop &lt;- creating.diploid(\n  nsnp = 1000,\n  snp.position = positions_M,\n  position.scaling = FALSE  # Don't rescale\n)",
+    "crumbs": [
+      "Building Populations & Traits",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Creating Founder Populations</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/04-creating-populations.html#sec-advanced-options",
+    "href": "chapters/04-creating-populations.html#sec-advanced-options",
+    "title": "4  Creating Founder Populations",
+    "section": "4.9 Advanced Options",
+    "text": "4.9 Advanced Options\n\n4.9.1 Genotyping Arrays\nSimulate partial genotyping (chip data):\n\n# Not all SNPs genotyped\npop &lt;- creating.diploid(\n  nsnp = 50000,          # 50K total SNPs\n  nindi = 1000,\n  genotyped.s = rep(c(1, 0, 0, 0), 12500),  # Every 4th SNP genotyped\n  share.genotyped = 0.8  # 80% of individuals genotyped\n)\n\nUses: - Model cost of genotyping - Test effects of marker density - Simulate imputation scenarios\n\n\n4.9.2 Size Scaling\nWhen founders are related (real data), scale effective size:\n\npop &lt;- creating.diploid(\n  vcf = \"real_data.vcf\",\n  size.scaling = 0.7  # Effective size is 70% of actual\n)\n\nThis affects: - Calculations of expected inbreeding - Expected relationships - Effective population size estimates",
+    "crumbs": [
+      "Building Populations & Traits",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Creating Founder Populations</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/04-creating-populations.html#sec-examples-pop",
+    "href": "chapters/04-creating-populations.html#sec-examples-pop",
+    "title": "4  Creating Founder Populations",
+    "section": "4.10 Practical Examples",
+    "text": "4.10 Practical Examples\n\n4.10.1 Example 1: Cattle Population\n\n# Realistic cattle breeding population\ncattle &lt;- creating.diploid(\n  nsnp = 50000,\n  nindi = 500,\n  template.chip = \"cattle\",\n  n.additive = 100,\n  n.dominant = 20,\n  beta_shape1 = 0.5,      # Some rare variants\n  beta_shape2 = 1.2,\n  share.genotyped = 0.8,   # 80% genotyped\n  sex.quota = 0.7,         # More females (dairy)\n  var.target = 100,\n  name.cohort = \"HolsteinFounders\"\n)\n\n\n\n4.10.2 Example 2: Maize Inbred Lines\n\n# Fully homozygous inbred lines\nmaize &lt;- creating.diploid(\n  nsnp = 10000,\n  nindi = 20,\n  template.chip = \"maize\",\n  dataset = \"homorandom\",  # Homozygous\n  one.sex.mode = TRUE,      # No sexes\n  n.additive = 200,\n  name.cohort = \"InbredLines\"\n)\n\n\n\n4.10.3 Example 3: Crossbreeding Setup\n\n# Breed A\ncross_pop &lt;- creating.diploid(\n  nsnp = 10000, nindi = 100, n.additive = 100,\n  founder.pool = 1, name.cohort = \"BreedA\",\n  beta_shape1 = 2, beta_shape2 = 2  # Common variants\n)\n\n# Breed B (different frequencies)\ncross_pop &lt;- creating.diploid(\n  population = cross_pop,\n  nsnp = 10000, nindi = 100, n.additive = 100,\n  founder.pool = 2, name.cohort = \"BreedB\",\n  beta_shape1 = 0.8, beta_shape2 = 2,  # Rare variants\n  freq = \"diff\"  # Independent frequencies from Breed A\n)",
+    "crumbs": [
+      "Building Populations & Traits",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Creating Founder Populations</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/04-creating-populations.html#summary",
+    "href": "chapters/04-creating-populations.html#summary",
+    "title": "4  Creating Founder Populations",
+    "section": "4.11 Summary",
+    "text": "4.11 Summary\nKey concepts from this chapter:\n\n✅ creating.diploid() initializes founder populations\n✅ Control genomic structure (chromosomes, positions, allele frequencies)\n✅ Import real data from VCF/PLINK or simulate data\n✅ Use species templates for realistic chromosome structure\n✅ Create multiple breeds with founder pools\n✅ Control sex ratios and population composition",
+    "crumbs": [
+      "Building Populations & Traits",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Creating Founder Populations</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/04-creating-populations.html#whats-next",
+    "href": "chapters/04-creating-populations.html#whats-next",
+    "title": "4  Creating Founder Populations",
+    "section": "4.12 What’s Next?",
+    "text": "4.12 What’s Next?\nNow that you can create populations, let’s design the trait architecture - the genetic basis of the traits you want to select on.\nContinue to Chapter 5: Trait Architecture!",
+    "crumbs": [
+      "Building Populations & Traits",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Creating Founder Populations</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/05-trait-architecture.html",
+    "href": "chapters/05-trait-architecture.html",
+    "title": "5  Trait Architecture",
+    "section": "",
+    "text": "5.1 Learning Objectives",
+    "crumbs": [
+      "Building Populations & Traits",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Trait Architecture</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/05-trait-architecture.html#learning-objectives",
+    "href": "chapters/05-trait-architecture.html#learning-objectives",
+    "title": "5  Trait Architecture",
+    "section": "",
+    "text": "Design simple and complex trait architectures\nModel additive, dominance, and epistatic effects\nCreate correlated traits\nAdd maternal/paternal effects\nImplement breed-specific QTLs",
+    "crumbs": [
+      "Building Populations & Traits",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Trait Architecture</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/05-trait-architecture.html#overview",
+    "href": "chapters/05-trait-architecture.html#overview",
+    "title": "5  Trait Architecture",
+    "section": "5.2 Overview",
+    "text": "5.2 Overview\nTrait architecture defines the genetic basis of traits: - Which markers are QTLs - Effect sizes of each QTL - Types of genetic effects (additive, dominance, epistasis) - Correlations between traits\nMoBPS provides both automated and custom approaches.",
+    "crumbs": [
+      "Building Populations & Traits",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Trait Architecture</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/05-trait-architecture.html#sec-auto-traits",
+    "href": "chapters/05-trait-architecture.html#sec-auto-traits",
+    "title": "5  Trait Architecture",
+    "section": "5.3 Automated Trait Generation",
+    "text": "5.3 Automated Trait Generation\n\n5.3.1 Simple Additive Trait\n\npopulation &lt;- creating.diploid(\n  nsnp = 10000,\n  nindi = 200,\n  n.additive = 100,      # 100 additive QTLs\n  var.target = 1,        # Genetic variance = 1\n  mean.target = 100      # Mean breeding value = 100\n)\n\nWhat happens: - 100 random SNPs chosen as QTLs - Effects drawn from Normal(0, σ²) - Automatically scaled to target variance\n\n\n5.3.2 Adding Dominance\n\npopulation &lt;- creating.diploid(\n  nsnp = 10000,\n  nindi = 200,\n  n.additive = 100,\n  n.dominant = 20,       # 20 loci with dominance\n  var.additive = 0.8,    # 80% of variance from additive\n  var.dominant = 0.2     # 20% from dominance\n)\n\nDominance effect modeling: - Random loci chosen for dominance - Effects: genotype 0, 1, 2 each get independent effect - Can specify dominant.only.positive = TRUE for heterosis modeling\n\n\n5.3.3 Epistatic Effects\n\npopulation &lt;- creating.diploid(\n  nsnp = 10000,\n  nindi = 200,\n  n.additive = 80,\n  n.qualitative = 10,    # Qualitative epistasis (ordered)\n  n.quantitative = 5     # Quantitative epistasis (unordered)\n)\n\nEpistasis types:\n\nQualitative: 00 &lt; 01 &lt; 02 &lt; 10 &lt; 11 &lt; 12 &lt; 20 &lt; 21 &lt; 22 (ordered, selection always beneficial)\nQuantitative: Mix of positive/negative interactions\n\n\n\n5.3.4 Effect Size Distributions\n\n# Gaussian effects (default)\npop_gaussian &lt;- creating.diploid(\n  nsnp = 5000, nindi = 200, n.additive = 100,\n  effect.distribution = \"gaussian\"\n)\n\n# Gamma distribution (for skewed effects)\npop_gamma &lt;- creating.diploid(\n  nsnp = 5000, nindi = 200, n.additive = 100,\n  effect.distribution = \"gamma\",\n  gamma.shape1 = 0.4,    # Shape parameter\n  gamma.shape2 = 1.66    # Rate parameter\n)\n\n# Equal effects\npop_equal &lt;- creating.diploid(\n  nsnp = 5000, nindi = 200,\n  n.equal.additive = 50,           # 50 QTLs\n  effect.size.equal.add = 0.5      # Each effect = 0.5\n)",
+    "crumbs": [
+      "Building Populations & Traits",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Trait Architecture</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/05-trait-architecture.html#sec-multiple-traits",
+    "href": "chapters/05-trait-architecture.html#sec-multiple-traits",
+    "title": "5  Trait Architecture",
+    "section": "5.4 Multiple Traits",
+    "text": "5.4 Multiple Traits\n\n5.4.1 Independent Traits\n\npopulation &lt;- creating.diploid(\n  nsnp = 10000,\n  nindi = 200,\n  n.additive = c(100, 80, 120),    # 3 traits\n  var.target = c(1, 1.5, 0.8),     # Different variances\n  trait.name = c(\"Yield\", \"Quality\", \"Disease_Resistance\")\n)\n\n\n\n5.4.2 Correlated Traits\n\n# Define correlation matrix\ncor_matrix &lt;- matrix(c(\n  1.0,  0.5, -0.3,   # Yield\n  0.5,  1.0, -0.2,   # Quality\n -0.3, -0.2,  1.0    # Disease Resistance\n), nrow = 3, byrow = TRUE)\n\npopulation &lt;- creating.diploid(\n  nsnp = 10000,\n  nindi = 200,\n  n.additive = c(100, 100, 100),\n  trait.cor = cor_matrix,          # Correlations\n  trait.name = c(\"Yield\", \"Quality\", \"Disease_Resistance\")\n)\n\nHow it works: - Same markers used as QTLs for correlated traits - Effects drawn from multivariate normal distribution - Correlations independent of LD structure\n\n\n\n\n\n\nWarningCorrelation vs. Covariance\n\n\n\nMoBPS uses correlation matrices, not covariance matrices. Standardize your traits first!",
+    "crumbs": [
+      "Building Populations & Traits",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Trait Architecture</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/05-trait-architecture.html#sec-custom-traits",
+    "href": "chapters/05-trait-architecture.html#sec-custom-traits",
+    "title": "5  Trait Architecture",
+    "section": "5.5 Custom Trait Architecture",
+    "text": "5.5 Custom Trait Architecture\n\n5.5.1 Single-Locus Effects (real.bv.add)\nSpecify exactly which SNPs are QTLs and their effects:\n\n# Create custom effects matrix\n# Columns: SNP_number, chromosome, effect_0, effect_1, effect_2\ncustom_effects &lt;- rbind(\n  c(120,  1, -1.0,  0.0,  1.0),   # Additive effect\n  c(42,   5,  0.0,  0.0,  2.0),   # Recessive\n  c(17,  22,  0.1,  0.1,  0.1)    # No effect (neutral)\n)\n\npopulation &lt;- creating.diploid(\n  nsnp = 10000,\n  nindi = 200,\n  real.bv.add = custom_effects\n)\n\nEffect coding: - Column 1: SNP number (1 to nsnp) - Column 2: Chromosome number - Columns 3-5: Effects for genotypes 0, 1, 2\n\n\n5.5.2 Two-Locus Epistasis (real.bv.mult)\n\n# Epistatic interaction between two loci\n# 9 effects for all genotype combinations\nepistatic_effects &lt;- rbind(\n  c(144, 1, 145, 1,  # SNPs 144 and 145 on chr 1\n    1.0, 0.0, 0.0,   # Effects when SNP1 = 0\n    0.0, 0.0, 0.0,   # Effects when SNP1 = 1\n    0.0, 0.0, 0.0),  # Effects when SNP1 = 2\n  c(4, 3, 188, 5,    # SNP 4 on chr 3, SNP 188 on chr 5\n    0.37, 0.16, 1.35,\n    1.99, 1.58, 2.51,\n    0.38, 2.12, 0.98)\n)\n\npopulation &lt;- creating.diploid(\n  nsnp = 10000,\n  nindi = 200,\n  real.bv.mult = epistatic_effects\n)\n\n\n\n5.5.3 Multi-Locus Epistasis (real.bv.dice)\nFor effects involving 3+ loci:\n\n# Complex epistatic network\ndice_list &lt;- list(\n  # First network: 3 SNPs\n  location = list(\n    matrix(c(11, 1,\n             12, 1,\n             16, 2), ncol = 2, byrow = TRUE)\n  ),\n  # Effects for all 27 combinations (3^3)\n  effects = list(\n    runif(27, -1, 1)  # Random effects\n  )\n)\n\npopulation &lt;- creating.diploid(\n  nsnp = 10000,\n  nindi = 200,\n  real.bv.dice = dice_list\n)",
+    "crumbs": [
+      "Building Populations & Traits",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Trait Architecture</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/05-trait-architecture.html#sec-special-traits",
+    "href": "chapters/05-trait-architecture.html#sec-special-traits",
+    "title": "5  Trait Architecture",
+    "section": "5.6 Special Trait Types",
+    "text": "5.6 Special Trait Types\n\n5.6.1 Maternal/Paternal Effects\n\n# Trait influenced by mother's genotype\npopulation &lt;- creating.diploid(\n  nsnp = 5000,\n  nindi = 100,\n  n.additive = c(100, 50),\n  is.maternal = c(FALSE, TRUE),  # Trait 2 is maternal\n  trait.name = c(\"Direct\", \"Maternal\")\n)\n\n# Combine into single trait\npopulation &lt;- add.combi(\n  population,\n  trait = 3,\n  combi.weights = c(0.7, 0.3),  # 70% direct, 30% maternal\n  trait.name = \"Combined\"\n)\n\nUse cases: - Birth weight (maternal nutrition) - Milk production (maternal effects on calves) - Egg quality (maternal contribution)\n\n\n5.6.2 Breed-Specific QTLs\nModel QTLs that only have effects in specific breeds:\n\n# Create two breeds\npop &lt;- creating.diploid(\n  nsnp = 5000, nindi = 100,\n  founder.pool = 1,\n  name.cohort = \"Breed_A\"\n)\n\npop &lt;- creating.diploid(\n  population = pop, nsnp = 5000, nindi = 100,\n  founder.pool = 2,\n  name.cohort = \"Breed_B\"\n)\n\n# Add trait only active in breed A\npop &lt;- creating.trait(\n  pop,\n  n.additive = 100,\n  trait.pool = 1  # Only affects pool 1 (Breed A)\n)\n\n\n\n5.6.3 Non-QTL Polygenic Traits\nSimulate infinitesimal model:\n\npopulation &lt;- creating.diploid(\n  nsnp = 10000,\n  nindi = 200,\n  n.traits = 2,              # Total traits\n  n.additive = 100,          # Trait 1 has QTLs\n  polygenic.variance = 1     # Trait 2 is polygenic\n)\n\nTrait 2 characteristics: - Based on parental average + inbreeding - No specific QTLs - Useful for: very highly polygenic traits",
+    "crumbs": [
+      "Building Populations & Traits",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Trait Architecture</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/05-trait-architecture.html#sec-add-traits",
+    "href": "chapters/05-trait-architecture.html#sec-add-traits",
+    "title": "5  Trait Architecture",
+    "section": "5.7 Adding Traits to Existing Populations",
+    "text": "5.7 Adding Traits to Existing Populations\nUse creating.trait() to add traits after population creation:\n\n# Create population\npop &lt;- creating.diploid(nsnp = 10000, nindi = 200)\n\n# Later, add a new trait\npop &lt;- creating.trait(\n  pop,\n  n.additive = 80,\n  n.dominant = 20,\n  trait.name = \"NewTrait\"\n)\n\nWhy add traits later? - Different traits need different architectures - Want to replace/update trait definitions - Building complex multi-trait models step-by-step",
+    "crumbs": [
+      "Building Populations & Traits",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Trait Architecture</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/05-trait-architecture.html#sec-combine-traits",
+    "href": "chapters/05-trait-architecture.html#sec-combine-traits",
+    "title": "5  Trait Architecture",
+    "section": "5.8 Combining Traits",
+    "text": "5.8 Combining Traits\nCreate composite traits from existing traits:\n\n# Create base traits\npop &lt;- creating.diploid(\n  nsnp = 5000, nindi = 200,\n  n.additive = c(100, 80, 60),\n  trait.name = c(\"Milk\", \"Fat\", \"Protein\")\n)\n\n# Create selection index\npop &lt;- add.combi(\n  pop,\n  trait = 4,  # New trait number\n  combi.weights = c(1, 10, 5),  # Economic weights\n  trait.name = \"EconomicIndex\"\n)",
+    "crumbs": [
+      "Building Populations & Traits",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Trait Architecture</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/05-trait-architecture.html#sec-standardization",
+    "href": "chapters/05-trait-architecture.html#sec-standardization",
+    "title": "5  Trait Architecture",
+    "section": "5.9 Trait Standardization",
+    "text": "5.9 Trait Standardization\nEnsure traits have desired mean and variance:\n\npopulation &lt;- bv.standardization(\n  population,\n  trait = 1,              # Which trait\n  mean.target = 100,      # Target mean\n  var.target = 1,         # Target variance\n  set.zero = TRUE         # Force 0 allele effect = 0\n)\n\nWhen to use: - After custom trait specification - To compare traits on same scale - Before economic index creation",
+    "crumbs": [
+      "Building Populations & Traits",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Trait Architecture</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/05-trait-architecture.html#sec-examples-traits",
+    "href": "chapters/05-trait-architecture.html#sec-examples-traits",
+    "title": "5  Trait Architecture",
+    "section": "5.10 Practical Examples",
+    "text": "5.10 Practical Examples\n\n5.10.1 Example 1: Dairy Cattle (Multiple Traits)\n\n# Correlated production traits\ncor_matrix &lt;- matrix(c(\n  1.0,  0.6,  0.5,   # Milk\n  0.6,  1.0,  0.7,   # Fat\n  0.5,  0.7,  1.0    # Protein\n), nrow = 3, byrow = TRUE)\n\ndairy &lt;- creating.diploid(\n  nsnp = 50000,\n  nindi = 500,\n  template.chip = \"cattle\",\n  n.additive = c(200, 150, 150),\n  n.dominant = c(20, 10, 10),\n  trait.cor = cor_matrix,\n  var.target = c(2000, 50, 30),\n  mean.target = c(8000, 350, 320),\n  trait.name = c(\"Milk_kg\", \"Fat_kg\", \"Protein_kg\")\n)\n\n\n\n5.10.2 Example 2: Maize Hybrid Performance\n\n# Model heterosis with dominance\nmaize &lt;- creating.diploid(\n  nsnp = 10000,\n  nindi = 20,\n  template.chip = \"maize\",\n  dataset = \"homorandom\",      # Inbred lines\n  n.additive = 200,\n  n.dominant = 50,\n  dominant.only.positive = TRUE,  # Heterosis = positive dominance\n  var.additive = 0.7,\n  var.dominant = 0.3,\n  trait.name = \"GrainYield\"\n)\n\n\n\n5.10.3 Example 3: Disease Resistance (Binary Trait)\n\n# Create underlying continuous trait\npop &lt;- creating.diploid(\n  nsnp = 5000, nindi = 500,\n  n.additive = 50,\n  mean.target = 0,\n  var.target = 1,\n  trait.name = \"Liability\"\n)\n\n# Apply threshold transformation\npop &lt;- creating.phenotypic.transform(\n  pop,\n  trait = 1,\n  trafo.function = function(x) { return(x &gt; 0) }  # 50% prevalence\n)",
+    "crumbs": [
+      "Building Populations & Traits",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Trait Architecture</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/05-trait-architecture.html#summary",
+    "href": "chapters/05-trait-architecture.html#summary",
+    "title": "5  Trait Architecture",
+    "section": "5.11 Summary",
+    "text": "5.11 Summary\n\n✅ Automated trait generation for common architectures\n✅ Custom effects for precise control\n✅ Multiple correlated traits supported\n✅ Dominance and epistasis modeling\n✅ Special traits: maternal, breed-specific, polygenic\n✅ Flexible trait combination and standardization",
+    "crumbs": [
+      "Building Populations & Traits",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Trait Architecture</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/05-trait-architecture.html#whats-next",
+    "href": "chapters/05-trait-architecture.html#whats-next",
+    "title": "5  Trait Architecture",
+    "section": "5.12 What’s Next?",
+    "text": "5.12 What’s Next?\nWith realistic populations and traits, let’s build more complex scenarios with LD structure and data import.\nContinue to Chapter 6: Advanced Population Setup!",
+    "crumbs": [
+      "Building Populations & Traits",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Trait Architecture</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/06-advanced-population-setup.html",
+    "href": "chapters/06-advanced-population-setup.html",
+    "title": "6  Advanced Population Setup",
+    "section": "",
+    "text": "6.1 Learning Objectives",
+    "crumbs": [
+      "Building Populations & Traits",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Advanced Population Setup</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/06-advanced-population-setup.html#learning-objectives",
+    "href": "chapters/06-advanced-population-setup.html#learning-objectives",
+    "title": "6  Advanced Population Setup",
+    "section": "",
+    "text": "Generate realistic LD structure with founder.simulation()\nImport and use real genomic/phenotypic data\nCreate populations with selection signatures\nModel population history",
+    "crumbs": [
+      "Building Populations & Traits",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Advanced Population Setup</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/06-advanced-population-setup.html#sec-ld-structure",
+    "href": "chapters/06-advanced-population-setup.html#sec-ld-structure",
+    "title": "6  Advanced Population Setup",
+    "section": "6.2 Creating Realistic LD Structure",
+    "text": "6.2 Creating Realistic LD Structure\nReal populations have linkage disequilibrium (LD) from historical selection and drift. The founder.simulation() function creates this automatically:\n\n# Create population with realistic LD\npopulation &lt;- creating.diploid(nsnp = 10000, nindi = 100)\n\npopulation &lt;- founder.simulation(\n  population,\n  generations = 100,        # 100 generations of random mating\n  breeding.size = 200,      # Population size per generation\n  mutation.rate = 0.0001    # Mutation rate per site\n)\n\nWhat happens: - Simulates historical random mating - Creates realistic LD decay with distance - Generates allele frequency spectrum - Produces heterozygosity patterns\n\n6.2.1 Controlling LD Levels\n\n# Low LD (large historical population)\npop_low_ld &lt;- founder.simulation(\n  creating.diploid(nsnp = 5000, nindi = 100),\n  generations = 1000,\n  breeding.size = 1000\n)\n\n# High LD (bottleneck)\npop_high_ld &lt;- founder.simulation(\n  creating.diploid(nsnp = 5000, nindi = 100),\n  generations = 100,\n  breeding.size = 20        # Small Ne = high LD\n)",
+    "crumbs": [
+      "Building Populations & Traits",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Advanced Population Setup</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/06-advanced-population-setup.html#sec-selection-signatures",
+    "href": "chapters/06-advanced-population-setup.html#sec-selection-signatures",
+    "title": "6  Advanced Population Setup",
+    "section": "6.3 Modeling Selection Signatures",
+    "text": "6.3 Modeling Selection Signatures\nSimulate hard sweeps (selective sweeps):\n\n# Create population\npop &lt;- creating.diploid(\n  nsnp = 10000,\n  nindi = 200,\n  chr.nr = 1,\n  n.additive = 100\n)\n\n# Historical selection on trait 1\npop &lt;- founder.simulation(\n  pop,\n  generations = 50,\n  breeding.size = 200,\n  selection.criteria = \"bv\",     # Select on breeding values\n  selection.size = c(20, 20),    # Strong selection\n  selection.m.gen = \"all\",\n  selection.f.gen = \"all\"\n)\n\nCreates: - Reduced diversity around selected QTLs - Extended haplotype homozygosity - Realistic post-selection LD patterns",
+    "crumbs": [
+      "Building Populations & Traits",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Advanced Population Setup</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/06-advanced-population-setup.html#sec-import-pheno",
+    "href": "chapters/06-advanced-population-setup.html#sec-import-pheno",
+    "title": "6  Advanced Population Setup",
+    "section": "6.4 Importing Real Phenotypic Data",
+    "text": "6.4 Importing Real Phenotypic Data\nUse real phenotypes to estimate trait architecture:\n\n# Example: Load data from MoBPS example population\ndata(ex_pop)\n\n# Extract information\npheno &lt;- get.pheno(ex_pop, gen = 1:5)\ngeno &lt;- get.geno(ex_pop, gen = 1:5)\nmap &lt;- get.map(ex_pop, use.snp.nr = TRUE)\n\n# Estimate marker effects from data\nestimated_effects &lt;- effect.estimate.add(geno, pheno, map)\n\n# Create new population with estimated architecture\npopulation &lt;- creating.diploid(\n  dataset = get.haplo(ex_pop, gen = 1),\n  map = map,\n  real.bv.add = estimated_effects\n)\n\nWorkflow: 1. Import real genotypes + phenotypes 2. Estimate marker effects (GWAS/GBLUP) 3. Use estimated effects in simulation",
+    "crumbs": [
+      "Building Populations & Traits",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Advanced Population Setup</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/06-advanced-population-setup.html#sec-age-structure",
+    "href": "chapters/06-advanced-population-setup.html#sec-age-structure",
+    "title": "6  Advanced Population Setup",
+    "section": "6.5 Creating Age-Structured Populations",
+    "text": "6.5 Creating Age-Structured Populations\nModel overlapping generations:\n\n# Create founders (year 0)\npop &lt;- creating.diploid(\n  nsnp = 5000, nindi = 100,\n  n.additive = 100,\n  name.cohort = \"Year_0\"\n)\n\n# Year 1: Some old + new animals\npop &lt;- breeding.diploid(\n  pop,\n  selection.m.cohorts = \"Year_0\",\n  selection.f.cohorts = \"Year_0\",\n  selection.size = c(20, 40),    # Keep some old animals\n  breeding.size = c(30, 60),     # Plus new calves\n  name.cohort = \"Year_1\"\n)\n\n# Select from BOTH cohorts in Year 2\npop &lt;- breeding.diploid(\n  pop,\n  selection.m.cohorts = c(\"Year_0\", \"Year_1\"),\n  selection.f.cohorts = c(\"Year_0\", \"Year_1\"),\n  selection.size = c(20, 40),\n  breeding.size = c(30, 60),\n  name.cohort = \"Year_2\"\n)\n\nApplications: - Dairy cattle (multi-parity cows) - Progeny testing schemes - Conservation programs",
+    "crumbs": [
+      "Building Populations & Traits",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Advanced Population Setup</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/06-advanced-population-setup.html#sec-pedigree-simulation",
+    "href": "chapters/06-advanced-population-setup.html#sec-pedigree-simulation",
+    "title": "6  Advanced Population Setup",
+    "section": "6.6 Multi-Stage Pedigree Simulation",
+    "text": "6.6 Multi-Stage Pedigree Simulation\nCreate populations from pedigree structure only:\n\n# Generate pedigree-based population\npop &lt;- pedigree.simulation(\n  population = creating.diploid(nsnp = 1000, nindi = 10),\n  breeding.size = 100,\n  generations = 5,\n  selection.size = c(5, 10)\n)\n\nUse cases: - Quick exploration without full genomics - Very large pedigrees - When genotypes not needed",
+    "crumbs": [
+      "Building Populations & Traits",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Advanced Population Setup</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/06-advanced-population-setup.html#sec-example-vcf-gwas",
+    "href": "chapters/06-advanced-population-setup.html#sec-example-vcf-gwas",
+    "title": "6  Advanced Population Setup",
+    "section": "6.7 Example: Import VCF + GWAS Results",
+    "text": "6.7 Example: Import VCF + GWAS Results\nComplete workflow with real data:\n\n# Step 1: Import VCF file\npop &lt;- creating.diploid(\n  vcf = \"path/to/cattle_genotypes.vcf.gz\",\n  vcf.maxsnp = 50000,     # Limit to 50K SNPs\n  vcf.maxindi = 1000      # Limit to 1000 animals\n)\n\n# Step 2: Load phenotypes (from external file)\npheno_data &lt;- read.csv(\"phenotypes.csv\")\n# Assume columns: AnimalID, Trait1, Trait2, Trait3\n\n# Step 3: Match phenotypes to individuals\n# (You'll need to map VCF sample IDs to phenotype IDs)\n\n# Step 4: Estimate effects using your favorite method\n# Example with rrBLUP\nlibrary(rrBLUP)\ngeno_matrix &lt;- get.geno(pop, gen = 1)\neffects &lt;- mixed.solve(pheno_data$Trait1, Z = t(geno_matrix))\n\n# Step 5: Create trait architecture from estimated effects\nqtl_effects &lt;- cbind(\n  1:length(effects$u),  # SNP number\n  1,                    # Chromosome (placeholder)\n  -effects$u,           # Effect for allele 0\n  0,                    # Effect for allele 1\n  effects$u             # Effect for allele 2\n)\n\npop &lt;- creating.trait(\n  pop,\n  real.bv.add = qtl_effects,\n  trait.name = \"EstimatedTrait\"\n)\n\n# Now ready to simulate breeding program!",
+    "crumbs": [
+      "Building Populations & Traits",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Advanced Population Setup</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/06-advanced-population-setup.html#summary",
+    "href": "chapters/06-advanced-population-setup.html#summary",
+    "title": "6  Advanced Population Setup",
+    "section": "6.8 Summary",
+    "text": "6.8 Summary\n\n✅ founder.simulation() creates realistic LD structure\n✅ Model selection signatures and population history\n✅ Import real data (genotypes, phenotypes, GWAS results)\n✅ Create age-structured populations\n✅ Flexible approaches for complex scenarios\n\nContinue to Chapter 7: Population Examples!",
+    "crumbs": [
+      "Building Populations & Traits",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Advanced Population Setup</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/07-population-examples.html",
+    "href": "chapters/07-population-examples.html",
+    "title": "7  Population Examples",
+    "section": "",
+    "text": "7.1 Learning Objectives",
+    "crumbs": [
+      "Building Populations & Traits",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Population Examples</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/07-population-examples.html#learning-objectives",
+    "href": "chapters/07-population-examples.html#learning-objectives",
+    "title": "7  Population Examples",
+    "section": "",
+    "text": "See complete worked examples of population creation\nLearn patterns for common scenarios\nUnderstand how to combine features",
+    "crumbs": [
+      "Building Populations & Traits",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Population Examples</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/07-population-examples.html#sec-example-inbred",
+    "href": "chapters/07-population-examples.html#sec-example-inbred",
+    "title": "7  Population Examples",
+    "section": "7.2 Example 1: Inbred Lines (DH Production)",
+    "text": "7.2 Example 1: Inbred Lines (DH Production)\n\n# Heterozygous founders\npop &lt;- creating.diploid(\n  nindi = 50,\n  nsnp = 5000,\n  sex.quota = 0,          # All \"male\" (no sex distinction)\n  n.additive = 100\n)\n\n# Create DH lines (instant homozygosity)\npop &lt;- breeding.diploid(\n  pop,\n  breeding.size = c(200, 0),\n  dh.mating = TRUE,        # Doubled haploid technology\n  name.cohort = \"DH_Lines\"\n)\n\n# Check homozygosity\ntable(get.geno(pop, gen = 2))  # Should be mostly 0 and 2, few 1s\n\nCompare with selfing:\n\n# 5 generations of selfing\npop_selfing &lt;- pop\nfor (i in 1:5) {\n  pop_selfing &lt;- breeding.diploid(\n    pop_selfing,\n    breeding.size = c(200, 0),\n    selfing.mating = TRUE\n  )\n}\n\n# Check reduction in heterozygosity\nfor (gen in 1:6) {\n  print(table(get.geno(pop_selfing, gen = gen)))\n}\n# ~50% reduction per generation",
+    "crumbs": [
+      "Building Populations & Traits",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Population Examples</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/07-population-examples.html#sec-example-magic",
+    "href": "chapters/07-population-examples.html#sec-example-magic",
+    "title": "7  Population Examples",
+    "section": "7.3 Example 2: MAGIC Population (Maize)",
+    "text": "7.3 Example 2: MAGIC Population (Maize)\nMulti-parent Advanced Generation Inter-Cross:\n\n# 20 fully homozygous founder lines\npop &lt;- creating.diploid(\n  nindi = 20,\n  sex.quota = 0,\n  template.chip = \"maize\",\n  dataset = \"homorandom\",\n  n.additive = 200\n)\n\n# Round 1: All pairwise crosses (190 F1s)\npop &lt;- breeding.diploid(\n  pop,\n  breeding.size = c(190, 0),\n  breeding.all.combination = TRUE,  # All combinations\n  selection.size = c(20, 0),\n  max.offspring = 19                # Each parent in 19 crosses\n)\n\n# Rounds 2-4: Random inter-mating\nfor (round in 1:3) {\n  pop &lt;- breeding.diploid(\n    pop,\n    breeding.size = c(190, 0),\n    selection.size = c(190, 0),\n    same.sex.activ = TRUE,\n    same.sex.sex = 0,\n    max.offspring = 2\n  )\n}\n\n# Final: Create RILs by selfing\npop &lt;- breeding.diploid(\n  pop,\n  breeding.size = c(380, 0),\n  selfing.mating = TRUE\n)",
+    "crumbs": [
+      "Building Populations & Traits",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Population Examples</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/07-population-examples.html#sec-example-crossbreeding",
+    "href": "chapters/07-population-examples.html#sec-example-crossbreeding",
+    "title": "7  Population Examples",
+    "section": "7.4 Example 3: Crossbreeding Setup",
+    "text": "7.4 Example 3: Crossbreeding Setup\nTwo-breed cross with breed-specific QTLs:\n\n# Breed A\npop &lt;- creating.diploid(\n  nsnp = 5000, nindi = 100,\n  founder.pool = 1,\n  name.cohort = \"Breed_A\",\n  n.additive = 0  # Add traits later\n)\n\n# Breed B\npop &lt;- creating.diploid(\n  population = pop,\n  nsnp = 5000, nindi = 100,\n  founder.pool = 2,\n  name.cohort = \"Breed_B\",\n  freq = \"diff\"  # Different allele frequencies\n)\n\n# Trait only in Breed A\npop &lt;- creating.trait(pop, n.additive = 100, trait.pool = 1)\n\n# Trait only in Breed B\npop &lt;- creating.trait(pop, n.additive = 100, trait.pool = 2)\n\n# Get QTL effects\nqtl_eff &lt;- get.qtl.effects(pop)\n\n# Combine into joint trait\ncombined_effects &lt;- rbind(qtl_eff[[1]][[1]], qtl_eff[[1]][[2]])\n\npop &lt;- creating.trait(\n  pop,\n  real.bv.add = combined_effects,\n  replace.traits = TRUE,\n  trait.name = \"Combined\"\n)\n\n# Cross the breeds\npop &lt;- breeding.diploid(\n  pop,\n  selection.m.cohorts = \"Breed_A\",\n  selection.f.cohorts = \"Breed_B\",\n  breeding.size = c(100, 100),\n  name.cohort = \"F1_Cross\"\n)\n\n# Visualize breed composition\npools &lt;- get.pool(pop, gen = 3, plot = TRUE)",
+    "crumbs": [
+      "Building Populations & Traits",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Population Examples</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/07-population-examples.html#sec-example-maternal",
+    "href": "chapters/07-population-examples.html#sec-example-maternal",
+    "title": "7  Population Examples",
+    "section": "7.5 Example 4: Maternal Effects",
+    "text": "7.5 Example 4: Maternal Effects\nBirth weight with direct and maternal components:\n\n# Create two traits: direct and maternal\npop &lt;- creating.diploid(\n  nsnp = 5000,\n  nindi = 200,\n  n.additive = c(100, 100),\n  var.target = c(100, 20),\n  trait.cor = matrix(c(1, 0.5, 0.5, 1), nrow = 2),\n  is.maternal = c(FALSE, TRUE),\n  trait.name = c(\"Direct\", \"Maternal\")\n)\n\n# Combine into observed trait\npop &lt;- add.combi(\n  pop,\n  trait = 3,\n  combi.weights = c(1, 1),\n  trait.name = \"BirthWeight\"\n)\n\n# Generate offspring\npop &lt;- breeding.diploid(pop, breeding.size = c(100, 100))\n\n# Check: maternal trait depends on dam's genotype\nbvs &lt;- get.bv(pop, gen = 2)\npedi &lt;- get.pedigree(pop, gen = 2)\nhead(cbind(pedi[, 3], bvs[2, ]))  # Dam ID vs maternal BV",
+    "crumbs": [
+      "Building Populations & Traits",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Population Examples</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/07-population-examples.html#sec-example-vcf-import",
+    "href": "chapters/07-population-examples.html#sec-example-vcf-import",
+    "title": "7  Population Examples",
+    "section": "7.6 Example 5: Import VCF + Create Trait",
+    "text": "7.6 Example 5: Import VCF + Create Trait\n\n# Import real genotypes\npop &lt;- creating.diploid(\n  vcf = \"holstein_1000genomes.vcf.gz\",\n  vcf.maxsnp = 50000,\n  vcf.maxindi = 500\n)\n\n# Add simulated trait\npop &lt;- creating.trait(\n  pop,\n  n.additive = 200,\n  n.dominant = 30,\n  var.target = 100,\n  mean.target = 8000,\n  trait.name = \"MilkYield\"\n)\n\n# Generate LD structure\npop &lt;- founder.simulation(\n  pop,\n  generations = 100,\n  breeding.size = 300\n)",
+    "crumbs": [
+      "Building Populations & Traits",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Population Examples</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/07-population-examples.html#sec-example-hard-sweep",
+    "href": "chapters/07-population-examples.html#sec-example-hard-sweep",
+    "title": "7  Population Examples",
+    "section": "7.7 Example 6: Hard Sweep (Selection Signature)",
+    "text": "7.7 Example 6: Hard Sweep (Selection Signature)\nSimulate past selection:\n\n# Create base population\npop &lt;- creating.diploid(\n  nsnp = 10000,\n  nindi = 200,\n  chr.nr = 5,\n  n.additive = 100,\n  var.target = 1\n)\n\n# Simulate 50 generations of STRONG selection\npop &lt;- founder.simulation(\n  pop,\n  generations = 50,\n  breeding.size = 200,\n  selection.criteria = \"bv\",\n  selection.size = c(5, 5),      # Top 2.5%!\n  phenotyping = \"all\",\n  heritability = 0.8\n)\n\n# Now selective sweep visible in allele frequencies\nqtls &lt;- get.qtl(pop)\nfreq_gen1 &lt;- get.allele.freq(pop, gen = 1, snp = qtls[[1]])\nfreq_gen51 &lt;- get.allele.freq(pop, gen = 51, snp = qtls[[1]])\n\ncbind(freq_gen1, freq_gen51)  # QTL frequencies changed",
+    "crumbs": [
+      "Building Populations & Traits",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Population Examples</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/07-population-examples.html#sec-example-gxe",
+    "href": "chapters/07-population-examples.html#sec-example-gxe",
+    "title": "7  Population Examples",
+    "section": "7.8 Example 7: GxE (Genotype-by-Environment)",
+    "text": "7.8 Example 7: GxE (Genotype-by-Environment)\n\n# Manual approach: Create correlated \"traits\" for each environment\npop &lt;- creating.diploid(\n  nsnp = 5000,\n  nindi = 200,\n  n.additive = c(100, 100),\n  trait.cor = matrix(c(1, 0.6, 0.6, 1), nrow = 2),  # Moderate correlation\n  trait.name = c(\"Env1\", \"Env2\")\n)\n\n# Automated GxE model\npop &lt;- creating.diploid(\n  nsnp = 5000,\n  nindi = 200,\n  n.additive = 100,\n  gxe.model = TRUE,\n  gxe.covariance = matrix(c(1, 0.6, 0.6, 1.2), nrow = 2)\n)",
+    "crumbs": [
+      "Building Populations & Traits",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Population Examples</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/07-population-examples.html#sec-example-plink",
+    "href": "chapters/07-population-examples.html#sec-example-plink",
+    "title": "7  Population Examples",
+    "section": "7.9 Example 8: Import PLINK Files",
+    "text": "7.9 Example 8: Import PLINK Files\n\n# Read PLINK .ped and .map files\nped_data &lt;- read.pedmap(\n  path_ped = \"mydata.ped\",\n  path_map = \"mydata.map\"\n)\n\n# Create population\npop &lt;- creating.diploid(\n  dataset = ped_data$dataset,\n  map = ped_data$map,\n  n.additive = 150,\n  trait.name = \"ImportedTrait\"\n)",
+    "crumbs": [
+      "Building Populations & Traits",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Population Examples</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/07-population-examples.html#summary",
+    "href": "chapters/07-population-examples.html#summary",
+    "title": "7  Population Examples",
+    "section": "7.10 Summary",
+    "text": "7.10 Summary\nThese examples demonstrate:\n\n✅ Inbred line creation (DH vs selfing)\n✅ MAGIC population schemes\n✅ Crossbreeding with breed-specific QTLs\n✅ Maternal effects modeling\n✅ VCF/PLINK data import\n✅ Selection signatures\n✅ Genotype-by-environment interactions",
+    "crumbs": [
+      "Building Populations & Traits",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Population Examples</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/07-population-examples.html#whats-next",
+    "href": "chapters/07-population-examples.html#whats-next",
+    "title": "7  Population Examples",
+    "section": "7.11 What’s Next?",
+    "text": "7.11 What’s Next?\nWith populations created, let’s simulate breeding actions - selection, mating, and culling.\nContinue to Chapter 8: Selection Strategies!",
+    "crumbs": [
+      "Building Populations & Traits",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Population Examples</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/08-selection-strategies.html",
+    "href": "chapters/08-selection-strategies.html",
+    "title": "8  Selection Strategies",
+    "section": "",
+    "text": "8.1 Overview\nSelection is controlled through breeding.diploid() parameters. Key options:",
+    "crumbs": [
+      "Selection, Mating & Breeding",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Selection Strategies</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/08-selection-strategies.html#overview",
+    "href": "chapters/08-selection-strategies.html#overview",
+    "title": "8  Selection Strategies",
+    "section": "",
+    "text": "selection.criteria - What to select on\nselection.size - How many to select\nselection.m.gen / selection.f.gen - Which generations\nselection.index - Multi-trait selection",
+    "crumbs": [
+      "Selection, Mating & Breeding",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Selection Strategies</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/08-selection-strategies.html#random-selection",
+    "href": "chapters/08-selection-strategies.html#random-selection",
+    "title": "8  Selection Strategies",
+    "section": "8.2 Random Selection",
+    "text": "8.2 Random Selection\n\npop &lt;- breeding.diploid(\n  pop,\n  selection.criteria = \"random\",\n  selection.size = c(20, 20),\n  breeding.size = c(100, 100)\n)",
+    "crumbs": [
+      "Selection, Mating & Breeding",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Selection Strategies</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/08-selection-strategies.html#phenotypic-selection",
+    "href": "chapters/08-selection-strategies.html#phenotypic-selection",
+    "title": "8  Selection Strategies",
+    "section": "8.3 Phenotypic Selection",
+    "text": "8.3 Phenotypic Selection\n\n# Phenotype first\npop &lt;- breeding.diploid(pop, phenotyping = \"all\", heritability = 0.5)\n\n# Select on phenotypes\npop &lt;- breeding.diploid(\n  pop,\n  selection.criteria = \"pheno\",\n  selection.size = c(10, 10),\n  breeding.size = c(50, 50)\n)",
+    "crumbs": [
+      "Selection, Mating & Breeding",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Selection Strategies</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/08-selection-strategies.html#genomic-selection-bve",
+    "href": "chapters/08-selection-strategies.html#genomic-selection-bve",
+    "title": "8  Selection Strategies",
+    "section": "8.4 Genomic Selection (BVE)",
+    "text": "8.4 Genomic Selection (BVE)\n\n# Calculate BVEs\npop &lt;- breeding.diploid(pop, bve = TRUE, bve.gen = 1:3)\n\n# Select on estimated breeding values\npop &lt;- breeding.diploid(\n  pop,\n  selection.criteria = \"bve\",\n  selection.size = c(10, 10),\n  breeding.size = c(50, 50)\n)",
+    "crumbs": [
+      "Selection, Mating & Breeding",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Selection Strategies</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/08-selection-strategies.html#selection-on-true-breeding-values",
+    "href": "chapters/08-selection-strategies.html#selection-on-true-breeding-values",
+    "title": "8  Selection Strategies",
+    "section": "8.5 Selection on True Breeding Values",
+    "text": "8.5 Selection on True Breeding Values\n\n# Select on known BVs (simulation only!)\npop &lt;- breeding.diploid(\n  pop,\n  selection.criteria = \"bv\",\n  selection.size = c(5, 5),\n  breeding.size = c(100, 100)\n)",
+    "crumbs": [
+      "Selection, Mating & Breeding",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Selection Strategies</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/08-selection-strategies.html#multi-trait-selection-index",
+    "href": "chapters/08-selection-strategies.html#multi-trait-selection-index",
+    "title": "8  Selection Strategies",
+    "section": "8.6 Multi-Trait Selection Index",
+    "text": "8.6 Multi-Trait Selection Index\n\n# Define economic weights\npop &lt;- breeding.diploid(\n  pop,\n  selection.criteria = \"bve\",\n  selection.index = c(1, 10, 5),  # Weights for traits 1,2,3\n  selection.size = c(10, 10),\n  breeding.size = c(50, 50)\n)",
+    "crumbs": [
+      "Selection, Mating & Breeding",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Selection Strategies</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/08-selection-strategies.html#truncation-selection-with-variable-intensity",
+    "href": "chapters/08-selection-strategies.html#truncation-selection-with-variable-intensity",
+    "title": "8  Selection Strategies",
+    "section": "8.7 Truncation Selection with Variable Intensity",
+    "text": "8.7 Truncation Selection with Variable Intensity\n\n# Select top males, more females\npop &lt;- breeding.diploid(\n  pop,\n  selection.criteria = \"bve\",\n  selection.size = c(5, 20),     # 5% males, 20% females\n  selection.m.gen = 4,\n  selection.f.gen = 4,\n  breeding.size = c(50, 50)\n)",
+    "crumbs": [
+      "Selection, Mating & Breeding",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Selection Strategies</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/08-selection-strategies.html#threshold-selection",
+    "href": "chapters/08-selection-strategies.html#threshold-selection",
+    "title": "8  Selection Strategies",
+    "section": "8.8 Threshold Selection",
+    "text": "8.8 Threshold Selection\n\n# Only individuals above threshold\npop &lt;- breeding.diploid(\n  pop,\n  selection.criteria = \"bve\",\n  selection.m.threshold = 105,   # BVE &gt; 105\n  selection.f.threshold = 100,   # BVE &gt; 100\n  breeding.size = c(50, 50)\n)",
+    "crumbs": [
+      "Selection, Mating & Breeding",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Selection Strategies</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/08-selection-strategies.html#optimal-genetic-contribution-ogc",
+    "href": "chapters/08-selection-strategies.html#optimal-genetic-contribution-ogc",
+    "title": "8  Selection Strategies",
+    "section": "8.9 Optimal Genetic Contribution (OGC)",
+    "text": "8.9 Optimal Genetic Contribution (OGC)\nBalance genetic gain with diversity:\n\n# Requires optiSel package\nlibrary(optiSel)\n\npop &lt;- breeding.diploid(\n  pop,\n  selection.algorithm = \"ogc\",\n  ogc.target.inbreeding = 0.01,  # Max 1% inbreeding increase\n  selection.size = c(20, 20),\n  breeding.size = c(100, 100)\n)",
+    "crumbs": [
+      "Selection, Mating & Breeding",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Selection Strategies</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/08-selection-strategies.html#custom-selection-function",
+    "href": "chapters/08-selection-strategies.html#custom-selection-function",
+    "title": "8  Selection Strategies",
+    "section": "8.10 Custom Selection Function",
+    "text": "8.10 Custom Selection Function\n\n# Define custom selection\nmy_selector &lt;- function(population, gen, sex) {\n  bv &lt;- get.bv(population, gen = gen, sex = sex)\n  pheno &lt;- get.pheno(population, gen = gen, sex = sex)\n\n  # Custom criterion: BV + 0.5*pheno\n  score &lt;- bv[1,] + 0.5 * pheno[1,]\n\n  # Return indices of selected individuals\n  return(order(score, decreasing = TRUE)[1:10])\n}\n\n# Use in breeding\npop &lt;- breeding.diploid(\n  pop,\n  selection.m.function = my_selector,\n  selection.f.function = my_selector,\n  breeding.size = c(50, 50)\n)",
+    "crumbs": [
+      "Selection, Mating & Breeding",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Selection Strategies</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/08-selection-strategies.html#summary",
+    "href": "chapters/08-selection-strategies.html#summary",
+    "title": "8  Selection Strategies",
+    "section": "8.11 Summary",
+    "text": "8.11 Summary\n\nRandom, phenotypic, genomic, and true BV selection\nMulti-trait selection indices\nThreshold and OGC methods\nCustom selection functions\n\nContinue to Chapter 9: Mating Designs!",
+    "crumbs": [
+      "Selection, Mating & Breeding",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Selection Strategies</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/09-mating-designs.html",
+    "href": "chapters/09-mating-designs.html",
+    "title": "9  Mating Designs",
+    "section": "",
+    "text": "9.1 Random Mating (Default)\npop &lt;- breeding.diploid(\n  pop,\n  selection.size = c(10, 20),\n  breeding.size = c(100, 100)\n)\n# Parents randomly paired",
+    "crumbs": [
+      "Selection, Mating & Breeding",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Mating Designs</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/09-mating-designs.html#assortative-mating",
+    "href": "chapters/09-mating-designs.html#assortative-mating",
+    "title": "9  Mating Designs",
+    "section": "9.2 Assortative Mating",
+    "text": "9.2 Assortative Mating\n\n# Positive: Best × Best\npop &lt;- breeding.diploid(\n  pop,\n  selection.size = c(10, 10),\n  mating.assortative = 1,        # Perfect positive\n  breeding.size = c(100, 100)\n)\n\n# Negative: Best × Worst\npop &lt;- breeding.diploid(\n  pop,\n  mating.assortative = -1,       # Perfect negative\n  breeding.size = c(100, 100)\n)",
+    "crumbs": [
+      "Selection, Mating & Breeding",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Mating Designs</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/09-mating-designs.html#avoiding-inbreeding",
+    "href": "chapters/09-mating-designs.html#avoiding-inbreeding",
+    "title": "9  Mating Designs",
+    "section": "9.3 Avoiding Inbreeding",
+    "text": "9.3 Avoiding Inbreeding\n\n# Avoid full-sib and half-sib matings\npop &lt;- breeding.diploid(\n  pop,\n  selection.size = c(5, 20),\n  avoid.mating.fullsib = TRUE,\n  avoid.mating.halfsib = TRUE,\n  breeding.size = c(100, 100)\n)",
+    "crumbs": [
+      "Selection, Mating & Breeding",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Mating Designs</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/09-mating-designs.html#maximum-offspring-per-parent",
+    "href": "chapters/09-mating-designs.html#maximum-offspring-per-parent",
+    "title": "9  Mating Designs",
+    "section": "9.4 Maximum Offspring Per Parent",
+    "text": "9.4 Maximum Offspring Per Parent\n\n# Limit offspring per sire\npop &lt;- breeding.diploid(\n  pop,\n  selection.size = c(5, 20),\n  max.offspring = 10,             # Max 10 offspring per parent\n  breeding.size = c(100, 100)\n)\n\n# Different limits by sex\npop &lt;- breeding.diploid(\n  pop,\n  selection.size = c(5, 20),\n  max.offspring.m = 20,           # Males can have 20\n  max.offspring.f = 5,            # Females max 5\n  breeding.size = c(100, 100)\n)",
+    "crumbs": [
+      "Selection, Mating & Breeding",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Mating Designs</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/09-mating-designs.html#all-combinations-diallel",
+    "href": "chapters/09-mating-designs.html#all-combinations-diallel",
+    "title": "9  Mating Designs",
+    "section": "9.5 All Combinations (Diallel)",
+    "text": "9.5 All Combinations (Diallel)\n\n# Test all crosses\npop &lt;- breeding.diploid(\n  pop,\n  selection.size = c(10, 10),\n  breeding.all.combination = TRUE,  # 10×10 = 100 crosses\n  breeding.size = c(100, 0)\n)",
+    "crumbs": [
+      "Selection, Mating & Breeding",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Mating Designs</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/09-mating-designs.html#targetedfixed-matings",
+    "href": "chapters/09-mating-designs.html#targetedfixed-matings",
+    "title": "9  Mating Designs",
+    "section": "9.6 Targeted/Fixed Matings",
+    "text": "9.6 Targeted/Fixed Matings\n\n# Specify exact matings\n# Matrix: [generation, sex, individual, generation, sex, individual]\nmatings &lt;- rbind(\n  c(2, 1, 5,  2, 2, 10),  # Male 5 × Female 10 from gen 2\n  c(2, 1, 8,  2, 2, 15),  # Male 8 × Female 15\n  c(2, 1, 3,  2, 2, 20)   # Male 3 × Female 20\n)\n\npop &lt;- breeding.diploid(\n  pop,\n  multiple.s = matings,\n  copy.individual.m = 5,           # 5 offspring per mating\n  copy.individual.f = 5\n)",
+    "crumbs": [
+      "Selection, Mating & Breeding",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Mating Designs</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/09-mating-designs.html#plant-breeding-selfing",
+    "href": "chapters/09-mating-designs.html#plant-breeding-selfing",
+    "title": "9  Mating Designs",
+    "section": "9.7 Plant Breeding: Selfing",
+    "text": "9.7 Plant Breeding: Selfing\n\npop &lt;- breeding.diploid(\n  pop,\n  selection.size = c(100, 0),\n  selfing.mating = TRUE,\n  breeding.size = c(100, 0)\n)",
+    "crumbs": [
+      "Selection, Mating & Breeding",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Mating Designs</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/09-mating-designs.html#plant-breeding-cloning",
+    "href": "chapters/09-mating-designs.html#plant-breeding-cloning",
+    "title": "9  Mating Designs",
+    "section": "9.8 Plant Breeding: Cloning",
+    "text": "9.8 Plant Breeding: Cloning\n\npop &lt;- breeding.diploid(\n  pop,\n  selection.size = c(50, 0),\n  copy.individual.m = 10,   # 10 clones each\n  breeding.size = c(500, 0)\n)",
+    "crumbs": [
+      "Selection, Mating & Breeding",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Mating Designs</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/09-mating-designs.html#same-sex-mating",
+    "href": "chapters/09-mating-designs.html#same-sex-mating",
+    "title": "9  Mating Designs",
+    "section": "9.9 Same-Sex Mating",
+    "text": "9.9 Same-Sex Mating\n\n# For plants without sex distinction\npop &lt;- breeding.diploid(\n  pop,\n  selection.size = c(100, 0),\n  same.sex.activ = TRUE,\n  same.sex.sex = 0,              # Use \"males\" as both parents\n  breeding.size = c(200, 0)\n)",
+    "crumbs": [
+      "Selection, Mating & Breeding",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Mating Designs</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/09-mating-designs.html#summary",
+    "href": "chapters/09-mating-designs.html#summary",
+    "title": "9  Mating Designs",
+    "section": "9.10 Summary",
+    "text": "9.10 Summary\n\nRandom vs assortative mating\nInbreeding avoidance\nOffspring number control\nFixed/targeted matings\nPlant-specific: selfing, cloning\n\nContinue to Chapter 10: Breeding Simulation!",
+    "crumbs": [
+      "Selection, Mating & Breeding",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Mating Designs</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-breeding-simulation.html",
+    "href": "chapters/10-breeding-simulation.html",
+    "title": "10  Breeding Program Simulation",
+    "section": "",
+    "text": "10.1 Complete Breeding Cycle\n# Typical cycle\npop &lt;- breeding.diploid(\n  pop,\n  # 1. Phenotype\n  phenotyping = \"all\",\n  phenotyping.gen = 5,\n  heritability = 0.5,\n\n  # 2. Genotype (if needed)\n  genotyping.gen = 5,\n  share.genotyped = 0.8,\n\n  # 3. Predict breeding values\n  bve = TRUE,\n  bve.gen = 1:5,\n\n  # 4. Select parents\n  selection.criteria = \"bve\",\n  selection.size = c(10, 20),\n  selection.gen = 5,\n\n  # 5. Mate and create offspring\n  breeding.size = c(50, 50),\n  name.cohort = \"Gen6\"\n)",
+    "crumbs": [
+      "Selection, Mating & Breeding",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Breeding Program Simulation</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-breeding-simulation.html#multi-stage-selection",
+    "href": "chapters/10-breeding-simulation.html#multi-stage-selection",
+    "title": "10  Breeding Program Simulation",
+    "section": "10.2 Multi-Stage Selection",
+    "text": "10.2 Multi-Stage Selection\n\n# Stage 1: Phenotypic pre-selection\npop &lt;- breeding.diploid(\n  pop,\n  phenotyping = \"all\",\n  phenotyping.gen = 3,\n  heritability = 0.3\n)\n\npop &lt;- set.class(pop, gen = 3, class = 1)  # Mark all as candidates\n\n# Select top 50% phenotypically\npheno &lt;- get.pheno(pop, gen = 3)\ncutoff &lt;- quantile(pheno, 0.5)\n# ... mark individuals above cutoff as class 2 ...\n\n# Stage 2: Genotype and genomic selection on survivors\npop &lt;- breeding.diploid(\n  pop,\n  genotyping.gen = 3,\n  genotyping.class = 2,     # Only genotype class 2\n  bve = TRUE,\n  selection.criteria = \"bve\",\n  selection.class = 2,       # Select from class 2\n  selection.size = c(10, 10),\n  breeding.size = c(100, 100)\n)",
+    "crumbs": [
+      "Selection, Mating & Breeding",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Breeding Program Simulation</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-breeding-simulation.html#progeny-testing",
+    "href": "chapters/10-breeding-simulation.html#progeny-testing",
+    "title": "10  Breeding Program Simulation",
+    "section": "10.3 Progeny Testing",
+    "text": "10.3 Progeny Testing\n\n# Year 1: Create test progeny\npop &lt;- breeding.diploid(\n  pop,\n  selection.m.gen = 5,\n  selection.f.gen = 5,\n  selection.size = c(50, 50),\n  breeding.size = c(500, 500),    # Many test progeny\n  name.cohort = \"TestProgeny\"\n)\n\n# Year 2: Phenotype progeny\npop &lt;- breeding.diploid(\n  pop,\n  phenotyping.cohorts = \"TestProgeny\",\n  phenotyping = \"all\",\n  heritability = 0.5\n)\n\n# Calculate parent averages from progeny\npop &lt;- breeding.diploid(\n  pop,\n  bve = TRUE,\n  bve.gen = 6  # Use progeny phenotypes\n)\n\n# Year 3: Select bulls based on daughter performance\npop &lt;- breeding.diploid(\n  pop,\n  selection.criteria = \"bve\",\n  selection.m.gen = 5,      # Original candidate bulls\n  selection.size = c(5, 20),\n  breeding.size = c(100, 100)\n)",
+    "crumbs": [
+      "Selection, Mating & Breeding",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Breeding Program Simulation</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-breeding-simulation.html#nucleus-breeding-program",
+    "href": "chapters/10-breeding-simulation.html#nucleus-breeding-program",
+    "title": "10  Breeding Program Simulation",
+    "section": "10.4 Nucleus Breeding Program",
+    "text": "10.4 Nucleus Breeding Program\n\n# Create nucleus\npop &lt;- creating.diploid(\n  nsnp = 10000, nindi = 100,\n  n.additive = 100,\n  name.cohort = \"Nucleus\"\n)\n\n# Nucleus selection (intensive)\npop &lt;- breeding.diploid(\n  pop,\n  phenotyping.cohorts = \"Nucleus\",\n  heritability = 0.5,\n  bve = TRUE,\n  selection.criteria = \"bve\",\n  selection.size = c(5, 10),\n  breeding.size = c(50, 50),\n  name.cohort = \"Nucleus_Gen2\"\n)\n\n# Commercial multiplier (uses nucleus genetics)\npop &lt;- breeding.diploid(\n  pop,\n  selection.m.cohorts = \"Nucleus_Gen2\",\n  selection.f.cohorts = \"Nucleus\",    # Or commercial dams\n  selection.size = c(10, 100),\n  breeding.size = c(500, 500),\n  name.cohort = \"Commercial\"\n)",
+    "crumbs": [
+      "Selection, Mating & Breeding",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Breeding Program Simulation</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-breeding-simulation.html#summary",
+    "href": "chapters/10-breeding-simulation.html#summary",
+    "title": "10  Breeding Program Simulation",
+    "section": "10.5 Summary",
+    "text": "10.5 Summary\n\nComplete breeding cycles\nMulti-stage selection\nProgeny testing schemes\nNucleus breeding programs\n\nContinue to Chapter 11: Plant vs Animal Breeding!",
+    "crumbs": [
+      "Selection, Mating & Breeding",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Breeding Program Simulation</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/11-plant-vs-animal.html",
+    "href": "chapters/11-plant-vs-animal.html",
+    "title": "11  Plant vs Animal Breeding",
+    "section": "",
+    "text": "11.1 Plant-Specific Features",
+    "crumbs": [
+      "Selection, Mating & Breeding",
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Plant vs Animal Breeding</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/11-plant-vs-animal.html#plant-specific-features",
+    "href": "chapters/11-plant-vs-animal.html#plant-specific-features",
+    "title": "11  Plant vs Animal Breeding",
+    "section": "",
+    "text": "11.1.1 Selfing\n\npop &lt;- breeding.diploid(pop, selfing.mating = TRUE, breeding.size = c(200, 0))\n\n\n\n11.1.2 Doubled Haploids (DH)\n\npop &lt;- breeding.diploid(pop, dh.mating = TRUE, breeding.size = c(200, 0))\n\n\n\n11.1.3 Cloning\n\npop &lt;- breeding.diploid(pop, copy.individual.m = 10, breeding.size = c(1000, 0))\n\n\n\n11.1.4 One-Sex Mode\n\npop &lt;- creating.diploid(nsnp = 5000, nindi = 200, one.sex.mode = TRUE)",
+    "crumbs": [
+      "Selection, Mating & Breeding",
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Plant vs Animal Breeding</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/11-plant-vs-animal.html#animal-specific-features",
+    "href": "chapters/11-plant-vs-animal.html#animal-specific-features",
+    "title": "11  Plant vs Animal Breeding",
+    "section": "11.2 Animal-Specific Features",
+    "text": "11.2 Animal-Specific Features\n\n11.2.1 Litter Size Control\n\npop &lt;- breeding.diploid(\n  pop,\n  selection.size = c(10, 20),\n  litter.size = 8,              # 8 piglets per litter\n  breeding.size = c(160, 160)   # 20 litters\n)\n\n\n\n11.2.2 Multiple Parities\n\n# Sows have multiple litters\nfor (parity in 1:3) {\n  pop &lt;- breeding.diploid(\n    pop,\n    selection.f.gen = 5,        # Same females each time\n    selection.m.gen = 6,        # New males\n    breeding.size = c(100, 100)\n  )\n}",
+    "crumbs": [
+      "Selection, Mating & Breeding",
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Plant vs Animal Breeding</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/11-plant-vs-animal.html#summary",
+    "href": "chapters/11-plant-vs-animal.html#summary",
+    "title": "11  Plant vs Animal Breeding",
+    "section": "11.3 Summary",
+    "text": "11.3 Summary\n\nPlants: selfing, DH, cloning, no sex\nAnimals: litter size, multiple parities\n\nContinue to Chapter 12: SNP Panels!",
+    "crumbs": [
+      "Selection, Mating & Breeding",
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Plant vs Animal Breeding</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/12-snp-panels.html",
+    "href": "chapters/12-snp-panels.html",
+    "title": "12  SNP Panels & Genotyping",
+    "section": "",
+    "text": "12.1 Partial Genotyping\n# Only genotype 80% of individuals\npop &lt;- breeding.diploid(\n  pop,\n  genotyping.gen = 3,\n  share.genotyped = 0.8\n)\n\n# Check who's genotyped\ngenotyped_status &lt;- get.genotyped(pop, gen = 3)",
+    "crumbs": [
+      "Genotyping & Genomic Analysis",
+      "<span class='chapter-number'>12</span>  <span class='chapter-title'>SNP Panels & Genotyping</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/12-snp-panels.html#genotyping-arrays-chips",
+    "href": "chapters/12-snp-panels.html#genotyping-arrays-chips",
+    "title": "12  SNP Panels & Genotyping",
+    "section": "12.2 Genotyping Arrays (Chips)",
+    "text": "12.2 Genotyping Arrays (Chips)\n\n# Define which SNPs are on chip\nchip_snps &lt;- seq(1, 50000, by = 10)  # Every 10th SNP\n\npop &lt;- creating.diploid(\n  nsnp = 50000,\n  nindi = 500,\n  genotyped.s = rep(0, 50000)  # Start with none genotyped\n)\n\n# Set chip SNPs as genotyped\npop$info$snp$genotyped[chip_snps] &lt;- 1",
+    "crumbs": [
+      "Genotyping & Genomic Analysis",
+      "<span class='chapter-number'>12</span>  <span class='chapter-title'>SNP Panels & Genotyping</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/12-snp-panels.html#genotyping-costs",
+    "href": "chapters/12-snp-panels.html#genotyping-costs",
+    "title": "12  SNP Panels & Genotyping",
+    "section": "12.3 Genotyping Costs",
+    "text": "12.3 Genotyping Costs\n\n# Track costs\ncosts &lt;- compute.costs.cohorts(\n  pop,\n  cohorts = \"Gen5\",\n  cost.genotyping = 50,      # $50 per sample\n  cost.phenotyping = 200     # $200 per phenotype\n)\n\nprint(costs$total.costs)",
+    "crumbs": [
+      "Genotyping & Genomic Analysis",
+      "<span class='chapter-number'>12</span>  <span class='chapter-title'>SNP Panels & Genotyping</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/12-snp-panels.html#summary",
+    "href": "chapters/12-snp-panels.html#summary",
+    "title": "12  SNP Panels & Genotyping",
+    "section": "12.4 Summary",
+    "text": "12.4 Summary\n\nPartial genotyping strategies\nSNP chip simulation\nCost tracking\n\nContinue to Chapter 13: Genomic Prediction!",
+    "crumbs": [
+      "Genotyping & Genomic Analysis",
+      "<span class='chapter-number'>12</span>  <span class='chapter-title'>SNP Panels & Genotyping</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/13-genomic-prediction.html",
+    "href": "chapters/13-genomic-prediction.html",
+    "title": "13  Genomic Prediction",
+    "section": "",
+    "text": "13.1 Internal GBLUP (Known h²)\npop &lt;- breeding.diploid(\n  pop,\n  bve = TRUE,\n  bve.gen = 1:5,\n  heritability = 0.5     # Must provide h²\n)",
+    "crumbs": [
+      "Genotyping & Genomic Analysis",
+      "<span class='chapter-number'>13</span>  <span class='chapter-title'>Genomic Prediction</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/13-genomic-prediction.html#rrblup-package",
+    "href": "chapters/13-genomic-prediction.html#rrblup-package",
+    "title": "13  Genomic Prediction",
+    "section": "13.2 rrBLUP Package",
+    "text": "13.2 rrBLUP Package\n\npop &lt;- breeding.diploid(\n  pop,\n  bve = TRUE,\n  bve.gen = 1:5,\n  bve.rrblup = TRUE     # Uses rrBLUP::mixed.solve\n)",
+    "crumbs": [
+      "Genotyping & Genomic Analysis",
+      "<span class='chapter-number'>13</span>  <span class='chapter-title'>Genomic Prediction</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/13-genomic-prediction.html#bayesian-methods-bglr",
+    "href": "chapters/13-genomic-prediction.html#bayesian-methods-bglr",
+    "title": "13  Genomic Prediction",
+    "section": "13.3 Bayesian Methods (BGLR)",
+    "text": "13.3 Bayesian Methods (BGLR)\n\npop &lt;- breeding.diploid(\n  pop,\n  bve = TRUE,\n  bve.gen = 1:5,\n  bve.bglr = TRUE,\n  bglr.model = \"BayesB\"   # BayesA, BayesB, BayesC, etc.\n)",
+    "crumbs": [
+      "Genotyping & Genomic Analysis",
+      "<span class='chapter-number'>13</span>  <span class='chapter-title'>Genomic Prediction</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/13-genomic-prediction.html#blupf90",
+    "href": "chapters/13-genomic-prediction.html#blupf90",
+    "title": "13  Genomic Prediction",
+    "section": "13.4 BLUPF90",
+    "text": "13.4 BLUPF90\n\npop &lt;- breeding.diploid(\n  pop,\n  bve = TRUE,\n  bve.gen = 1:5,\n  bve.blupf90 = TRUE,\n  blupf90.path = \"/path/to/blupf90\"\n)",
+    "crumbs": [
+      "Genotyping & Genomic Analysis",
+      "<span class='chapter-number'>13</span>  <span class='chapter-title'>Genomic Prediction</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/13-genomic-prediction.html#cross-validation",
+    "href": "chapters/13-genomic-prediction.html#cross-validation",
+    "title": "13  Genomic Prediction",
+    "section": "13.5 Cross-Validation",
+    "text": "13.5 Cross-Validation\n\n# Assess prediction accuracy\naccuracy &lt;- analyze.bv(\n  pop,\n  gen = 5,\n  cohorts = \"TestSet\",\n  bve.gen = 1:4         # Training set\n)\n\nprint(accuracy$correlation)  # Accuracy\nprint(accuracy$bias)          # Bias",
+    "crumbs": [
+      "Genotyping & Genomic Analysis",
+      "<span class='chapter-number'>13</span>  <span class='chapter-title'>Genomic Prediction</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/13-genomic-prediction.html#summary",
+    "href": "chapters/13-genomic-prediction.html#summary",
+    "title": "13  Genomic Prediction",
+    "section": "13.6 Summary",
+    "text": "13.6 Summary\n\nMultiple BVE methods\nIntegration with R packages and external software\nAccuracy assessment\n\nContinue to Chapter 14: Population Structure!",
+    "crumbs": [
+      "Genotyping & Genomic Analysis",
+      "<span class='chapter-number'>13</span>  <span class='chapter-title'>Genomic Prediction</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/14-population-structure.html",
+    "href": "chapters/14-population-structure.html",
+    "title": "14  Population Structure Analysis",
+    "section": "",
+    "text": "14.1 Inbreeding Coefficients\n# Pedigree-based\ninb_ped &lt;- inbreeding.exp(pop, gen = 5)\n\n# Genomic\ninb_gen &lt;- inbreeding.emp(pop, gen = 5)\n\nmean(inb_ped)\nmean(inb_gen)",
+    "crumbs": [
+      "Genotyping & Genomic Analysis",
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>Population Structure Analysis</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/14-population-structure.html#kinship-matrices",
+    "href": "chapters/14-population-structure.html#kinship-matrices",
+    "title": "14  Population Structure Analysis",
+    "section": "14.2 Kinship Matrices",
+    "text": "14.2 Kinship Matrices\n\n# Expected (pedigree)\nK_exp &lt;- kinship.exp(pop, gen = c(5, 6))\n\n# Empirical (genomic)\nK_emp &lt;- kinship.emp(pop, gen = c(5, 6))\n\n# Average kinship\nmean(K_emp[upper.tri(K_emp)])",
+    "crumbs": [
+      "Genotyping & Genomic Analysis",
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>Population Structure Analysis</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/14-population-structure.html#pca-analysis",
+    "href": "chapters/14-population-structure.html#pca-analysis",
+    "title": "14  Population Structure Analysis",
+    "section": "14.3 PCA Analysis",
+    "text": "14.3 PCA Analysis\n\n# Visualize population structure\nget.pca(pop, gen = 1:10, pca.color.breeding = TRUE)",
+    "crumbs": [
+      "Genotyping & Genomic Analysis",
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>Population Structure Analysis</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/14-population-structure.html#admixture-analysis",
+    "href": "chapters/14-population-structure.html#admixture-analysis",
+    "title": "14  Population Structure Analysis",
+    "section": "14.4 Admixture Analysis",
+    "text": "14.4 Admixture Analysis\n\n# K=3 ancestral populations\nget.admixture(pop, gen = 5, K = 3, plot = TRUE)",
+    "crumbs": [
+      "Genotyping & Genomic Analysis",
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>Population Structure Analysis</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/14-population-structure.html#dendrograms",
+    "href": "chapters/14-population-structure.html#dendrograms",
+    "title": "14  Population Structure Analysis",
+    "section": "14.5 Dendrograms",
+    "text": "14.5 Dendrograms\n\n# Hierarchical clustering\nget.dendrogram(pop, gen = 5, type = \"kinship\")",
+    "crumbs": [
+      "Genotyping & Genomic Analysis",
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>Population Structure Analysis</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/14-population-structure.html#effective-population-size",
+    "href": "chapters/14-population-structure.html#effective-population-size",
+    "title": "14  Population Structure Analysis",
+    "section": "14.6 Effective Population Size",
+    "text": "14.6 Effective Population Size\n\nNe &lt;- get.effective.size(pop, gen = 5)\nprint(Ne)",
+    "crumbs": [
+      "Genotyping & Genomic Analysis",
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>Population Structure Analysis</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/14-population-structure.html#summary",
+    "href": "chapters/14-population-structure.html#summary",
+    "title": "14  Population Structure Analysis",
+    "section": "14.7 Summary",
+    "text": "14.7 Summary\n\nInbreeding and kinship analysis\nPCA and admixture visualization\nEffective population size\n\nContinue to Chapter 15: Data Export/Import!",
+    "crumbs": [
+      "Genotyping & Genomic Analysis",
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>Population Structure Analysis</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/15-data-export-import.html",
+    "href": "chapters/15-data-export-import.html",
+    "title": "15  Data Export & Import",
+    "section": "",
+    "text": "15.1 Export Genotypes",
+    "crumbs": [
+      "Advanced Topics & Reference",
+      "<span class='chapter-number'>15</span>  <span class='chapter-title'>Data Export & Import</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/15-data-export-import.html#export-genotypes",
+    "href": "chapters/15-data-export-import.html#export-genotypes",
+    "title": "15  Data Export & Import",
+    "section": "",
+    "text": "15.1.1 VCF Format\n\nget.vcf(pop, gen = 5, path = \"generation5.vcf\")\n\n\n\n15.1.2 PLINK Format\n\nget.plink(pop, gen = 5, path = \"generation5\")  # Creates .bed/.bim/.fam\nget.pedmap(pop, gen = 5, path = \"generation5\") # Creates .ped/.map",
+    "crumbs": [
+      "Advanced Topics & Reference",
+      "<span class='chapter-number'>15</span>  <span class='chapter-title'>Data Export & Import</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/15-data-export-import.html#export-pedigrees",
+    "href": "chapters/15-data-export-import.html#export-pedigrees",
+    "title": "15  Data Export & Import",
+    "section": "15.2 Export Pedigrees",
+    "text": "15.2 Export Pedigrees\n\n# Standard pedigree (ID, Sire, Dam)\nped &lt;- get.pedigree(pop, gen = 5)\nwrite.csv(ped, \"pedigree.csv\")\n\n# Extended pedigree (more info)\nped2 &lt;- get.pedigree2(pop, gen = 5)  # Includes sex, cohort, etc.",
+    "crumbs": [
+      "Advanced Topics & Reference",
+      "<span class='chapter-number'>15</span>  <span class='chapter-title'>Data Export & Import</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/15-data-export-import.html#export-phenotypes",
+    "href": "chapters/15-data-export-import.html#export-phenotypes",
+    "title": "15  Data Export & Import",
+    "section": "15.3 Export Phenotypes",
+    "text": "15.3 Export Phenotypes\n\npheno &lt;- get.pheno(pop, gen = 1:5)\nwrite.csv(t(pheno), \"phenotypes.csv\")",
+    "crumbs": [
+      "Advanced Topics & Reference",
+      "<span class='chapter-number'>15</span>  <span class='chapter-title'>Data Export & Import</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/15-data-export-import.html#export-breeding-values",
+    "href": "chapters/15-data-export-import.html#export-breeding-values",
+    "title": "15  Data Export & Import",
+    "section": "15.4 Export Breeding Values",
+    "text": "15.4 Export Breeding Values\n\nbv &lt;- get.bv(pop, gen = 1:10)\nbve &lt;- get.bve(pop, gen = 1:10)\n\ndata_export &lt;- data.frame(\n  ID = colnames(bv),\n  TrueBV = bv[1,],\n  EstimatedBV = bve[1,]\n)\nwrite.csv(data_export, \"breeding_values.csv\")",
+    "crumbs": [
+      "Advanced Topics & Reference",
+      "<span class='chapter-number'>15</span>  <span class='chapter-title'>Data Export & Import</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/15-data-export-import.html#import-external-bves",
+    "href": "chapters/15-data-export-import.html#import-external-bves",
+    "title": "15  Data Export & Import",
+    "section": "15.5 Import External BVEs",
+    "text": "15.5 Import External BVEs\n\n# Calculate BVEs externally, then import\nexternal_bve &lt;- read.csv(\"external_predictions.csv\")\n\npop &lt;- insert.bve(\n  pop,\n  bve = external_bve$EBV,\n  gen = 5\n)",
+    "crumbs": [
+      "Advanced Topics & Reference",
+      "<span class='chapter-number'>15</span>  <span class='chapter-title'>Data Export & Import</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/15-data-export-import.html#summary",
+    "href": "chapters/15-data-export-import.html#summary",
+    "title": "15  Data Export & Import",
+    "section": "15.6 Summary",
+    "text": "15.6 Summary\n\nExport to VCF, PLINK formats\nPedigree and phenotype export\nImport external predictions\n\nContinue to Chapter 16: Performance & Memory!",
+    "crumbs": [
+      "Advanced Topics & Reference",
+      "<span class='chapter-number'>15</span>  <span class='chapter-title'>Data Export & Import</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/16-performance-memory.html",
+    "href": "chapters/16-performance-memory.html",
+    "title": "16  Performance & Memory Management",
+    "section": "",
+    "text": "16.1 Memory Management",
+    "crumbs": [
+      "Advanced Topics & Reference",
+      "<span class='chapter-number'>16</span>  <span class='chapter-title'>Performance & Memory Management</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/16-performance-memory.html#memory-management",
+    "href": "chapters/16-performance-memory.html#memory-management",
+    "title": "16  Performance & Memory Management",
+    "section": "",
+    "text": "16.1.1 Clean Up Old Generations\n\n# Remove data from old generations\npop &lt;- clean.up(pop, gen = 1:5)  # Keep gens 6+\n\n\n\n16.1.2 New Base Generation\n\n# Reset generation numbering, free memory\npop &lt;- new.base.generation(pop, base.gen = 10)\n# Gen 10 becomes new \"gen 1\"",
+    "crumbs": [
+      "Advanced Topics & Reference",
+      "<span class='chapter-number'>16</span>  <span class='chapter-title'>Performance & Memory Management</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/16-performance-memory.html#computational-speed",
+    "href": "chapters/16-performance-memory.html#computational-speed",
+    "title": "16  Performance & Memory Management",
+    "section": "16.2 Computational Speed",
+    "text": "16.2 Computational Speed\n\n16.2.1 Use miraculix\n\n# Install for fast matrix operations\ndevtools::install_github(\"tpook92/miraculix\")\n\n# Automatically used when available\n\n\n\n16.2.2 Optimize Cores\n\n# Find optimal number of cores for your system\noptimal &lt;- optimize.cores(pop)\n\n\n\n16.2.3 Reduce Marker Number\n\n# Fewer SNPs = faster\npop &lt;- creating.diploid(\n  nsnp = 1000,     # Instead of 50000\n  nindi = 1000,\n  n.additive = 100\n)\n\n\n\n16.2.4 Disable Copying\n\n# Don't store full breeding values in memory\npop &lt;- breeding.diploid(\n  pop,\n  copy.breeding.values = FALSE\n)",
+    "crumbs": [
+      "Advanced Topics & Reference",
+      "<span class='chapter-number'>16</span>  <span class='chapter-title'>Performance & Memory Management</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/16-performance-memory.html#parallel-processing",
+    "href": "chapters/16-performance-memory.html#parallel-processing",
+    "title": "16  Performance & Memory Management",
+    "section": "16.3 Parallel Processing",
+    "text": "16.3 Parallel Processing\n\n# Run multiple simulations in parallel\nlibrary(parallel)\n\nresults &lt;- mclapply(1:100, function(i) {\n  pop &lt;- creating.diploid(nsnp = 5000, nindi = 200)\n  # ... run simulation ...\n  return(mean(get.bv(pop, gen = 10)))\n}, mc.cores = 4)",
+    "crumbs": [
+      "Advanced Topics & Reference",
+      "<span class='chapter-number'>16</span>  <span class='chapter-title'>Performance & Memory Management</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/16-performance-memory.html#summary",
+    "href": "chapters/16-performance-memory.html#summary",
+    "title": "16  Performance & Memory Management",
+    "section": "16.4 Summary",
+    "text": "16.4 Summary\n\nMemory management techniques\nSpeed optimization\nParallel simulation\n\nContinue to Chapter 17: Function Reference!",
+    "crumbs": [
+      "Advanced Topics & Reference",
+      "<span class='chapter-number'>16</span>  <span class='chapter-title'>Performance & Memory Management</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/17-function-reference.html",
+    "href": "chapters/17-function-reference.html",
+    "title": "17  Function Reference Quick Guide",
+    "section": "",
+    "text": "17.1 Core Functions",
+    "crumbs": [
+      "Advanced Topics & Reference",
+      "<span class='chapter-number'>17</span>  <span class='chapter-title'>Function Reference Quick Guide</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/17-function-reference.html#core-functions",
+    "href": "chapters/17-function-reference.html#core-functions",
+    "title": "17  Function Reference Quick Guide",
+    "section": "",
+    "text": "Function\nPurpose\n\n\n\n\ncreating.diploid()\nCreate founder population\n\n\nbreeding.diploid()\nSimulate breeding actions\n\n\ncreating.trait()\nAdd traits to population",
+    "crumbs": [
+      "Advanced Topics & Reference",
+      "<span class='chapter-number'>17</span>  <span class='chapter-title'>Function Reference Quick Guide</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/17-function-reference.html#extraction-functions-get.",
+    "href": "chapters/17-function-reference.html#extraction-functions-get.",
+    "title": "17  Function Reference Quick Guide",
+    "section": "17.2 Extraction Functions (get.*)",
+    "text": "17.2 Extraction Functions (get.*)\n\n\n\nFunction\nReturns\n\n\n\n\nget.bv()\nTrue breeding values\n\n\nget.bve()\nEstimated breeding values\n\n\nget.pheno()\nPhenotypes\n\n\nget.geno()\nGenotypes (0/1/2 matrix)\n\n\nget.haplo()\nHaplotypes\n\n\nget.pedigree()\nPedigree (ID, Sire, Dam)\n\n\nget.map()\nGenetic map\n\n\nget.qtl()\nQTL positions",
+    "crumbs": [
+      "Advanced Topics & Reference",
+      "<span class='chapter-number'>17</span>  <span class='chapter-title'>Function Reference Quick Guide</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/17-function-reference.html#analysis-functions",
+    "href": "chapters/17-function-reference.html#analysis-functions",
+    "title": "17  Function Reference Quick Guide",
+    "section": "17.3 Analysis Functions",
+    "text": "17.3 Analysis Functions\n\n\n\nFunction\nPurpose\n\n\n\n\nkinship.emp()\nGenomic kinship matrix\n\n\nkinship.exp()\nPedigree kinship matrix\n\n\ninbreeding.emp()\nGenomic inbreeding\n\n\ninbreeding.exp()\nPedigree inbreeding\n\n\nget.pca()\nPCA plot\n\n\nget.admixture()\nAdmixture analysis\n\n\nbv.development()\nGenetic trend plot\n\n\nanalyze.bv()\nPrediction accuracy",
+    "crumbs": [
+      "Advanced Topics & Reference",
+      "<span class='chapter-number'>17</span>  <span class='chapter-title'>Function Reference Quick Guide</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/17-function-reference.html#utility-functions",
+    "href": "chapters/17-function-reference.html#utility-functions",
+    "title": "17  Function Reference Quick Guide",
+    "section": "17.4 Utility Functions",
+    "text": "17.4 Utility Functions\n\n\n\nFunction\nPurpose\n\n\n\n\nsummary()\nPopulation summary\n\n\nget.size()\nNumber of individuals\n\n\nset.class()\nAssign class to individuals\n\n\nclean.up()\nFree memory\n\n\nnew.base.generation()\nReset generation numbering",
+    "crumbs": [
+      "Advanced Topics & Reference",
+      "<span class='chapter-number'>17</span>  <span class='chapter-title'>Function Reference Quick Guide</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/17-function-reference.html#export-functions",
+    "href": "chapters/17-function-reference.html#export-functions",
+    "title": "17  Function Reference Quick Guide",
+    "section": "17.5 Export Functions",
+    "text": "17.5 Export Functions\n\n\n\nFunction\nPurpose\n\n\n\n\nget.vcf()\nExport VCF file\n\n\nget.plink()\nExport PLINK files\n\n\nget.pedmap()\nExport ped/map files",
+    "crumbs": [
+      "Advanced Topics & Reference",
+      "<span class='chapter-number'>17</span>  <span class='chapter-title'>Function Reference Quick Guide</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/17-function-reference.html#for-full-documentation",
+    "href": "chapters/17-function-reference.html#for-full-documentation",
+    "title": "17  Function Reference Quick Guide",
+    "section": "17.6 For Full Documentation",
+    "text": "17.6 For Full Documentation\n\n# Function help\n?creating.diploid\n?breeding.diploid\n\n# Package help\nhelp(package = \"MoBPS\")",
+    "crumbs": [
+      "Advanced Topics & Reference",
+      "<span class='chapter-number'>17</span>  <span class='chapter-title'>Function Reference Quick Guide</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/17-function-reference.html#summary",
+    "href": "chapters/17-function-reference.html#summary",
+    "title": "17  Function Reference Quick Guide",
+    "section": "17.7 Summary",
+    "text": "17.7 Summary\nQuick reference for common MoBPS functions. See the full manual for complete parameter lists and details.",
+    "crumbs": [
+      "Advanced Topics & Reference",
+      "<span class='chapter-number'>17</span>  <span class='chapter-title'>Function Reference Quick Guide</span>"
+    ]
+  },
+  {
+    "objectID": "references.html",
+    "href": "references.html",
+    "title": "References",
+    "section": "",
+    "text": "Key MoBPS Publications\nMain Paper:\nPook, T., Freudenthal, J., Korte, A., & Simianer, H. (2020). Using local convolutional neural networks for genomic prediction. Frontiers in Genetics, 11, 561497.\nPook, T., Schlather, M., & Simianer, H. (2020). MoBPS - Modular Breeding Program Simulator. G3: Genes, Genomes, Genetics, 10(6), 1915-1918.",
+    "crumbs": [
+      "References"
+    ]
+  },
+  {
+    "objectID": "references.html#additional-resources",
+    "href": "references.html#additional-resources",
+    "title": "References",
+    "section": "Additional Resources",
+    "text": "Additional Resources\n\nGitHub Repository: https://github.com/tpook92/MoBPS\nWeb Interface: https://www.mobps.de\nCRAN Page: https://CRAN.R-project.org/package=MoBPS",
+    "crumbs": [
+      "References"
+    ]
+  },
+  {
+    "objectID": "references.html#contact",
+    "href": "references.html#contact",
+    "title": "References",
+    "section": "Contact",
+    "text": "Contact\nFor questions, bug reports, or collaborations:\n\nTorsten Pook: Torsten.pook@wur.nl\nWageningen University & Research\nAnimal Breeding and Genomics Group",
+    "crumbs": [
+      "References"
+    ]
+  },
+  {
+    "objectID": "references.html#citation",
+    "href": "references.html#citation",
+    "title": "References",
+    "section": "Citation",
+    "text": "Citation\nIf you use MoBPS in your research, please cite:\n@article{pook2020mobps,\n  title={MoBPS—Modular breeding program simulator},\n  author={Pook, Torsten and Schlather, Martin and Simianer, Henner},\n  journal={G3: Genes, Genomes, Genetics},\n  volume={10},\n  number={6},\n  pages={1915--1918},\n  year={2020},\n  publisher={Oxford University Press}\n}",
+    "crumbs": [
+      "References"
+    ]
+  },
+  {
+    "objectID": "references.html#related-software",
+    "href": "references.html#related-software",
+    "title": "References",
+    "section": "Related Software",
+    "text": "Related Software\n\nAlphaSimR: Another breeding simulation package\nQMSim: Quantitative and molecular simulation\nGenomic Selection packages: rrBLUP, BGLR, sommer, BLUPF90",
+    "crumbs": [
+      "References"
+    ]
+  }
+]

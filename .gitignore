@@ -1,8 +1,12 @@
 # Quarto build outputs
-_book/
-*.html
-*.pdf
+# docs/ folder is NOT ignored - it's used for GitHub Pages
+# Only ignore HTML/PDF files in the root directory
+/*.html
+/*.pdf
 /.quarto/
+_book/
+index_files/
+*.tex
 
 # R files
 .Rproj.user
@@ -23,3 +27,5 @@ Thumbs.db
 *-knit.md
 *.knit.md
 *.utf8.md
+
+**/*.quarto_ipynb

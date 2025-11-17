@@ -1,6 +1,6 @@
 project:
   type: book
-  output-dir: _book
+  output-dir: docs
 
 book:
   title: "MoBPS Cookbook"
@@ -50,11 +50,11 @@ format:
     code-tools: true
     code-copy: true
     link-external-newwindow: true
-  pdf:
-    documentclass: book
-    toc: true
-    number-sections: true
-    colorlinks: true
+  # pdf:
+  #   documentclass: book
+  #   toc: true
+  #   number-sections: true
+  #   colorlinks: true
 
 execute:
   echo: true
