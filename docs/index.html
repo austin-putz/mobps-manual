@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="MoBPS Development Team">
-<meta name="dcterms.date" content="2025-11-16">
+<meta name="dcterms.date" content="2025-11-18">
 
 <title>MoBPS Cookbook</title>
 <style>
@@ -57,7 +57,27 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -360,7 +380,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">November 16, 2025</p>
+      <p class="date">November 18, 2025</p>
     </div>
   </div>
   
@@ -377,7 +397,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Welcome to the <strong>MoBPS Cookbook</strong> - a practical, hands-on guide to using the Modular Breeding Program Simulator!</p>
 <section id="what-is-mobps" class="level2">
 <h2 class="anchored" data-anchor-id="what-is-mobps">What is MoBPS?</h2>
-<p>MoBPS (Modular Breeding Program Simulator) is a powerful R package for stochastic simulation of breeding programs. Whether you’re working with:</p>
+<p>MoBPS (Modular Breeding Program Simulator) is a powerful R package for stochastic simulation of breeding programs <span class="citation" data-cites="pook2020mobps">(<a href="#ref-pook2020mobps" role="doc-biblioref">Pook, Schlather, and Simianer 2020</a>)</span>. Whether you’re working with:</p>
 <ul>
 <li><strong>Animal breeding</strong> (dairy cattle, pigs, chickens, etc.)</li>
 <li><strong>Plant breeding</strong> (maize, wheat, crops with selfing/DH)</li>
@@ -454,6 +474,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <!-- -->
 
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-pook2020mobps" class="csl-entry" role="listitem">
+Pook, Torsten, Martin Schlather, and Henner Simianer. 2020. <span>“MoBPS—Modular Breeding Program Simulator.”</span> <em>G3: Genes, Genomes, Genetics</em> 10 (6): 1915–18. <a href="https://doi.org/10.1534/g3.120.401193">https://doi.org/10.1534/g3.120.401193</a>.
+</div>
+</div>
 </section>
 </section>
 
@@ -929,7 +954,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">## What is MoBPS?</span></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>MoBPS (Modular Breeding Program Simulator) is a powerful R package for stochastic simulation of breeding programs. Whether you're working with:</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>MoBPS (Modular Breeding Program Simulator) is a powerful R package for stochastic simulation of breeding programs <span class="co">[</span><span class="ot">@pook2020mobps</span><span class="co">]</span>. Whether you're working with:</span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Animal breeding** (dairy cattle, pigs, chickens, etc.)</span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Plant breeding** (maize, wheat, crops with selfing/DH)</span>

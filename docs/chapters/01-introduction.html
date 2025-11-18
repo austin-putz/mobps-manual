@@ -55,7 +55,27 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -393,7 +413,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="what-is-mobps" class="level2" data-number="1.2">
 <h2 data-number="1.2" class="anchored" data-anchor-id="what-is-mobps"><span class="header-section-number">1.2</span> What is MoBPS?</h2>
-<p><strong>MoBPS</strong> (Modular Breeding Program Simulator) is an R package for stochastic simulation of breeding programs. It provides a flexible framework to:</p>
+<p><strong>MoBPS</strong> (Modular Breeding Program Simulator) is an R package for stochastic simulation of breeding programs <span class="citation" data-cites="pook2020mobps">(<a href="#ref-pook2020mobps" role="doc-biblioref">Pook, Schlather, and Simianer 2020</a>)</span>. It provides a flexible framework to:</p>
 <ul>
 <li><strong>Create</strong> realistic founder populations with complex genetic architectures</li>
 <li><strong>Simulate</strong> multiple generations of breeding actions (selection, mating, culling)</li>
@@ -668,6 +688,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <!-- -->
 
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-pook2020mobps" class="csl-entry" role="listitem">
+Pook, Torsten, Martin Schlather, and Henner Simianer. 2020. <span>“MoBPS—Modular Breeding Program Simulator.”</span> <em>G3: Genes, Genomes, Genetics</em> 10 (6): 1915–18. <a href="https://doi.org/10.1534/g3.120.401193">https://doi.org/10.1534/g3.120.401193</a>.
+</div>
+</div>
 </section>
 
 </main> <!-- /main -->
@@ -1152,7 +1177,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="fu">## What is MoBPS?</span></span>
 <span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>**MoBPS** (Modular Breeding Program Simulator) is an R package for stochastic simulation of breeding programs. It provides a flexible framework to:</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>**MoBPS** (Modular Breeding Program Simulator) is an R package for stochastic simulation of breeding programs <span class="co">[</span><span class="ot">@pook2020mobps</span><span class="co">]</span>. It provides a flexible framework to:</span>
 <span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Create** realistic founder populations with complex genetic architectures</span>
 <span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Simulate** multiple generations of breeding actions (selection, mating, culling)</span>

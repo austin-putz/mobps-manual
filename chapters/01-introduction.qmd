@@ -11,7 +11,7 @@ By the end of this chapter, you will:
 
 ## What is MoBPS?
 
-**MoBPS** (Modular Breeding Program Simulator) is an R package for stochastic simulation of breeding programs. It provides a flexible framework to:
+**MoBPS** (Modular Breeding Program Simulator) is an R package for stochastic simulation of breeding programs [@pook2020mobps]. It provides a flexible framework to:
 
 - **Create** realistic founder populations with complex genetic architectures
 - **Simulate** multiple generations of breeding actions (selection, mating, culling)

@@ -319,7 +319,7 @@ pop <- breeding.diploid(pop,
                         breeding.size = c(50, 50))
 ```
 
-This creates **generation 4** from a mix of gen 2 and 3 parents.
+This creates **generation 4** from a mix of gen 2 and 3 parents, mirroring the overlapping-generation response framework described by Hill [@hill1974prediction].
 
 ### Age Structure
 

@@ -14,7 +14,7 @@
     "href": "index.html#what-is-mobps",
     "title": "MoBPS Cookbook",
     "section": "What is MoBPS?",
-    "text": "What is MoBPS?\nMoBPS (Modular Breeding Program Simulator) is a powerful R package for stochastic simulation of breeding programs. Whether you’re working with:\n\nAnimal breeding (dairy cattle, pigs, chickens, etc.)\nPlant breeding (maize, wheat, crops with selfing/DH)\nConservation programs\nResearch on breeding strategies\n\nMoBPS provides the flexibility and tools you need to simulate, analyze, and optimize breeding schemes.",
+    "text": "What is MoBPS?\nMoBPS (Modular Breeding Program Simulator) is a powerful R package for stochastic simulation of breeding programs (Pook, Schlather, and Simianer 2020). Whether you’re working with:\n\nAnimal breeding (dairy cattle, pigs, chickens, etc.)\nPlant breeding (maize, wheat, crops with selfing/DH)\nConservation programs\nResearch on breeding strategies\n\nMoBPS provides the flexibility and tools you need to simulate, analyze, and optimize breeding schemes.",
     "crumbs": [
       "Welcome"
     ]
@@ -64,7 +64,7 @@
     "href": "index.html#authors",
     "title": "MoBPS Cookbook",
     "section": "Authors",
-    "text": "Authors\nMoBPS Development Team:\n\nTorsten Pook (Wageningen University & Research)\nMartin Schlather (University of Mannheim)\nHenner Simianer (University of Göttingen)\n\n\nReady to get started? Head to Chapter 1: Introduction or jump to any topic using the navigation menu!\n\n\n\n\n\n\nNoteThe MoBPS Name\n\n\n\nMoBPS is named after a pug (German: “Mops”)! The development team has a soft spot for this friendly breed.",
+    "text": "Authors\nMoBPS Development Team:\n\nTorsten Pook (Wageningen University & Research)\nMartin Schlather (University of Mannheim)\nHenner Simianer (University of Göttingen)\n\n\nReady to get started? Head to Chapter 1: Introduction or jump to any topic using the navigation menu!\n\n\n\n\n\n\nNoteThe MoBPS Name\n\n\n\nMoBPS is named after a pug (German: “Mops”)! The development team has a soft spot for this friendly breed.\n\n\n\n\n\n\n\n\nPook, Torsten, Martin Schlather, and Henner Simianer. 2020. “MoBPS—Modular Breeding Program Simulator.” G3: Genes, Genomes, Genetics 10 (6): 1915–18. https://doi.org/10.1534/g3.120.401193.",
     "crumbs": [
       "Welcome"
     ]
@@ -96,7 +96,7 @@
     "href": "chapters/01-introduction.html#what-is-mobps",
     "title": "1  Introduction to MoBPS",
     "section": "1.2 What is MoBPS?",
-    "text": "1.2 What is MoBPS?\nMoBPS (Modular Breeding Program Simulator) is an R package for stochastic simulation of breeding programs. It provides a flexible framework to:\n\nCreate realistic founder populations with complex genetic architectures\nSimulate multiple generations of breeding actions (selection, mating, culling)\nAnalyze genetic gain, diversity, inbreeding, and population structure\nCompare different breeding strategies\nOptimize breeding programs for specific goals\n\n\n1.2.1 Why Simulate Breeding Programs?\nBreeding program simulation allows you to:\n\nTest strategies before implementing them in reality\nUnderstand trade-offs between genetic gain and diversity\nOptimize selection and mating decisions\nPredict long-term outcomes over many generations\nTrain future breeders in a risk-free environment\n\n\n\n1.2.2 Key Features\nMoBPS offers exceptional flexibility:\n\n✅ Works with both plant and animal breeding\n✅ Supports single or multiple traits\n✅ Handles additive, dominance, and epistatic effects\n✅ Simulates realistic genomic data or uses real data\n✅ Integrates with external prediction software (BLUP, GBLUP, Bayesian)\n✅ Provides rich visualization and analysis tools\n✅ Scales from small experiments to large commercial programs",
+    "text": "1.2 What is MoBPS?\nMoBPS (Modular Breeding Program Simulator) is an R package for stochastic simulation of breeding programs (Pook, Schlather, and Simianer 2020). It provides a flexible framework to:\n\nCreate realistic founder populations with complex genetic architectures\nSimulate multiple generations of breeding actions (selection, mating, culling)\nAnalyze genetic gain, diversity, inbreeding, and population structure\nCompare different breeding strategies\nOptimize breeding programs for specific goals\n\n\n1.2.1 Why Simulate Breeding Programs?\nBreeding program simulation allows you to:\n\nTest strategies before implementing them in reality\nUnderstand trade-offs between genetic gain and diversity\nOptimize selection and mating decisions\nPredict long-term outcomes over many generations\nTrain future breeders in a risk-free environment\n\n\n\n1.2.2 Key Features\nMoBPS offers exceptional flexibility:\n\n✅ Works with both plant and animal breeding\n✅ Supports single or multiple traits\n✅ Handles additive, dominance, and epistatic effects\n✅ Simulates realistic genomic data or uses real data\n✅ Integrates with external prediction software (BLUP, GBLUP, Bayesian)\n✅ Provides rich visualization and analysis tools\n✅ Scales from small experiments to large commercial programs",
     "crumbs": [
       "Getting Started",
       "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introduction to MoBPS</span>"
@@ -162,7 +162,7 @@
     "href": "chapters/01-introduction.html#summary",
     "title": "1  Introduction to MoBPS",
     "section": "1.8 Summary",
-    "text": "1.8 Summary\n\nMoBPS is a flexible R package for breeding program simulation\nInstall from GitHub for latest features\nOptional performance packages (miraculix) are highly recommended\nBasic workflow: Create → Breed → Analyze → Visualize\nThe population object stores all your simulation data\nHelp is available through documentation and direct contact",
+    "text": "1.8 Summary\n\nMoBPS is a flexible R package for breeding program simulation\nInstall from GitHub for latest features\nOptional performance packages (miraculix) are highly recommended\nBasic workflow: Create → Breed → Analyze → Visualize\nThe population object stores all your simulation data\nHelp is available through documentation and direct contact\n\n\n\n\n\n\n\nPook, Torsten, Martin Schlather, and Henner Simianer. 2020. “MoBPS—Modular Breeding Program Simulator.” G3: Genes, Genomes, Genetics 10 (6): 1915–18. https://doi.org/10.1534/g3.120.401193.",
     "crumbs": [
       "Getting Started",
       "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introduction to MoBPS</span>"
@@ -239,7 +239,7 @@
     "href": "chapters/02-core-concepts.html#sec-time-flow",
     "title": "2  Core Concepts",
     "section": "2.6 Time and Generation Flow",
-    "text": "2.6 Time and Generation Flow\nUnderstanding how time works in MoBPS is crucial:\n\n2.6.1 Sequential Generations\nEach breeding.diploid() call creates the next generation:\n\n# Gen 1: Founders\npop &lt;- creating.diploid(nsnp = 1000, nindi = 100)\n\n# Gen 2: First offspring\npop &lt;- breeding.diploid(pop,\n                        selection.size = c(10, 10),\n                        breeding.size = c(50, 50))\n\n# Gen 3: Second offspring generation\npop &lt;- breeding.diploid(pop,\n                        selection.size = c(10, 10),\n                        breeding.size = c(50, 50))\n\nGeneration numbers are automatic and sequential.\n\n\n2.6.2 Overlapping Generations\nYou can have overlapping generations by selecting parents from multiple generations:\n\n# Use individuals from generation 2 AND 3 as parents\npop &lt;- breeding.diploid(pop,\n                        selection.m.gen = 2,      # Males from gen 2\n                        selection.f.gen = 3,      # Females from gen 3\n                        breeding.size = c(50, 50))\n\nThis creates generation 4 from a mix of gen 2 and 3 parents.\n\n\n2.6.3 Age Structure\nMoBPS doesn’t explicitly track age, but you can model it:\n\nUse generations as age cohorts\nUse cohorts to track birth years\nSelect parents from specific generations to control age\n\nSee Section 6.20 in the full manual for detailed age structure examples.",
+    "text": "2.6 Time and Generation Flow\nUnderstanding how time works in MoBPS is crucial:\n\n2.6.1 Sequential Generations\nEach breeding.diploid() call creates the next generation:\n\n# Gen 1: Founders\npop &lt;- creating.diploid(nsnp = 1000, nindi = 100)\n\n# Gen 2: First offspring\npop &lt;- breeding.diploid(pop,\n                        selection.size = c(10, 10),\n                        breeding.size = c(50, 50))\n\n# Gen 3: Second offspring generation\npop &lt;- breeding.diploid(pop,\n                        selection.size = c(10, 10),\n                        breeding.size = c(50, 50))\n\nGeneration numbers are automatic and sequential.\n\n\n2.6.2 Overlapping Generations\nYou can have overlapping generations by selecting parents from multiple generations:\n\n# Use individuals from generation 2 AND 3 as parents\npop &lt;- breeding.diploid(pop,\n                        selection.m.gen = 2,      # Males from gen 2\n                        selection.f.gen = 3,      # Females from gen 3\n                        breeding.size = c(50, 50))\n\nThis creates generation 4 from a mix of gen 2 and 3 parents, mirroring the overlapping-generation response framework described by Hill (Hill 1974).\n\n\n2.6.3 Age Structure\nMoBPS doesn’t explicitly track age, but you can model it:\n\nUse generations as age cohorts\nUse cohorts to track birth years\nSelect parents from specific generations to control age\n\nSee Section 6.20 in the full manual for detailed age structure examples.",
     "crumbs": [
       "Getting Started",
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>Core Concepts</span>"
@@ -294,7 +294,7 @@
     "href": "chapters/02-core-concepts.html#whats-next",
     "title": "2  Core Concepts",
     "section": "2.11 What’s Next?",
-    "text": "2.11 What’s Next?\nNow that you understand the core concepts, let’s put them into practice!\nIn Chapter 3: Your First Simulation, you’ll create a complete breeding program from start to finish.",
+    "text": "2.11 What’s Next?\nNow that you understand the core concepts, let’s put them into practice!\nIn Chapter 3: Your First Simulation, you’ll create a complete breeding program from start to finish.\n\n\n\n\n\n\nHill, William G. 1974. “Prediction and Evaluation of Response to Selection with Overlapping Generations.” Animal Science 18 (2): 117–39. https://doi.org/10.1017/S0003356100017372.",
     "crumbs": [
       "Getting Started",
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>Core Concepts</span>"
@@ -822,7 +822,7 @@
     "href": "chapters/06-advanced-population-setup.html#sec-age-structure",
     "title": "6  Advanced Population Setup",
     "section": "6.5 Creating Age-Structured Populations",
-    "text": "6.5 Creating Age-Structured Populations\nModel overlapping generations:\n\n# Create founders (year 0)\npop &lt;- creating.diploid(\n  nsnp = 5000, nindi = 100,\n  n.additive = 100,\n  name.cohort = \"Year_0\"\n)\n\n# Year 1: Some old + new animals\npop &lt;- breeding.diploid(\n  pop,\n  selection.m.cohorts = \"Year_0\",\n  selection.f.cohorts = \"Year_0\",\n  selection.size = c(20, 40),    # Keep some old animals\n  breeding.size = c(30, 60),     # Plus new calves\n  name.cohort = \"Year_1\"\n)\n\n# Select from BOTH cohorts in Year 2\npop &lt;- breeding.diploid(\n  pop,\n  selection.m.cohorts = c(\"Year_0\", \"Year_1\"),\n  selection.f.cohorts = c(\"Year_0\", \"Year_1\"),\n  selection.size = c(20, 40),\n  breeding.size = c(30, 60),\n  name.cohort = \"Year_2\"\n)\n\nApplications: - Dairy cattle (multi-parity cows) - Progeny testing schemes - Conservation programs",
+    "text": "6.5 Creating Age-Structured Populations\nModel overlapping generations:\n\n# Create founders (year 0)\npop &lt;- creating.diploid(\n  nsnp = 5000, nindi = 100,\n  n.additive = 100,\n  name.cohort = \"Year_0\"\n)\n\n# Year 1: Some old + new animals\npop &lt;- breeding.diploid(\n  pop,\n  selection.m.cohorts = \"Year_0\",\n  selection.f.cohorts = \"Year_0\",\n  selection.size = c(20, 40),    # Keep some old animals\n  breeding.size = c(30, 60),     # Plus new calves\n  name.cohort = \"Year_1\"\n)\n\n# Select from BOTH cohorts in Year 2\npop &lt;- breeding.diploid(\n  pop,\n  selection.m.cohorts = c(\"Year_0\", \"Year_1\"),\n  selection.f.cohorts = c(\"Year_0\", \"Year_1\"),\n  selection.size = c(20, 40),\n  breeding.size = c(30, 60),\n  name.cohort = \"Year_2\"\n)\n\nApplications: - Dairy cattle (multi-parity cows) - Progeny testing schemes - Conservation programs\nThis mirrors classical overlapping-generation breeding program formulations described by Hill (Hill 1974).",
     "crumbs": [
       "Building Populations & Traits",
       "<span class='chapter-number'>6</span>  <span class='chapter-title'>Advanced Population Setup</span>"
@@ -855,7 +855,7 @@
     "href": "chapters/06-advanced-population-setup.html#summary",
     "title": "6  Advanced Population Setup",
     "section": "6.8 Summary",
-    "text": "6.8 Summary\n\n✅ founder.simulation() creates realistic LD structure\n✅ Model selection signatures and population history\n✅ Import real data (genotypes, phenotypes, GWAS results)\n✅ Create age-structured populations\n✅ Flexible approaches for complex scenarios\n\nContinue to Chapter 7: Population Examples!",
+    "text": "6.8 Summary\n\n✅ founder.simulation() creates realistic LD structure\n✅ Model selection signatures and population history\n✅ Import real data (genotypes, phenotypes, GWAS results)\n✅ Create age-structured populations\n✅ Flexible approaches for complex scenarios\n\nContinue to Chapter 7: Population Examples!\n\n\n\n\n\n\nHill, William G. 1974. “Prediction and Evaluation of Response to Selection with Overlapping Generations.” Animal Science 18 (2): 117–39. https://doi.org/10.1017/S0003356100017372.",
     "crumbs": [
       "Building Populations & Traits",
       "<span class='chapter-number'>6</span>  <span class='chapter-title'>Advanced Population Setup</span>"
@@ -1746,7 +1746,7 @@
     "href": "references.html",
     "title": "References",
     "section": "",
-    "text": "Key MoBPS Publications\nMain Paper:\nPook, T., Freudenthal, J., Korte, A., & Simianer, H. (2020). Using local convolutional neural networks for genomic prediction. Frontiers in Genetics, 11, 561497.\nPook, T., Schlather, M., & Simianer, H. (2020). MoBPS - Modular Breeding Program Simulator. G3: Genes, Genomes, Genetics, 10(6), 1915-1918.",
+    "text": "Key MoBPS Publications\nMain Paper:\nPook, T., Freudenthal, J., Korte, A., & Simianer, H. (2020). Using local convolutional neural networks for genomic prediction. Frontiers in Genetics, 11, 561497 (Pook et al. 2020).\nPook, T., Schlather, M., & Simianer, H. (2020). MoBPS - Modular Breeding Program Simulator. G3: Genes, Genomes, Genetics, 10(6), 1915-1918 (Pook, Schlather, and Simianer 2020).",
     "crumbs": [
       "References"
     ]
@@ -1776,7 +1776,7 @@
     "href": "references.html#citation",
     "title": "References",
     "section": "Citation",
-    "text": "Citation\nIf you use MoBPS in your research, please cite:\n@article{pook2020mobps,\n  title={MoBPS—Modular breeding program simulator},\n  author={Pook, Torsten and Schlather, Martin and Simianer, Henner},\n  journal={G3: Genes, Genomes, Genetics},\n  volume={10},\n  number={6},\n  pages={1915--1918},\n  year={2020},\n  publisher={Oxford University Press}\n}",
+    "text": "Citation\nIf you use MoBPS in your research, please cite the main paper (Pook, Schlather, and Simianer 2020):\n@article{pook2020mobps,\n  title={MoBPS—Modular breeding program simulator},\n  author={Pook, Torsten and Schlather, Martin and Simianer, Henner},\n  journal={G3: Genes, Genomes, Genetics},\n  volume={10},\n  number={6},\n  pages={1915--1918},\n  year={2020},\n  publisher={Oxford University Press},\n  doi={10.1534/g3.120.401193},\n  url={https://doi.org/10.1534/g3.120.401193}\n}",
     "crumbs": [
       "References"
     ]
@@ -1786,7 +1786,7 @@
     "href": "references.html#related-software",
     "title": "References",
     "section": "Related Software",
-    "text": "Related Software\n\nAlphaSimR: Another breeding simulation package\nQMSim: Quantitative and molecular simulation\nGenomic Selection packages: rrBLUP, BGLR, sommer, BLUPF90",
+    "text": "Related Software\n\nAlphaSimR: Another breeding simulation package\nQMSim: Quantitative and molecular simulation\nGenomic Selection packages: rrBLUP, BGLR, sommer, BLUPF90\n\n\n\n\n\n\n\nPook, Torsten, Jan Freudenthal, Arthur Korte, and Henner Simianer. 2020. “Using Local Convolutional Neural Networks for Genomic Prediction.” Frontiers in Genetics 11: 561497. https://doi.org/10.3389/fgene.2020.561497.\n\n\nPook, Torsten, Martin Schlather, and Henner Simianer. 2020. “MoBPS—Modular Breeding Program Simulator.” G3: Genes, Genomes, Genetics 10 (6): 1915–18. https://doi.org/10.1534/g3.120.401193.",
     "crumbs": [
       "References"
     ]

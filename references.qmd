@@ -4,9 +4,9 @@
 
 **Main Paper:**
 
-Pook, T., Freudenthal, J., Korte, A., & Simianer, H. (2020). Using local convolutional neural networks for genomic prediction. *Frontiers in Genetics*, 11, 561497.
+Pook, T., Freudenthal, J., Korte, A., & Simianer, H. (2020). Using local convolutional neural networks for genomic prediction. *Frontiers in Genetics*, 11, 561497 [@pook2020lcnn].
 
-Pook, T., Schlather, M., & Simianer, H. (2020). MoBPS - Modular Breeding Program Simulator. *G3: Genes, Genomes, Genetics*, 10(6), 1915-1918.
+Pook, T., Schlather, M., & Simianer, H. (2020). MoBPS - Modular Breeding Program Simulator. *G3: Genes, Genomes, Genetics*, 10(6), 1915-1918 [@pook2020mobps].
 
 ## Additional Resources
 
@@ -24,7 +24,7 @@ For questions, bug reports, or collaborations:
 
 ## Citation
 
-If you use MoBPS in your research, please cite:
+If you use MoBPS in your research, please cite the main paper [@pook2020mobps]:
 
 ```
 @article{pook2020mobps,
@@ -35,7 +35,9 @@ If you use MoBPS in your research, please cite:
   number={6},
   pages={1915--1918},
   year={2020},
-  publisher={Oxford University Press}
+  publisher={Oxford University Press},
+  doi={10.1534/g3.120.401193},
+  url={https://doi.org/10.1534/g3.120.401193}
 }
 ```
 

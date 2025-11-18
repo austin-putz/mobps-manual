@@ -4,7 +4,7 @@ Welcome to the **MoBPS Cookbook** - a practical, hands-on guide to using the Mod
 
 ## What is MoBPS?
 
-MoBPS (Modular Breeding Program Simulator) is a powerful R package for stochastic simulation of breeding programs. Whether you're working with:
+MoBPS (Modular Breeding Program Simulator) is a powerful R package for stochastic simulation of breeding programs [@pook2020mobps]. Whether you're working with:
 
 - **Animal breeding** (dairy cattle, pigs, chickens, etc.)
 - **Plant breeding** (maize, wheat, crops with selfing/DH)

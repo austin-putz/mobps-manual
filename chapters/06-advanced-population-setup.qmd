@@ -154,6 +154,8 @@ pop <- breeding.diploid(
 - Progeny testing schemes
 - Conservation programs
 
+This mirrors classical overlapping-generation breeding program formulations described by Hill [@hill1974prediction].
+
 ## Multi-Stage Pedigree Simulation {#sec-pedigree-simulation}
 
 Create populations from pedigree structure only:
