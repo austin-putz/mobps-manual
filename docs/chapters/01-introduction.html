@@ -654,6 +654,20 @@ div.csl-indent {
 <p>Mac’s default Apple Clang compiler <strong>does not support OpenMP</strong>, which both packages require. You must first configure R to use GCC (installed via Homebrew in Step 1) and install <code>libomp</code>.</p>
 <p><strong>Step 1 — Install OpenMP support via Homebrew:</strong></p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> install libomp</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>About the Homebrew libomp warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Homebrew will warn that <code>libomp</code> was not symlinked and may suggest setting <code>LDFLAGS</code> and <code>CPPFLAGS</code> in your shell profile. You can <strong>ignore this warning</strong> for our purposes.</p>
+<p><code>libomp</code> is Apple Clang’s OpenMP library. The warning exists because Homebrew intentionally doesn’t symlink it to avoid conflicts with Xcode. However, the <code>~/.R/Makevars</code> setup below routes R through <strong>Homebrew GCC</strong>, which uses its own OpenMP library (<code>libgomp</code>) — it never looks for <code>libomp</code> at all. The <code>LDFLAGS</code>/<code>CPPFLAGS</code> Homebrew suggests are only needed if you were using Apple Clang with OpenMP, which we are not.</p>
+</div>
+</div>
 <p><strong>Step 2 — Configure R to use Homebrew GCC:</strong></p>
 <p>Create (or edit) the file <code>~/.R/Makevars</code> to override the default compiler:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> ~/.R</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1794,384 +1808,392 @@ Pook, Torsten, Martin Schlather, and Henner Simianer. 2020. <span>“MoBPS—Mod
 <span id="cb47-331"><a href="#cb47-331" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> install libomp</span>
 <span id="cb47-332"><a href="#cb47-332" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb47-333"><a href="#cb47-333" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-334"><a href="#cb47-334" aria-hidden="true" tabindex="-1"></a>**Step 2 — Configure R to use Homebrew GCC:**</span>
-<span id="cb47-335"><a href="#cb47-335" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-336"><a href="#cb47-336" aria-hidden="true" tabindex="-1"></a>Create (or edit) the file <span class="in">`~/.R/Makevars`</span> to override the default compiler:</span>
-<span id="cb47-337"><a href="#cb47-337" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-338"><a href="#cb47-338" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
-<span id="cb47-339"><a href="#cb47-339" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> ~/.R</span>
-<span id="cb47-340"><a href="#cb47-340" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb47-334"><a href="#cb47-334" aria-hidden="true" tabindex="-1"></a>:::{.callout-note}</span>
+<span id="cb47-335"><a href="#cb47-335" aria-hidden="true" tabindex="-1"></a><span class="fu">## About the Homebrew libomp warning</span></span>
+<span id="cb47-336"><a href="#cb47-336" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-337"><a href="#cb47-337" aria-hidden="true" tabindex="-1"></a>Homebrew will warn that <span class="in">`libomp`</span> was not symlinked and may suggest setting <span class="in">`LDFLAGS`</span> and <span class="in">`CPPFLAGS`</span> in your shell profile. You can **ignore this warning** for our purposes.</span>
+<span id="cb47-338"><a href="#cb47-338" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-339"><a href="#cb47-339" aria-hidden="true" tabindex="-1"></a><span class="in">`libomp`</span> is Apple Clang's OpenMP library. The warning exists because Homebrew intentionally doesn't symlink it to avoid conflicts with Xcode. However, the <span class="in">`~/.R/Makevars`</span> setup below routes R through **Homebrew GCC**, which uses its own OpenMP library (<span class="in">`libgomp`</span>) — it never looks for <span class="in">`libomp`</span> at all. The <span class="in">`LDFLAGS`</span>/<span class="in">`CPPFLAGS`</span> Homebrew suggests are only needed if you were using Apple Clang with OpenMP, which we are not.</span>
+<span id="cb47-340"><a href="#cb47-340" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb47-341"><a href="#cb47-341" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-342"><a href="#cb47-342" aria-hidden="true" tabindex="-1"></a>Then create <span class="in">`~/.R/Makevars`</span> with the following content (adjust GCC version number to match what <span class="in">`brew install gcc`</span> installed — check with <span class="in">`ls /opt/homebrew/bin/gcc*`</span>):</span>
+<span id="cb47-342"><a href="#cb47-342" aria-hidden="true" tabindex="-1"></a>**Step 2 — Configure R to use Homebrew GCC:**</span>
 <span id="cb47-343"><a href="#cb47-343" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-344"><a href="#cb47-344" aria-hidden="true" tabindex="-1"></a><span class="in">```makefile</span></span>
-<span id="cb47-345"><a href="#cb47-345" aria-hidden="true" tabindex="-1"></a><span class="in"># ~/.R/Makevars</span></span>
-<span id="cb47-346"><a href="#cb47-346" aria-hidden="true" tabindex="-1"></a><span class="in">CC=/opt/homebrew/bin/gcc-14</span></span>
-<span id="cb47-347"><a href="#cb47-347" aria-hidden="true" tabindex="-1"></a><span class="in">CXX=/opt/homebrew/bin/g++-14</span></span>
-<span id="cb47-348"><a href="#cb47-348" aria-hidden="true" tabindex="-1"></a><span class="in">CXX11=/opt/homebrew/bin/g++-14</span></span>
-<span id="cb47-349"><a href="#cb47-349" aria-hidden="true" tabindex="-1"></a><span class="in">CXX14=/opt/homebrew/bin/g++-14</span></span>
-<span id="cb47-350"><a href="#cb47-350" aria-hidden="true" tabindex="-1"></a><span class="in">CXX17=/opt/homebrew/bin/g++-14</span></span>
-<span id="cb47-351"><a href="#cb47-351" aria-hidden="true" tabindex="-1"></a><span class="in">FC=/opt/homebrew/bin/gfortran-14</span></span>
-<span id="cb47-352"><a href="#cb47-352" aria-hidden="true" tabindex="-1"></a><span class="in">F77=/opt/homebrew/bin/gfortran-14</span></span>
-<span id="cb47-353"><a href="#cb47-353" aria-hidden="true" tabindex="-1"></a><span class="in">OBJC=/opt/homebrew/bin/gcc-14</span></span>
-<span id="cb47-354"><a href="#cb47-354" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-355"><a href="#cb47-355" aria-hidden="true" tabindex="-1"></a><span class="in"># OpenMP flags</span></span>
-<span id="cb47-356"><a href="#cb47-356" aria-hidden="true" tabindex="-1"></a><span class="in">SHLIB_OPENMP_CFLAGS=-fopenmp</span></span>
-<span id="cb47-357"><a href="#cb47-357" aria-hidden="true" tabindex="-1"></a><span class="in">SHLIB_OPENMP_CXXFLAGS=-fopenmp</span></span>
-<span id="cb47-358"><a href="#cb47-358" aria-hidden="true" tabindex="-1"></a><span class="in">SHLIB_OPENMP_FFLAGS=-fopenmp</span></span>
-<span id="cb47-359"><a href="#cb47-359" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb47-360"><a href="#cb47-360" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-361"><a href="#cb47-361" aria-hidden="true" tabindex="-1"></a>:::{.callout-tip}</span>
-<span id="cb47-362"><a href="#cb47-362" aria-hidden="true" tabindex="-1"></a><span class="fu">## Finding your GCC version number</span></span>
-<span id="cb47-363"><a href="#cb47-363" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-364"><a href="#cb47-364" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
-<span id="cb47-365"><a href="#cb47-365" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> /opt/homebrew/bin/gcc-<span class="pp">*</span></span>
-<span id="cb47-366"><a href="#cb47-366" aria-hidden="true" tabindex="-1"></a><span class="co"># e.g. /opt/homebrew/bin/gcc-14  → use 14</span></span>
+<span id="cb47-344"><a href="#cb47-344" aria-hidden="true" tabindex="-1"></a>Create (or edit) the file <span class="in">`~/.R/Makevars`</span> to override the default compiler:</span>
+<span id="cb47-345"><a href="#cb47-345" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-346"><a href="#cb47-346" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb47-347"><a href="#cb47-347" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> ~/.R</span>
+<span id="cb47-348"><a href="#cb47-348" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb47-349"><a href="#cb47-349" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-350"><a href="#cb47-350" aria-hidden="true" tabindex="-1"></a>Then create <span class="in">`~/.R/Makevars`</span> with the following content (adjust GCC version number to match what <span class="in">`brew install gcc`</span> installed — check with <span class="in">`ls /opt/homebrew/bin/gcc*`</span>):</span>
+<span id="cb47-351"><a href="#cb47-351" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-352"><a href="#cb47-352" aria-hidden="true" tabindex="-1"></a><span class="in">```makefile</span></span>
+<span id="cb47-353"><a href="#cb47-353" aria-hidden="true" tabindex="-1"></a><span class="in"># ~/.R/Makevars</span></span>
+<span id="cb47-354"><a href="#cb47-354" aria-hidden="true" tabindex="-1"></a><span class="in">CC=/opt/homebrew/bin/gcc-14</span></span>
+<span id="cb47-355"><a href="#cb47-355" aria-hidden="true" tabindex="-1"></a><span class="in">CXX=/opt/homebrew/bin/g++-14</span></span>
+<span id="cb47-356"><a href="#cb47-356" aria-hidden="true" tabindex="-1"></a><span class="in">CXX11=/opt/homebrew/bin/g++-14</span></span>
+<span id="cb47-357"><a href="#cb47-357" aria-hidden="true" tabindex="-1"></a><span class="in">CXX14=/opt/homebrew/bin/g++-14</span></span>
+<span id="cb47-358"><a href="#cb47-358" aria-hidden="true" tabindex="-1"></a><span class="in">CXX17=/opt/homebrew/bin/g++-14</span></span>
+<span id="cb47-359"><a href="#cb47-359" aria-hidden="true" tabindex="-1"></a><span class="in">FC=/opt/homebrew/bin/gfortran-14</span></span>
+<span id="cb47-360"><a href="#cb47-360" aria-hidden="true" tabindex="-1"></a><span class="in">F77=/opt/homebrew/bin/gfortran-14</span></span>
+<span id="cb47-361"><a href="#cb47-361" aria-hidden="true" tabindex="-1"></a><span class="in">OBJC=/opt/homebrew/bin/gcc-14</span></span>
+<span id="cb47-362"><a href="#cb47-362" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-363"><a href="#cb47-363" aria-hidden="true" tabindex="-1"></a><span class="in"># OpenMP flags</span></span>
+<span id="cb47-364"><a href="#cb47-364" aria-hidden="true" tabindex="-1"></a><span class="in">SHLIB_OPENMP_CFLAGS=-fopenmp</span></span>
+<span id="cb47-365"><a href="#cb47-365" aria-hidden="true" tabindex="-1"></a><span class="in">SHLIB_OPENMP_CXXFLAGS=-fopenmp</span></span>
+<span id="cb47-366"><a href="#cb47-366" aria-hidden="true" tabindex="-1"></a><span class="in">SHLIB_OPENMP_FFLAGS=-fopenmp</span></span>
 <span id="cb47-367"><a href="#cb47-367" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb47-368"><a href="#cb47-368" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb47-369"><a href="#cb47-369" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-370"><a href="#cb47-370" aria-hidden="true" tabindex="-1"></a>**Step 3 — Install from tarballs in R:**</span>
+<span id="cb47-368"><a href="#cb47-368" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-369"><a href="#cb47-369" aria-hidden="true" tabindex="-1"></a>:::{.callout-tip}</span>
+<span id="cb47-370"><a href="#cb47-370" aria-hidden="true" tabindex="-1"></a><span class="fu">## Finding your GCC version number</span></span>
 <span id="cb47-371"><a href="#cb47-371" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-374"><a href="#cb47-374" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb47-375"><a href="#cb47-375" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb47-376"><a href="#cb47-376" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-377"><a href="#cb47-377" aria-hidden="true" tabindex="-1"></a>pkg_dir <span class="ot">&lt;-</span> <span class="st">"~/mobps-pkgs"</span>   <span class="co"># adjust to your path</span></span>
-<span id="cb47-378"><a href="#cb47-378" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-379"><a href="#cb47-379" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(</span>
-<span id="cb47-380"><a href="#cb47-380" aria-hidden="true" tabindex="-1"></a>  <span class="fu">file.path</span>(pkg_dir, <span class="st">"RandomFieldsUtils_1.6.0.2.tar.gz"</span>),</span>
-<span id="cb47-381"><a href="#cb47-381" aria-hidden="true" tabindex="-1"></a>  <span class="at">repos =</span> <span class="cn">NULL</span>, <span class="at">type =</span> <span class="st">"source"</span></span>
-<span id="cb47-382"><a href="#cb47-382" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb47-383"><a href="#cb47-383" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-384"><a href="#cb47-384" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(</span>
-<span id="cb47-385"><a href="#cb47-385" aria-hidden="true" tabindex="-1"></a>  <span class="fu">file.path</span>(pkg_dir, <span class="st">"miraculix_1.6.0.2.tar.gz"</span>),</span>
-<span id="cb47-386"><a href="#cb47-386" aria-hidden="true" tabindex="-1"></a>  <span class="at">repos =</span> <span class="cn">NULL</span>, <span class="at">type =</span> <span class="st">"source"</span></span>
-<span id="cb47-387"><a href="#cb47-387" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb47-388"><a href="#cb47-388" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb47-389"><a href="#cb47-389" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-390"><a href="#cb47-390" aria-hidden="true" tabindex="-1"></a>Or from the terminal:</span>
+<span id="cb47-372"><a href="#cb47-372" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb47-373"><a href="#cb47-373" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> /opt/homebrew/bin/gcc-<span class="pp">*</span></span>
+<span id="cb47-374"><a href="#cb47-374" aria-hidden="true" tabindex="-1"></a><span class="co"># e.g. /opt/homebrew/bin/gcc-14  → use 14</span></span>
+<span id="cb47-375"><a href="#cb47-375" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb47-376"><a href="#cb47-376" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb47-377"><a href="#cb47-377" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-378"><a href="#cb47-378" aria-hidden="true" tabindex="-1"></a>**Step 3 — Install from tarballs in R:**</span>
+<span id="cb47-379"><a href="#cb47-379" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-382"><a href="#cb47-382" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb47-383"><a href="#cb47-383" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb47-384"><a href="#cb47-384" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-385"><a href="#cb47-385" aria-hidden="true" tabindex="-1"></a>pkg_dir <span class="ot">&lt;-</span> <span class="st">"~/mobps-pkgs"</span>   <span class="co"># adjust to your path</span></span>
+<span id="cb47-386"><a href="#cb47-386" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-387"><a href="#cb47-387" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(</span>
+<span id="cb47-388"><a href="#cb47-388" aria-hidden="true" tabindex="-1"></a>  <span class="fu">file.path</span>(pkg_dir, <span class="st">"RandomFieldsUtils_1.6.0.2.tar.gz"</span>),</span>
+<span id="cb47-389"><a href="#cb47-389" aria-hidden="true" tabindex="-1"></a>  <span class="at">repos =</span> <span class="cn">NULL</span>, <span class="at">type =</span> <span class="st">"source"</span></span>
+<span id="cb47-390"><a href="#cb47-390" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb47-391"><a href="#cb47-391" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-392"><a href="#cb47-392" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
-<span id="cb47-393"><a href="#cb47-393" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/mobps-pkgs</span>
-<span id="cb47-394"><a href="#cb47-394" aria-hidden="true" tabindex="-1"></a><span class="ex">R</span> CMD INSTALL RandomFieldsUtils_1.6.0.2.tar.gz</span>
-<span id="cb47-395"><a href="#cb47-395" aria-hidden="true" tabindex="-1"></a><span class="ex">R</span> CMD INSTALL miraculix_1.6.0.2.tar.gz</span>
+<span id="cb47-392"><a href="#cb47-392" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(</span>
+<span id="cb47-393"><a href="#cb47-393" aria-hidden="true" tabindex="-1"></a>  <span class="fu">file.path</span>(pkg_dir, <span class="st">"miraculix_1.6.0.2.tar.gz"</span>),</span>
+<span id="cb47-394"><a href="#cb47-394" aria-hidden="true" tabindex="-1"></a>  <span class="at">repos =</span> <span class="cn">NULL</span>, <span class="at">type =</span> <span class="st">"source"</span></span>
+<span id="cb47-395"><a href="#cb47-395" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb47-396"><a href="#cb47-396" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb47-397"><a href="#cb47-397" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-398"><a href="#cb47-398" aria-hidden="true" tabindex="-1"></a>:::{.callout-note}</span>
-<span id="cb47-399"><a href="#cb47-399" aria-hidden="true" tabindex="-1"></a><span class="fu">## Apple Silicon (M1/M2/M3) Note</span></span>
-<span id="cb47-400"><a href="#cb47-400" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-401"><a href="#cb47-401" aria-hidden="true" tabindex="-1"></a>The packages use x86 SIMD instructions (AVX/SSE) that are not natively available on Apple Silicon. The <span class="in">`configure.ac`</span> in both packages detects the architecture and falls back to a non-SIMD build automatically — you will still get a working install, just without the maximum SIMD speedup. The OpenMP parallelism still works and provides meaningful gains.</span>
-<span id="cb47-402"><a href="#cb47-402" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb47-403"><a href="#cb47-403" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-404"><a href="#cb47-404" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb47-398"><a href="#cb47-398" aria-hidden="true" tabindex="-1"></a>Or from the terminal:</span>
+<span id="cb47-399"><a href="#cb47-399" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-400"><a href="#cb47-400" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb47-401"><a href="#cb47-401" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/mobps-pkgs</span>
+<span id="cb47-402"><a href="#cb47-402" aria-hidden="true" tabindex="-1"></a><span class="ex">R</span> CMD INSTALL RandomFieldsUtils_1.6.0.2.tar.gz</span>
+<span id="cb47-403"><a href="#cb47-403" aria-hidden="true" tabindex="-1"></a><span class="ex">R</span> CMD INSTALL miraculix_1.6.0.2.tar.gz</span>
+<span id="cb47-404"><a href="#cb47-404" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb47-405"><a href="#cb47-405" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-406"><a href="#cb47-406" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Installing on Linux with sudo</span></span>
-<span id="cb47-407"><a href="#cb47-407" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-408"><a href="#cb47-408" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
-<span id="cb47-409"><a href="#cb47-409" aria-hidden="true" tabindex="-1"></a><span class="co"># Ubuntu/Debian — ensure build tools are present (see Step 1)</span></span>
-<span id="cb47-410"><a href="#cb47-410" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt-get install libgomp1</span>
+<span id="cb47-406"><a href="#cb47-406" aria-hidden="true" tabindex="-1"></a>:::{.callout-note}</span>
+<span id="cb47-407"><a href="#cb47-407" aria-hidden="true" tabindex="-1"></a><span class="fu">## Apple Silicon (M1/M2/M3) Note</span></span>
+<span id="cb47-408"><a href="#cb47-408" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-409"><a href="#cb47-409" aria-hidden="true" tabindex="-1"></a>The packages use x86 SIMD instructions (AVX/SSE) that are not natively available on Apple Silicon. The <span class="in">`configure.ac`</span> in both packages detects the architecture and falls back to a non-SIMD build automatically — you will still get a working install, just without the maximum SIMD speedup. The OpenMP parallelism still works and provides meaningful gains.</span>
+<span id="cb47-410"><a href="#cb47-410" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb47-411"><a href="#cb47-411" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-412"><a href="#cb47-412" aria-hidden="true" tabindex="-1"></a><span class="co"># Fedora/RHEL</span></span>
-<span id="cb47-413"><a href="#cb47-413" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> dnf install libgomp</span>
-<span id="cb47-414"><a href="#cb47-414" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb47-412"><a href="#cb47-412" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb47-413"><a href="#cb47-413" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-414"><a href="#cb47-414" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Installing on Linux with sudo</span></span>
 <span id="cb47-415"><a href="#cb47-415" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-416"><a href="#cb47-416" aria-hidden="true" tabindex="-1"></a>Then install from tarballs in R:</span>
-<span id="cb47-417"><a href="#cb47-417" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-420"><a href="#cb47-420" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb47-421"><a href="#cb47-421" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb47-422"><a href="#cb47-422" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-423"><a href="#cb47-423" aria-hidden="true" tabindex="-1"></a>pkg_dir <span class="ot">&lt;-</span> <span class="st">"~/mobps-pkgs"</span>   <span class="co"># adjust to your path</span></span>
-<span id="cb47-424"><a href="#cb47-424" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-425"><a href="#cb47-425" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(</span>
-<span id="cb47-426"><a href="#cb47-426" aria-hidden="true" tabindex="-1"></a>  <span class="fu">file.path</span>(pkg_dir, <span class="st">"RandomFieldsUtils_1.6.0.2.tar.gz"</span>),</span>
-<span id="cb47-427"><a href="#cb47-427" aria-hidden="true" tabindex="-1"></a>  <span class="at">repos =</span> <span class="cn">NULL</span>, <span class="at">type =</span> <span class="st">"source"</span></span>
-<span id="cb47-428"><a href="#cb47-428" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb47-429"><a href="#cb47-429" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-430"><a href="#cb47-430" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(</span>
-<span id="cb47-431"><a href="#cb47-431" aria-hidden="true" tabindex="-1"></a>  <span class="fu">file.path</span>(pkg_dir, <span class="st">"miraculix_1.6.0.2.tar.gz"</span>),</span>
-<span id="cb47-432"><a href="#cb47-432" aria-hidden="true" tabindex="-1"></a>  <span class="at">repos =</span> <span class="cn">NULL</span>, <span class="at">type =</span> <span class="st">"source"</span></span>
-<span id="cb47-433"><a href="#cb47-433" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb47-434"><a href="#cb47-434" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb47-435"><a href="#cb47-435" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-436"><a href="#cb47-436" aria-hidden="true" tabindex="-1"></a>Or from bash directly:</span>
+<span id="cb47-416"><a href="#cb47-416" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb47-417"><a href="#cb47-417" aria-hidden="true" tabindex="-1"></a><span class="co"># Ubuntu/Debian — ensure build tools are present (see Step 1)</span></span>
+<span id="cb47-418"><a href="#cb47-418" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt-get install libgomp1</span>
+<span id="cb47-419"><a href="#cb47-419" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-420"><a href="#cb47-420" aria-hidden="true" tabindex="-1"></a><span class="co"># Fedora/RHEL</span></span>
+<span id="cb47-421"><a href="#cb47-421" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> dnf install libgomp</span>
+<span id="cb47-422"><a href="#cb47-422" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb47-423"><a href="#cb47-423" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-424"><a href="#cb47-424" aria-hidden="true" tabindex="-1"></a>Then install from tarballs in R:</span>
+<span id="cb47-425"><a href="#cb47-425" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-428"><a href="#cb47-428" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb47-429"><a href="#cb47-429" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb47-430"><a href="#cb47-430" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-431"><a href="#cb47-431" aria-hidden="true" tabindex="-1"></a>pkg_dir <span class="ot">&lt;-</span> <span class="st">"~/mobps-pkgs"</span>   <span class="co"># adjust to your path</span></span>
+<span id="cb47-432"><a href="#cb47-432" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-433"><a href="#cb47-433" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(</span>
+<span id="cb47-434"><a href="#cb47-434" aria-hidden="true" tabindex="-1"></a>  <span class="fu">file.path</span>(pkg_dir, <span class="st">"RandomFieldsUtils_1.6.0.2.tar.gz"</span>),</span>
+<span id="cb47-435"><a href="#cb47-435" aria-hidden="true" tabindex="-1"></a>  <span class="at">repos =</span> <span class="cn">NULL</span>, <span class="at">type =</span> <span class="st">"source"</span></span>
+<span id="cb47-436"><a href="#cb47-436" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb47-437"><a href="#cb47-437" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-438"><a href="#cb47-438" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
-<span id="cb47-439"><a href="#cb47-439" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/mobps-pkgs</span>
-<span id="cb47-440"><a href="#cb47-440" aria-hidden="true" tabindex="-1"></a><span class="ex">R</span> CMD INSTALL RandomFieldsUtils_1.6.0.2.tar.gz</span>
-<span id="cb47-441"><a href="#cb47-441" aria-hidden="true" tabindex="-1"></a><span class="ex">R</span> CMD INSTALL miraculix_1.6.0.2.tar.gz</span>
+<span id="cb47-438"><a href="#cb47-438" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(</span>
+<span id="cb47-439"><a href="#cb47-439" aria-hidden="true" tabindex="-1"></a>  <span class="fu">file.path</span>(pkg_dir, <span class="st">"miraculix_1.6.0.2.tar.gz"</span>),</span>
+<span id="cb47-440"><a href="#cb47-440" aria-hidden="true" tabindex="-1"></a>  <span class="at">repos =</span> <span class="cn">NULL</span>, <span class="at">type =</span> <span class="st">"source"</span></span>
+<span id="cb47-441"><a href="#cb47-441" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb47-442"><a href="#cb47-442" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb47-443"><a href="#cb47-443" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-444"><a href="#cb47-444" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb47-444"><a href="#cb47-444" aria-hidden="true" tabindex="-1"></a>Or from bash directly:</span>
 <span id="cb47-445"><a href="#cb47-445" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-446"><a href="#cb47-446" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Installing on HPC / Cluster (module system)</span></span>
-<span id="cb47-447"><a href="#cb47-447" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-448"><a href="#cb47-448" aria-hidden="true" tabindex="-1"></a>Load the required modules first, then install into your personal R library:</span>
-<span id="cb47-449"><a href="#cb47-449" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-450"><a href="#cb47-450" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
-<span id="cb47-451"><a href="#cb47-451" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load R/4.3.1</span>
-<span id="cb47-452"><a href="#cb47-452" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load gcc/12.2.0      <span class="co"># must include gfortran</span></span>
+<span id="cb47-446"><a href="#cb47-446" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb47-447"><a href="#cb47-447" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/mobps-pkgs</span>
+<span id="cb47-448"><a href="#cb47-448" aria-hidden="true" tabindex="-1"></a><span class="ex">R</span> CMD INSTALL RandomFieldsUtils_1.6.0.2.tar.gz</span>
+<span id="cb47-449"><a href="#cb47-449" aria-hidden="true" tabindex="-1"></a><span class="ex">R</span> CMD INSTALL miraculix_1.6.0.2.tar.gz</span>
+<span id="cb47-450"><a href="#cb47-450" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb47-451"><a href="#cb47-451" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-452"><a href="#cb47-452" aria-hidden="true" tabindex="-1"></a>---</span>
 <span id="cb47-453"><a href="#cb47-453" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-454"><a href="#cb47-454" aria-hidden="true" tabindex="-1"></a><span class="co"># Ensure personal library exists</span></span>
-<span id="cb47-455"><a href="#cb47-455" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> ~/R/library</span>
-<span id="cb47-456"><a href="#cb47-456" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">R_LIBS_USER</span><span class="op">=</span>~/R/library</span>
-<span id="cb47-457"><a href="#cb47-457" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb47-458"><a href="#cb47-458" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-459"><a href="#cb47-459" aria-hidden="true" tabindex="-1"></a>Then install from the tarballs:</span>
-<span id="cb47-460"><a href="#cb47-460" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-461"><a href="#cb47-461" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
-<span id="cb47-462"><a href="#cb47-462" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/mobps-pkgs</span>
-<span id="cb47-463"><a href="#cb47-463" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-464"><a href="#cb47-464" aria-hidden="true" tabindex="-1"></a><span class="ex">R</span> CMD INSTALL <span class="at">--library</span><span class="op">=</span>~/R/library RandomFieldsUtils_1.6.0.2.tar.gz</span>
-<span id="cb47-465"><a href="#cb47-465" aria-hidden="true" tabindex="-1"></a><span class="ex">R</span> CMD INSTALL <span class="at">--library</span><span class="op">=</span>~/R/library miraculix_1.6.0.2.tar.gz</span>
-<span id="cb47-466"><a href="#cb47-466" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb47-467"><a href="#cb47-467" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-468"><a href="#cb47-468" aria-hidden="true" tabindex="-1"></a>Add the library path to your <span class="in">`~/.bashrc`</span> so R always finds these packages:</span>
-<span id="cb47-469"><a href="#cb47-469" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-470"><a href="#cb47-470" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
-<span id="cb47-471"><a href="#cb47-471" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">'export R_LIBS_USER=~/R/library'</span> <span class="op">&gt;&gt;</span> ~/.bashrc</span>
-<span id="cb47-472"><a href="#cb47-472" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb47-473"><a href="#cb47-473" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-474"><a href="#cb47-474" aria-hidden="true" tabindex="-1"></a>And add the same to the top of your SLURM job scripts:</span>
+<span id="cb47-454"><a href="#cb47-454" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Installing on HPC / Cluster (module system)</span></span>
+<span id="cb47-455"><a href="#cb47-455" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-456"><a href="#cb47-456" aria-hidden="true" tabindex="-1"></a>Load the required modules first, then install into your personal R library:</span>
+<span id="cb47-457"><a href="#cb47-457" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-458"><a href="#cb47-458" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb47-459"><a href="#cb47-459" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load R/4.3.1</span>
+<span id="cb47-460"><a href="#cb47-460" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load gcc/12.2.0      <span class="co"># must include gfortran</span></span>
+<span id="cb47-461"><a href="#cb47-461" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-462"><a href="#cb47-462" aria-hidden="true" tabindex="-1"></a><span class="co"># Ensure personal library exists</span></span>
+<span id="cb47-463"><a href="#cb47-463" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> ~/R/library</span>
+<span id="cb47-464"><a href="#cb47-464" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">R_LIBS_USER</span><span class="op">=</span>~/R/library</span>
+<span id="cb47-465"><a href="#cb47-465" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb47-466"><a href="#cb47-466" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-467"><a href="#cb47-467" aria-hidden="true" tabindex="-1"></a>Then install from the tarballs:</span>
+<span id="cb47-468"><a href="#cb47-468" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-469"><a href="#cb47-469" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb47-470"><a href="#cb47-470" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/mobps-pkgs</span>
+<span id="cb47-471"><a href="#cb47-471" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-472"><a href="#cb47-472" aria-hidden="true" tabindex="-1"></a><span class="ex">R</span> CMD INSTALL <span class="at">--library</span><span class="op">=</span>~/R/library RandomFieldsUtils_1.6.0.2.tar.gz</span>
+<span id="cb47-473"><a href="#cb47-473" aria-hidden="true" tabindex="-1"></a><span class="ex">R</span> CMD INSTALL <span class="at">--library</span><span class="op">=</span>~/R/library miraculix_1.6.0.2.tar.gz</span>
+<span id="cb47-474"><a href="#cb47-474" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb47-475"><a href="#cb47-475" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-476"><a href="#cb47-476" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
-<span id="cb47-477"><a href="#cb47-477" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
-<span id="cb47-478"><a href="#cb47-478" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --job-name=mobps_sim</span></span>
-<span id="cb47-479"><a href="#cb47-479" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --cpus-per-task=8</span></span>
-<span id="cb47-480"><a href="#cb47-480" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --mem=32G</span></span>
+<span id="cb47-476"><a href="#cb47-476" aria-hidden="true" tabindex="-1"></a>Add the library path to your <span class="in">`~/.bashrc`</span> so R always finds these packages:</span>
+<span id="cb47-477"><a href="#cb47-477" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-478"><a href="#cb47-478" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb47-479"><a href="#cb47-479" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">'export R_LIBS_USER=~/R/library'</span> <span class="op">&gt;&gt;</span> ~/.bashrc</span>
+<span id="cb47-480"><a href="#cb47-480" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb47-481"><a href="#cb47-481" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-482"><a href="#cb47-482" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load R/4.3.1</span>
-<span id="cb47-483"><a href="#cb47-483" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load gcc/12.2.0</span>
-<span id="cb47-484"><a href="#cb47-484" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-485"><a href="#cb47-485" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">R_LIBS_USER</span><span class="op">=</span>~/R/library</span>
-<span id="cb47-486"><a href="#cb47-486" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> my_simulation.R</span>
-<span id="cb47-487"><a href="#cb47-487" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb47-488"><a href="#cb47-488" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-489"><a href="#cb47-489" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb47-490"><a href="#cb47-490" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-491"><a href="#cb47-491" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Installing on HPC without sudo or modules (Conda)</span></span>
+<span id="cb47-482"><a href="#cb47-482" aria-hidden="true" tabindex="-1"></a>And add the same to the top of your SLURM job scripts:</span>
+<span id="cb47-483"><a href="#cb47-483" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-484"><a href="#cb47-484" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb47-485"><a href="#cb47-485" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb47-486"><a href="#cb47-486" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --job-name=mobps_sim</span></span>
+<span id="cb47-487"><a href="#cb47-487" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --cpus-per-task=8</span></span>
+<span id="cb47-488"><a href="#cb47-488" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --mem=32G</span></span>
+<span id="cb47-489"><a href="#cb47-489" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-490"><a href="#cb47-490" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load R/4.3.1</span>
+<span id="cb47-491"><a href="#cb47-491" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load gcc/12.2.0</span>
 <span id="cb47-492"><a href="#cb47-492" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-493"><a href="#cb47-493" aria-hidden="true" tabindex="-1"></a>If your cluster uses Conda/Mamba (see Option 3 in Step 1), the compilers and OpenMP support are already bundled in the environment. Just activate it and install:</span>
-<span id="cb47-494"><a href="#cb47-494" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-495"><a href="#cb47-495" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
-<span id="cb47-496"><a href="#cb47-496" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate mobps</span>
-<span id="cb47-497"><a href="#cb47-497" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-498"><a href="#cb47-498" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/mobps-pkgs</span>
-<span id="cb47-499"><a href="#cb47-499" aria-hidden="true" tabindex="-1"></a><span class="ex">R</span> CMD INSTALL RandomFieldsUtils_1.6.0.2.tar.gz</span>
-<span id="cb47-500"><a href="#cb47-500" aria-hidden="true" tabindex="-1"></a><span class="ex">R</span> CMD INSTALL miraculix_1.6.0.2.tar.gz</span>
-<span id="cb47-501"><a href="#cb47-501" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb47-493"><a href="#cb47-493" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">R_LIBS_USER</span><span class="op">=</span>~/R/library</span>
+<span id="cb47-494"><a href="#cb47-494" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> my_simulation.R</span>
+<span id="cb47-495"><a href="#cb47-495" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb47-496"><a href="#cb47-496" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-497"><a href="#cb47-497" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb47-498"><a href="#cb47-498" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-499"><a href="#cb47-499" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Installing on HPC without sudo or modules (Conda)</span></span>
+<span id="cb47-500"><a href="#cb47-500" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-501"><a href="#cb47-501" aria-hidden="true" tabindex="-1"></a>If your cluster uses Conda/Mamba (see Option 3 in Step 1), the compilers and OpenMP support are already bundled in the environment. Just activate it and install:</span>
 <span id="cb47-502"><a href="#cb47-502" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-503"><a href="#cb47-503" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb47-504"><a href="#cb47-504" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-505"><a href="#cb47-505" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Verify the Installation</span></span>
-<span id="cb47-506"><a href="#cb47-506" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-507"><a href="#cb47-507" aria-hidden="true" tabindex="-1"></a>In R, confirm both packages load without errors:</span>
-<span id="cb47-508"><a href="#cb47-508" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-511"><a href="#cb47-511" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb47-512"><a href="#cb47-512" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb47-513"><a href="#cb47-513" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-514"><a href="#cb47-514" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(RandomFieldsUtils)</span>
-<span id="cb47-515"><a href="#cb47-515" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(miraculix)</span>
+<span id="cb47-503"><a href="#cb47-503" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb47-504"><a href="#cb47-504" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate mobps</span>
+<span id="cb47-505"><a href="#cb47-505" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-506"><a href="#cb47-506" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/mobps-pkgs</span>
+<span id="cb47-507"><a href="#cb47-507" aria-hidden="true" tabindex="-1"></a><span class="ex">R</span> CMD INSTALL RandomFieldsUtils_1.6.0.2.tar.gz</span>
+<span id="cb47-508"><a href="#cb47-508" aria-hidden="true" tabindex="-1"></a><span class="ex">R</span> CMD INSTALL miraculix_1.6.0.2.tar.gz</span>
+<span id="cb47-509"><a href="#cb47-509" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb47-510"><a href="#cb47-510" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-511"><a href="#cb47-511" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb47-512"><a href="#cb47-512" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-513"><a href="#cb47-513" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Verify the Installation</span></span>
+<span id="cb47-514"><a href="#cb47-514" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-515"><a href="#cb47-515" aria-hidden="true" tabindex="-1"></a>In R, confirm both packages load without errors:</span>
 <span id="cb47-516"><a href="#cb47-516" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-517"><a href="#cb47-517" aria-hidden="true" tabindex="-1"></a><span class="co"># Check versions</span></span>
-<span id="cb47-518"><a href="#cb47-518" aria-hidden="true" tabindex="-1"></a><span class="fu">packageVersion</span>(<span class="st">"RandomFieldsUtils"</span>)  <span class="co"># should be 1.6.0.2</span></span>
-<span id="cb47-519"><a href="#cb47-519" aria-hidden="true" tabindex="-1"></a><span class="fu">packageVersion</span>(<span class="st">"miraculix"</span>)          <span class="co"># should be 1.6.0.2</span></span>
-<span id="cb47-520"><a href="#cb47-520" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb47-519"><a href="#cb47-519" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb47-520"><a href="#cb47-520" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
 <span id="cb47-521"><a href="#cb47-521" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-522"><a href="#cb47-522" aria-hidden="true" tabindex="-1"></a>If <span class="in">`miraculix`</span> loads successfully, MoBPS will automatically detect and use it for faster genomic computations — no extra configuration needed.</span>
-<span id="cb47-523"><a href="#cb47-523" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-524"><a href="#cb47-524" aria-hidden="true" tabindex="-1"></a><span class="fu">### Step 3: Install MoBPS</span></span>
-<span id="cb47-525"><a href="#cb47-525" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-526"><a href="#cb47-526" aria-hidden="true" tabindex="-1"></a>Install the latest MoBPS from GitHub (recommended over CRAN for latest features):</span>
-<span id="cb47-527"><a href="#cb47-527" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-530"><a href="#cb47-530" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb47-531"><a href="#cb47-531" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb47-532"><a href="#cb47-532" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-533"><a href="#cb47-533" aria-hidden="true" tabindex="-1"></a><span class="co"># Install MoBPS from GitHub</span></span>
-<span id="cb47-534"><a href="#cb47-534" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"tpook92/MoBPS"</span>, <span class="at">subdir=</span><span class="st">"pkg"</span>)</span>
-<span id="cb47-535"><a href="#cb47-535" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb47-536"><a href="#cb47-536" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-537"><a href="#cb47-537" aria-hidden="true" tabindex="-1"></a>**Why GitHub over CRAN?**</span>
-<span id="cb47-538"><a href="#cb47-538" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>GitHub has the latest features and bug fixes</span>
-<span id="cb47-539"><a href="#cb47-539" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Regular updates and improvements</span>
-<span id="cb47-540"><a href="#cb47-540" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>CRAN version may be outdated (last update: November 2021)</span>
-<span id="cb47-541"><a href="#cb47-541" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-542"><a href="#cb47-542" aria-hidden="true" tabindex="-1"></a><span class="fu">### Step 4: Install Genetic Maps (Optional)</span></span>
-<span id="cb47-543"><a href="#cb47-543" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-544"><a href="#cb47-544" aria-hidden="true" tabindex="-1"></a>For working with real species data:</span>
-<span id="cb47-545"><a href="#cb47-545" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-548"><a href="#cb47-548" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb47-549"><a href="#cb47-549" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb47-550"><a href="#cb47-550" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-551"><a href="#cb47-551" aria-hidden="true" tabindex="-1"></a><span class="co"># Install MoBPS maps package (includes Ensembl maps)</span></span>
-<span id="cb47-552"><a href="#cb47-552" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"tpook92/MoBPS"</span>, <span class="at">subdir=</span><span class="st">"pkg-maps"</span>)</span>
-<span id="cb47-553"><a href="#cb47-553" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb47-554"><a href="#cb47-554" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-555"><a href="#cb47-555" aria-hidden="true" tabindex="-1"></a>This package includes genetic maps for common species from Ensembl.</span>
-<span id="cb47-556"><a href="#cb47-556" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-557"><a href="#cb47-557" aria-hidden="true" tabindex="-1"></a><span class="fu">### Step 5: Verify Installation</span></span>
+<span id="cb47-522"><a href="#cb47-522" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(RandomFieldsUtils)</span>
+<span id="cb47-523"><a href="#cb47-523" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(miraculix)</span>
+<span id="cb47-524"><a href="#cb47-524" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-525"><a href="#cb47-525" aria-hidden="true" tabindex="-1"></a><span class="co"># Check versions</span></span>
+<span id="cb47-526"><a href="#cb47-526" aria-hidden="true" tabindex="-1"></a><span class="fu">packageVersion</span>(<span class="st">"RandomFieldsUtils"</span>)  <span class="co"># should be 1.6.0.2</span></span>
+<span id="cb47-527"><a href="#cb47-527" aria-hidden="true" tabindex="-1"></a><span class="fu">packageVersion</span>(<span class="st">"miraculix"</span>)          <span class="co"># should be 1.6.0.2</span></span>
+<span id="cb47-528"><a href="#cb47-528" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb47-529"><a href="#cb47-529" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-530"><a href="#cb47-530" aria-hidden="true" tabindex="-1"></a>If <span class="in">`miraculix`</span> loads successfully, MoBPS will automatically detect and use it for faster genomic computations — no extra configuration needed.</span>
+<span id="cb47-531"><a href="#cb47-531" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-532"><a href="#cb47-532" aria-hidden="true" tabindex="-1"></a><span class="fu">### Step 3: Install MoBPS</span></span>
+<span id="cb47-533"><a href="#cb47-533" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-534"><a href="#cb47-534" aria-hidden="true" tabindex="-1"></a>Install the latest MoBPS from GitHub (recommended over CRAN for latest features):</span>
+<span id="cb47-535"><a href="#cb47-535" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-538"><a href="#cb47-538" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb47-539"><a href="#cb47-539" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb47-540"><a href="#cb47-540" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-541"><a href="#cb47-541" aria-hidden="true" tabindex="-1"></a><span class="co"># Install MoBPS from GitHub</span></span>
+<span id="cb47-542"><a href="#cb47-542" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"tpook92/MoBPS"</span>, <span class="at">subdir=</span><span class="st">"pkg"</span>)</span>
+<span id="cb47-543"><a href="#cb47-543" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb47-544"><a href="#cb47-544" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-545"><a href="#cb47-545" aria-hidden="true" tabindex="-1"></a>**Why GitHub over CRAN?**</span>
+<span id="cb47-546"><a href="#cb47-546" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>GitHub has the latest features and bug fixes</span>
+<span id="cb47-547"><a href="#cb47-547" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Regular updates and improvements</span>
+<span id="cb47-548"><a href="#cb47-548" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>CRAN version may be outdated (last update: November 2021)</span>
+<span id="cb47-549"><a href="#cb47-549" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-550"><a href="#cb47-550" aria-hidden="true" tabindex="-1"></a><span class="fu">### Step 4: Install Genetic Maps (Optional)</span></span>
+<span id="cb47-551"><a href="#cb47-551" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-552"><a href="#cb47-552" aria-hidden="true" tabindex="-1"></a>For working with real species data:</span>
+<span id="cb47-553"><a href="#cb47-553" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-556"><a href="#cb47-556" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb47-557"><a href="#cb47-557" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
 <span id="cb47-558"><a href="#cb47-558" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-559"><a href="#cb47-559" aria-hidden="true" tabindex="-1"></a>Load the package and check version:</span>
-<span id="cb47-560"><a href="#cb47-560" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-563"><a href="#cb47-563" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb47-564"><a href="#cb47-564" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb47-565"><a href="#cb47-565" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-566"><a href="#cb47-566" aria-hidden="true" tabindex="-1"></a><span class="co"># Load MoBPS</span></span>
-<span id="cb47-567"><a href="#cb47-567" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MoBPS)</span>
+<span id="cb47-559"><a href="#cb47-559" aria-hidden="true" tabindex="-1"></a><span class="co"># Install MoBPS maps package (includes Ensembl maps)</span></span>
+<span id="cb47-560"><a href="#cb47-560" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"tpook92/MoBPS"</span>, <span class="at">subdir=</span><span class="st">"pkg-maps"</span>)</span>
+<span id="cb47-561"><a href="#cb47-561" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb47-562"><a href="#cb47-562" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-563"><a href="#cb47-563" aria-hidden="true" tabindex="-1"></a>This package includes genetic maps for common species from Ensembl.</span>
+<span id="cb47-564"><a href="#cb47-564" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-565"><a href="#cb47-565" aria-hidden="true" tabindex="-1"></a><span class="fu">### Step 5: Verify Installation</span></span>
+<span id="cb47-566"><a href="#cb47-566" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-567"><a href="#cb47-567" aria-hidden="true" tabindex="-1"></a>Load the package and check version:</span>
 <span id="cb47-568"><a href="#cb47-568" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-569"><a href="#cb47-569" aria-hidden="true" tabindex="-1"></a><span class="co"># Check version</span></span>
-<span id="cb47-570"><a href="#cb47-570" aria-hidden="true" tabindex="-1"></a><span class="fu">packageVersion</span>(<span class="st">"MoBPS"</span>)</span>
-<span id="cb47-571"><a href="#cb47-571" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-572"><a href="#cb47-572" aria-hidden="true" tabindex="-1"></a><span class="co"># Should see something like: '1.13.0' or higher</span></span>
-<span id="cb47-573"><a href="#cb47-573" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb47-574"><a href="#cb47-574" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-575"><a href="#cb47-575" aria-hidden="true" tabindex="-1"></a><span class="fu">### Additional Packages</span></span>
+<span id="cb47-571"><a href="#cb47-571" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb47-572"><a href="#cb47-572" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb47-573"><a href="#cb47-573" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-574"><a href="#cb47-574" aria-hidden="true" tabindex="-1"></a><span class="co"># Load MoBPS</span></span>
+<span id="cb47-575"><a href="#cb47-575" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MoBPS)</span>
 <span id="cb47-576"><a href="#cb47-576" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-577"><a href="#cb47-577" aria-hidden="true" tabindex="-1"></a>MoBPS can integrate with various prediction software. These are **optional** and only needed for specific analyses:</span>
-<span id="cb47-578"><a href="#cb47-578" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-581"><a href="#cb47-581" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb47-582"><a href="#cb47-582" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb47-583"><a href="#cb47-583" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-584"><a href="#cb47-584" aria-hidden="true" tabindex="-1"></a><span class="co"># For genomic prediction</span></span>
-<span id="cb47-585"><a href="#cb47-585" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"rrBLUP"</span>)    <span class="co"># GBLUP</span></span>
-<span id="cb47-586"><a href="#cb47-586" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"BGLR"</span>)      <span class="co"># Bayesian methods</span></span>
-<span id="cb47-587"><a href="#cb47-587" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"sommer"</span>)    <span class="co"># Mixed models</span></span>
-<span id="cb47-588"><a href="#cb47-588" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-589"><a href="#cb47-589" aria-hidden="true" tabindex="-1"></a><span class="co"># For visualization</span></span>
-<span id="cb47-590"><a href="#cb47-590" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"ggplot2"</span>)   <span class="co"># Advanced plotting</span></span>
-<span id="cb47-591"><a href="#cb47-591" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"viridis"</span>)   <span class="co"># Color palettes</span></span>
-<span id="cb47-592"><a href="#cb47-592" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb47-593"><a href="#cb47-593" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-594"><a href="#cb47-594" aria-hidden="true" tabindex="-1"></a><span class="fu">## Basic Workflow Overview {#sec-workflow}</span></span>
-<span id="cb47-595"><a href="#cb47-595" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-596"><a href="#cb47-596" aria-hidden="true" tabindex="-1"></a>Every MoBPS simulation follows the same basic structure:</span>
-<span id="cb47-597"><a href="#cb47-597" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-598"><a href="#cb47-598" aria-hidden="true" tabindex="-1"></a><span class="fu">### 1. Create a Founder Population</span></span>
-<span id="cb47-599"><a href="#cb47-599" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-600"><a href="#cb47-600" aria-hidden="true" tabindex="-1"></a>Use <span class="in">`creating.diploid()`</span> to initialize your population:</span>
+<span id="cb47-577"><a href="#cb47-577" aria-hidden="true" tabindex="-1"></a><span class="co"># Check version</span></span>
+<span id="cb47-578"><a href="#cb47-578" aria-hidden="true" tabindex="-1"></a><span class="fu">packageVersion</span>(<span class="st">"MoBPS"</span>)</span>
+<span id="cb47-579"><a href="#cb47-579" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-580"><a href="#cb47-580" aria-hidden="true" tabindex="-1"></a><span class="co"># Should see something like: '1.13.0' or higher</span></span>
+<span id="cb47-581"><a href="#cb47-581" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb47-582"><a href="#cb47-582" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-583"><a href="#cb47-583" aria-hidden="true" tabindex="-1"></a><span class="fu">### Additional Packages</span></span>
+<span id="cb47-584"><a href="#cb47-584" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-585"><a href="#cb47-585" aria-hidden="true" tabindex="-1"></a>MoBPS can integrate with various prediction software. These are **optional** and only needed for specific analyses:</span>
+<span id="cb47-586"><a href="#cb47-586" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-589"><a href="#cb47-589" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb47-590"><a href="#cb47-590" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb47-591"><a href="#cb47-591" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-592"><a href="#cb47-592" aria-hidden="true" tabindex="-1"></a><span class="co"># For genomic prediction</span></span>
+<span id="cb47-593"><a href="#cb47-593" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"rrBLUP"</span>)    <span class="co"># GBLUP</span></span>
+<span id="cb47-594"><a href="#cb47-594" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"BGLR"</span>)      <span class="co"># Bayesian methods</span></span>
+<span id="cb47-595"><a href="#cb47-595" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"sommer"</span>)    <span class="co"># Mixed models</span></span>
+<span id="cb47-596"><a href="#cb47-596" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-597"><a href="#cb47-597" aria-hidden="true" tabindex="-1"></a><span class="co"># For visualization</span></span>
+<span id="cb47-598"><a href="#cb47-598" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"ggplot2"</span>)   <span class="co"># Advanced plotting</span></span>
+<span id="cb47-599"><a href="#cb47-599" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"viridis"</span>)   <span class="co"># Color palettes</span></span>
+<span id="cb47-600"><a href="#cb47-600" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb47-601"><a href="#cb47-601" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-604"><a href="#cb47-604" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb47-605"><a href="#cb47-605" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb47-606"><a href="#cb47-606" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-607"><a href="#cb47-607" aria-hidden="true" tabindex="-1"></a>population <span class="ot">&lt;-</span> <span class="fu">creating.diploid</span>(</span>
-<span id="cb47-608"><a href="#cb47-608" aria-hidden="true" tabindex="-1"></a>  <span class="at">nsnp =</span> <span class="dv">1000</span>,          <span class="co"># Number of SNP markers</span></span>
-<span id="cb47-609"><a href="#cb47-609" aria-hidden="true" tabindex="-1"></a>  <span class="at">nindi =</span> <span class="dv">100</span>,          <span class="co"># Number of individuals</span></span>
-<span id="cb47-610"><a href="#cb47-610" aria-hidden="true" tabindex="-1"></a>  <span class="at">n.additive =</span> <span class="dv">100</span>,     <span class="co"># Number of QTLs</span></span>
-<span id="cb47-611"><a href="#cb47-611" aria-hidden="true" tabindex="-1"></a>  <span class="at">mean.target =</span> <span class="dv">100</span>     <span class="co"># Mean breeding value</span></span>
-<span id="cb47-612"><a href="#cb47-612" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb47-613"><a href="#cb47-613" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb47-602"><a href="#cb47-602" aria-hidden="true" tabindex="-1"></a><span class="fu">## Basic Workflow Overview {#sec-workflow}</span></span>
+<span id="cb47-603"><a href="#cb47-603" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-604"><a href="#cb47-604" aria-hidden="true" tabindex="-1"></a>Every MoBPS simulation follows the same basic structure:</span>
+<span id="cb47-605"><a href="#cb47-605" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-606"><a href="#cb47-606" aria-hidden="true" tabindex="-1"></a><span class="fu">### 1. Create a Founder Population</span></span>
+<span id="cb47-607"><a href="#cb47-607" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-608"><a href="#cb47-608" aria-hidden="true" tabindex="-1"></a>Use <span class="in">`creating.diploid()`</span> to initialize your population:</span>
+<span id="cb47-609"><a href="#cb47-609" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-612"><a href="#cb47-612" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb47-613"><a href="#cb47-613" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
 <span id="cb47-614"><a href="#cb47-614" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-615"><a href="#cb47-615" aria-hidden="true" tabindex="-1"></a><span class="fu">### 2. Simulate Breeding Actions</span></span>
-<span id="cb47-616"><a href="#cb47-616" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-617"><a href="#cb47-617" aria-hidden="true" tabindex="-1"></a>Use <span class="in">`breeding.diploid()`</span> to perform selection, mating, and other actions:</span>
-<span id="cb47-618"><a href="#cb47-618" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-621"><a href="#cb47-621" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb47-622"><a href="#cb47-622" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb47-623"><a href="#cb47-623" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-624"><a href="#cb47-624" aria-hidden="true" tabindex="-1"></a>population <span class="ot">&lt;-</span> <span class="fu">breeding.diploid</span>(</span>
-<span id="cb47-625"><a href="#cb47-625" aria-hidden="true" tabindex="-1"></a>  population,</span>
-<span id="cb47-626"><a href="#cb47-626" aria-hidden="true" tabindex="-1"></a>  <span class="at">selection.size =</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">10</span>),  <span class="co"># 10 males, 10 females</span></span>
-<span id="cb47-627"><a href="#cb47-627" aria-hidden="true" tabindex="-1"></a>  <span class="at">breeding.size =</span> <span class="fu">c</span>(<span class="dv">50</span>, <span class="dv">50</span>)     <span class="co"># Generate 50 male, 50 female offspring</span></span>
-<span id="cb47-628"><a href="#cb47-628" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb47-629"><a href="#cb47-629" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb47-630"><a href="#cb47-630" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-631"><a href="#cb47-631" aria-hidden="true" tabindex="-1"></a><span class="fu">### 3. Extract and Analyze Results</span></span>
-<span id="cb47-632"><a href="#cb47-632" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-633"><a href="#cb47-633" aria-hidden="true" tabindex="-1"></a>Use <span class="in">`get.*()`</span> functions to extract information:</span>
-<span id="cb47-634"><a href="#cb47-634" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-637"><a href="#cb47-637" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb47-638"><a href="#cb47-638" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb47-639"><a href="#cb47-639" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-640"><a href="#cb47-640" aria-hidden="true" tabindex="-1"></a><span class="co"># Get breeding values</span></span>
-<span id="cb47-641"><a href="#cb47-641" aria-hidden="true" tabindex="-1"></a>bv <span class="ot">&lt;-</span> <span class="fu">get.bv</span>(population, <span class="at">gen =</span> <span class="dv">2</span>)</span>
+<span id="cb47-615"><a href="#cb47-615" aria-hidden="true" tabindex="-1"></a>population <span class="ot">&lt;-</span> <span class="fu">creating.diploid</span>(</span>
+<span id="cb47-616"><a href="#cb47-616" aria-hidden="true" tabindex="-1"></a>  <span class="at">nsnp =</span> <span class="dv">1000</span>,          <span class="co"># Number of SNP markers</span></span>
+<span id="cb47-617"><a href="#cb47-617" aria-hidden="true" tabindex="-1"></a>  <span class="at">nindi =</span> <span class="dv">100</span>,          <span class="co"># Number of individuals</span></span>
+<span id="cb47-618"><a href="#cb47-618" aria-hidden="true" tabindex="-1"></a>  <span class="at">n.additive =</span> <span class="dv">100</span>,     <span class="co"># Number of QTLs</span></span>
+<span id="cb47-619"><a href="#cb47-619" aria-hidden="true" tabindex="-1"></a>  <span class="at">mean.target =</span> <span class="dv">100</span>     <span class="co"># Mean breeding value</span></span>
+<span id="cb47-620"><a href="#cb47-620" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb47-621"><a href="#cb47-621" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb47-622"><a href="#cb47-622" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-623"><a href="#cb47-623" aria-hidden="true" tabindex="-1"></a><span class="fu">### 2. Simulate Breeding Actions</span></span>
+<span id="cb47-624"><a href="#cb47-624" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-625"><a href="#cb47-625" aria-hidden="true" tabindex="-1"></a>Use <span class="in">`breeding.diploid()`</span> to perform selection, mating, and other actions:</span>
+<span id="cb47-626"><a href="#cb47-626" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-629"><a href="#cb47-629" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb47-630"><a href="#cb47-630" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb47-631"><a href="#cb47-631" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-632"><a href="#cb47-632" aria-hidden="true" tabindex="-1"></a>population <span class="ot">&lt;-</span> <span class="fu">breeding.diploid</span>(</span>
+<span id="cb47-633"><a href="#cb47-633" aria-hidden="true" tabindex="-1"></a>  population,</span>
+<span id="cb47-634"><a href="#cb47-634" aria-hidden="true" tabindex="-1"></a>  <span class="at">selection.size =</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">10</span>),  <span class="co"># 10 males, 10 females</span></span>
+<span id="cb47-635"><a href="#cb47-635" aria-hidden="true" tabindex="-1"></a>  <span class="at">breeding.size =</span> <span class="fu">c</span>(<span class="dv">50</span>, <span class="dv">50</span>)     <span class="co"># Generate 50 male, 50 female offspring</span></span>
+<span id="cb47-636"><a href="#cb47-636" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb47-637"><a href="#cb47-637" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb47-638"><a href="#cb47-638" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-639"><a href="#cb47-639" aria-hidden="true" tabindex="-1"></a><span class="fu">### 3. Extract and Analyze Results</span></span>
+<span id="cb47-640"><a href="#cb47-640" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-641"><a href="#cb47-641" aria-hidden="true" tabindex="-1"></a>Use <span class="in">`get.*()`</span> functions to extract information:</span>
 <span id="cb47-642"><a href="#cb47-642" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-643"><a href="#cb47-643" aria-hidden="true" tabindex="-1"></a><span class="co"># Get phenotypes</span></span>
-<span id="cb47-644"><a href="#cb47-644" aria-hidden="true" tabindex="-1"></a>pheno <span class="ot">&lt;-</span> <span class="fu">get.pheno</span>(population, <span class="at">gen =</span> <span class="dv">2</span>)</span>
-<span id="cb47-645"><a href="#cb47-645" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-646"><a href="#cb47-646" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate inbreeding</span></span>
-<span id="cb47-647"><a href="#cb47-647" aria-hidden="true" tabindex="-1"></a>inbreeding <span class="ot">&lt;-</span> <span class="fu">inbreeding.exp</span>(population, <span class="at">gen =</span> <span class="dv">2</span>)</span>
-<span id="cb47-648"><a href="#cb47-648" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb47-649"><a href="#cb47-649" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-650"><a href="#cb47-650" aria-hidden="true" tabindex="-1"></a><span class="fu">### 4. Visualize Results</span></span>
-<span id="cb47-651"><a href="#cb47-651" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-652"><a href="#cb47-652" aria-hidden="true" tabindex="-1"></a>Use built-in plotting functions:</span>
+<span id="cb47-645"><a href="#cb47-645" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb47-646"><a href="#cb47-646" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb47-647"><a href="#cb47-647" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-648"><a href="#cb47-648" aria-hidden="true" tabindex="-1"></a><span class="co"># Get breeding values</span></span>
+<span id="cb47-649"><a href="#cb47-649" aria-hidden="true" tabindex="-1"></a>bv <span class="ot">&lt;-</span> <span class="fu">get.bv</span>(population, <span class="at">gen =</span> <span class="dv">2</span>)</span>
+<span id="cb47-650"><a href="#cb47-650" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-651"><a href="#cb47-651" aria-hidden="true" tabindex="-1"></a><span class="co"># Get phenotypes</span></span>
+<span id="cb47-652"><a href="#cb47-652" aria-hidden="true" tabindex="-1"></a>pheno <span class="ot">&lt;-</span> <span class="fu">get.pheno</span>(population, <span class="at">gen =</span> <span class="dv">2</span>)</span>
 <span id="cb47-653"><a href="#cb47-653" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-656"><a href="#cb47-656" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb47-657"><a href="#cb47-657" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb47-658"><a href="#cb47-658" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-659"><a href="#cb47-659" aria-hidden="true" tabindex="-1"></a><span class="co"># Track genetic gain</span></span>
-<span id="cb47-660"><a href="#cb47-660" aria-hidden="true" tabindex="-1"></a><span class="fu">bv.development</span>(population)</span>
+<span id="cb47-654"><a href="#cb47-654" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate inbreeding</span></span>
+<span id="cb47-655"><a href="#cb47-655" aria-hidden="true" tabindex="-1"></a>inbreeding <span class="ot">&lt;-</span> <span class="fu">inbreeding.exp</span>(population, <span class="at">gen =</span> <span class="dv">2</span>)</span>
+<span id="cb47-656"><a href="#cb47-656" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb47-657"><a href="#cb47-657" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-658"><a href="#cb47-658" aria-hidden="true" tabindex="-1"></a><span class="fu">### 4. Visualize Results</span></span>
+<span id="cb47-659"><a href="#cb47-659" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-660"><a href="#cb47-660" aria-hidden="true" tabindex="-1"></a>Use built-in plotting functions:</span>
 <span id="cb47-661"><a href="#cb47-661" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-662"><a href="#cb47-662" aria-hidden="true" tabindex="-1"></a><span class="co"># PCA plot</span></span>
-<span id="cb47-663"><a href="#cb47-663" aria-hidden="true" tabindex="-1"></a><span class="fu">get.pca</span>(population, <span class="at">gen =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>)</span>
-<span id="cb47-664"><a href="#cb47-664" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-665"><a href="#cb47-665" aria-hidden="true" tabindex="-1"></a><span class="co"># Kinship development</span></span>
-<span id="cb47-666"><a href="#cb47-666" aria-hidden="true" tabindex="-1"></a><span class="fu">kinship.development</span>(population, <span class="at">gen =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>)</span>
-<span id="cb47-667"><a href="#cb47-667" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb47-668"><a href="#cb47-668" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-669"><a href="#cb47-669" aria-hidden="true" tabindex="-1"></a><span class="fu">## The Population Object</span></span>
-<span id="cb47-670"><a href="#cb47-670" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-671"><a href="#cb47-671" aria-hidden="true" tabindex="-1"></a>The core of MoBPS is the **population object** (usually called <span class="in">`population`</span> or <span class="in">`pop`</span>):</span>
+<span id="cb47-664"><a href="#cb47-664" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb47-665"><a href="#cb47-665" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb47-666"><a href="#cb47-666" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-667"><a href="#cb47-667" aria-hidden="true" tabindex="-1"></a><span class="co"># Track genetic gain</span></span>
+<span id="cb47-668"><a href="#cb47-668" aria-hidden="true" tabindex="-1"></a><span class="fu">bv.development</span>(population)</span>
+<span id="cb47-669"><a href="#cb47-669" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-670"><a href="#cb47-670" aria-hidden="true" tabindex="-1"></a><span class="co"># PCA plot</span></span>
+<span id="cb47-671"><a href="#cb47-671" aria-hidden="true" tabindex="-1"></a><span class="fu">get.pca</span>(population, <span class="at">gen =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>)</span>
 <span id="cb47-672"><a href="#cb47-672" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-673"><a href="#cb47-673" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>It's an **R list** containing all simulation data</span>
-<span id="cb47-674"><a href="#cb47-674" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Stores genotypes, phenotypes, pedigrees, trait architectures</span>
-<span id="cb47-675"><a href="#cb47-675" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Updated by each <span class="in">`breeding.diploid()`</span> call</span>
-<span id="cb47-676"><a href="#cb47-676" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Can be saved/loaded for reproducibility</span>
-<span id="cb47-677"><a href="#cb47-677" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-678"><a href="#cb47-678" aria-hidden="true" tabindex="-1"></a>Think of it as a **complete database** of your breeding program.</span>
-<span id="cb47-679"><a href="#cb47-679" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-680"><a href="#cb47-680" aria-hidden="true" tabindex="-1"></a><span class="fu">## Getting Help</span></span>
-<span id="cb47-681"><a href="#cb47-681" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-682"><a href="#cb47-682" aria-hidden="true" tabindex="-1"></a><span class="fu">### Within R</span></span>
-<span id="cb47-683"><a href="#cb47-683" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-686"><a href="#cb47-686" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb47-687"><a href="#cb47-687" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb47-688"><a href="#cb47-688" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-689"><a href="#cb47-689" aria-hidden="true" tabindex="-1"></a><span class="co"># Function documentation</span></span>
-<span id="cb47-690"><a href="#cb47-690" aria-hidden="true" tabindex="-1"></a>?creating.diploid</span>
-<span id="cb47-691"><a href="#cb47-691" aria-hidden="true" tabindex="-1"></a>?breeding.diploid</span>
-<span id="cb47-692"><a href="#cb47-692" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-693"><a href="#cb47-693" aria-hidden="true" tabindex="-1"></a><span class="co"># See all MoBPS functions</span></span>
-<span id="cb47-694"><a href="#cb47-694" aria-hidden="true" tabindex="-1"></a><span class="fu">help</span>(<span class="at">package =</span> <span class="st">"MoBPS"</span>)</span>
-<span id="cb47-695"><a href="#cb47-695" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb47-673"><a href="#cb47-673" aria-hidden="true" tabindex="-1"></a><span class="co"># Kinship development</span></span>
+<span id="cb47-674"><a href="#cb47-674" aria-hidden="true" tabindex="-1"></a><span class="fu">kinship.development</span>(population, <span class="at">gen =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>)</span>
+<span id="cb47-675"><a href="#cb47-675" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb47-676"><a href="#cb47-676" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-677"><a href="#cb47-677" aria-hidden="true" tabindex="-1"></a><span class="fu">## The Population Object</span></span>
+<span id="cb47-678"><a href="#cb47-678" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-679"><a href="#cb47-679" aria-hidden="true" tabindex="-1"></a>The core of MoBPS is the **population object** (usually called <span class="in">`population`</span> or <span class="in">`pop`</span>):</span>
+<span id="cb47-680"><a href="#cb47-680" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-681"><a href="#cb47-681" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>It's an **R list** containing all simulation data</span>
+<span id="cb47-682"><a href="#cb47-682" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Stores genotypes, phenotypes, pedigrees, trait architectures</span>
+<span id="cb47-683"><a href="#cb47-683" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Updated by each <span class="in">`breeding.diploid()`</span> call</span>
+<span id="cb47-684"><a href="#cb47-684" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Can be saved/loaded for reproducibility</span>
+<span id="cb47-685"><a href="#cb47-685" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-686"><a href="#cb47-686" aria-hidden="true" tabindex="-1"></a>Think of it as a **complete database** of your breeding program.</span>
+<span id="cb47-687"><a href="#cb47-687" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-688"><a href="#cb47-688" aria-hidden="true" tabindex="-1"></a><span class="fu">## Getting Help</span></span>
+<span id="cb47-689"><a href="#cb47-689" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-690"><a href="#cb47-690" aria-hidden="true" tabindex="-1"></a><span class="fu">### Within R</span></span>
+<span id="cb47-691"><a href="#cb47-691" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-694"><a href="#cb47-694" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb47-695"><a href="#cb47-695" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
 <span id="cb47-696"><a href="#cb47-696" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-697"><a href="#cb47-697" aria-hidden="true" tabindex="-1"></a><span class="fu">### Online Resources</span></span>
-<span id="cb47-698"><a href="#cb47-698" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-699"><a href="#cb47-699" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**GitHub:** <span class="ot">&lt;https://github.com/tpook92/MoBPS&gt;</span></span>
-<span id="cb47-700"><a href="#cb47-700" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Web Interface:** <span class="ot">&lt;https://www.mobps.de&gt;</span></span>
-<span id="cb47-701"><a href="#cb47-701" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Email Support:** Torsten.pook@wur.nl</span>
-<span id="cb47-702"><a href="#cb47-702" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-703"><a href="#cb47-703" aria-hidden="true" tabindex="-1"></a><span class="fu">### Important Notes</span></span>
+<span id="cb47-697"><a href="#cb47-697" aria-hidden="true" tabindex="-1"></a><span class="co"># Function documentation</span></span>
+<span id="cb47-698"><a href="#cb47-698" aria-hidden="true" tabindex="-1"></a>?creating.diploid</span>
+<span id="cb47-699"><a href="#cb47-699" aria-hidden="true" tabindex="-1"></a>?breeding.diploid</span>
+<span id="cb47-700"><a href="#cb47-700" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-701"><a href="#cb47-701" aria-hidden="true" tabindex="-1"></a><span class="co"># See all MoBPS functions</span></span>
+<span id="cb47-702"><a href="#cb47-702" aria-hidden="true" tabindex="-1"></a><span class="fu">help</span>(<span class="at">package =</span> <span class="st">"MoBPS"</span>)</span>
+<span id="cb47-703"><a href="#cb47-703" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb47-704"><a href="#cb47-704" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-705"><a href="#cb47-705" aria-hidden="true" tabindex="-1"></a>:::{.callout-warning}</span>
-<span id="cb47-706"><a href="#cb47-706" aria-hidden="true" tabindex="-1"></a><span class="fu">## Take Simulation Results with Caution!</span></span>
-<span id="cb47-707"><a href="#cb47-707" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-708"><a href="#cb47-708" aria-hidden="true" tabindex="-1"></a>MoBPS won't stop you from making biologically impossible settings (e.g., collecting milk records from bulls). Always validate your simulation setup makes biological sense!</span>
-<span id="cb47-709"><a href="#cb47-709" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb47-705"><a href="#cb47-705" aria-hidden="true" tabindex="-1"></a><span class="fu">### Online Resources</span></span>
+<span id="cb47-706"><a href="#cb47-706" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-707"><a href="#cb47-707" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**GitHub:** <span class="ot">&lt;https://github.com/tpook92/MoBPS&gt;</span></span>
+<span id="cb47-708"><a href="#cb47-708" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Web Interface:** <span class="ot">&lt;https://www.mobps.de&gt;</span></span>
+<span id="cb47-709"><a href="#cb47-709" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Email Support:** Torsten.pook@wur.nl</span>
 <span id="cb47-710"><a href="#cb47-710" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-711"><a href="#cb47-711" aria-hidden="true" tabindex="-1"></a>:::{.callout-tip}</span>
-<span id="cb47-712"><a href="#cb47-712" aria-hidden="true" tabindex="-1"></a><span class="fu">## Don't Get Overwhelmed!</span></span>
-<span id="cb47-713"><a href="#cb47-713" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-714"><a href="#cb47-714" aria-hidden="true" tabindex="-1"></a>MoBPS has many parameters, but you only need a few for most simulations. Start simple, then add complexity as needed. Use Ctrl+F to search the documentation for specific features.</span>
-<span id="cb47-715"><a href="#cb47-715" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb47-716"><a href="#cb47-716" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-717"><a href="#cb47-717" aria-hidden="true" tabindex="-1"></a><span class="fu">## What's Next?</span></span>
+<span id="cb47-711"><a href="#cb47-711" aria-hidden="true" tabindex="-1"></a><span class="fu">### Important Notes</span></span>
+<span id="cb47-712"><a href="#cb47-712" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-713"><a href="#cb47-713" aria-hidden="true" tabindex="-1"></a>:::{.callout-warning}</span>
+<span id="cb47-714"><a href="#cb47-714" aria-hidden="true" tabindex="-1"></a><span class="fu">## Take Simulation Results with Caution!</span></span>
+<span id="cb47-715"><a href="#cb47-715" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-716"><a href="#cb47-716" aria-hidden="true" tabindex="-1"></a>MoBPS won't stop you from making biologically impossible settings (e.g., collecting milk records from bulls). Always validate your simulation setup makes biological sense!</span>
+<span id="cb47-717"><a href="#cb47-717" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb47-718"><a href="#cb47-718" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-719"><a href="#cb47-719" aria-hidden="true" tabindex="-1"></a>In the next chapter, we'll dive into **core concepts** that are essential for understanding how MoBPS works:</span>
-<span id="cb47-720"><a href="#cb47-720" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-721"><a href="#cb47-721" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Individual grouping (generations, databases, cohorts)</span>
-<span id="cb47-722"><a href="#cb47-722" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The population list structure</span>
-<span id="cb47-723"><a href="#cb47-723" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>How traits are represented</span>
-<span id="cb47-724"><a href="#cb47-724" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Time flow in simulations</span>
-<span id="cb47-725"><a href="#cb47-725" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-726"><a href="#cb47-726" aria-hidden="true" tabindex="-1"></a>Let's continue to <span class="co">[</span><span class="ot">Chapter 2: Core Concepts</span><span class="co">](02-core-concepts.qmd)</span>!</span>
-<span id="cb47-727"><a href="#cb47-727" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-728"><a href="#cb47-728" aria-hidden="true" tabindex="-1"></a><span class="fu">## Summary</span></span>
-<span id="cb47-729"><a href="#cb47-729" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-730"><a href="#cb47-730" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>MoBPS is a flexible R package for breeding program simulation</span>
-<span id="cb47-731"><a href="#cb47-731" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Install from GitHub for latest features</span>
-<span id="cb47-732"><a href="#cb47-732" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Optional performance packages (<span class="in">`miraculix`</span>) are highly recommended</span>
-<span id="cb47-733"><a href="#cb47-733" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Basic workflow: Create → Breed → Analyze → Visualize</span>
-<span id="cb47-734"><a href="#cb47-734" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The population object stores all your simulation data</span>
-<span id="cb47-735"><a href="#cb47-735" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Help is available through documentation and direct contact</span>
+<span id="cb47-719"><a href="#cb47-719" aria-hidden="true" tabindex="-1"></a>:::{.callout-tip}</span>
+<span id="cb47-720"><a href="#cb47-720" aria-hidden="true" tabindex="-1"></a><span class="fu">## Don't Get Overwhelmed!</span></span>
+<span id="cb47-721"><a href="#cb47-721" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-722"><a href="#cb47-722" aria-hidden="true" tabindex="-1"></a>MoBPS has many parameters, but you only need a few for most simulations. Start simple, then add complexity as needed. Use Ctrl+F to search the documentation for specific features.</span>
+<span id="cb47-723"><a href="#cb47-723" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb47-724"><a href="#cb47-724" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-725"><a href="#cb47-725" aria-hidden="true" tabindex="-1"></a><span class="fu">## What's Next?</span></span>
+<span id="cb47-726"><a href="#cb47-726" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-727"><a href="#cb47-727" aria-hidden="true" tabindex="-1"></a>In the next chapter, we'll dive into **core concepts** that are essential for understanding how MoBPS works:</span>
+<span id="cb47-728"><a href="#cb47-728" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-729"><a href="#cb47-729" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Individual grouping (generations, databases, cohorts)</span>
+<span id="cb47-730"><a href="#cb47-730" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The population list structure</span>
+<span id="cb47-731"><a href="#cb47-731" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>How traits are represented</span>
+<span id="cb47-732"><a href="#cb47-732" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Time flow in simulations</span>
+<span id="cb47-733"><a href="#cb47-733" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-734"><a href="#cb47-734" aria-hidden="true" tabindex="-1"></a>Let's continue to <span class="co">[</span><span class="ot">Chapter 2: Core Concepts</span><span class="co">](02-core-concepts.qmd)</span>!</span>
+<span id="cb47-735"><a href="#cb47-735" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-736"><a href="#cb47-736" aria-hidden="true" tabindex="-1"></a><span class="fu">## Summary</span></span>
+<span id="cb47-737"><a href="#cb47-737" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-738"><a href="#cb47-738" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>MoBPS is a flexible R package for breeding program simulation</span>
+<span id="cb47-739"><a href="#cb47-739" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Install from GitHub for latest features</span>
+<span id="cb47-740"><a href="#cb47-740" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Optional performance packages (<span class="in">`miraculix`</span>) are highly recommended</span>
+<span id="cb47-741"><a href="#cb47-741" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Basic workflow: Create → Breed → Analyze → Visualize</span>
+<span id="cb47-742"><a href="#cb47-742" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The population object stores all your simulation data</span>
+<span id="cb47-743"><a href="#cb47-743" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Help is available through documentation and direct contact</span>
 </code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

@@ -329,6 +329,14 @@ Mac's default Apple Clang compiler **does not support OpenMP**, which both packa
 brew install libomp
 ```
 
+:::{.callout-note}
+## About the Homebrew libomp warning
+
+Homebrew will warn that `libomp` was not symlinked and may suggest setting `LDFLAGS` and `CPPFLAGS` in your shell profile. You can **ignore this warning** for our purposes.
+
+`libomp` is Apple Clang's OpenMP library. The warning exists because Homebrew intentionally doesn't symlink it to avoid conflicts with Xcode. However, the `~/.R/Makevars` setup below routes R through **Homebrew GCC**, which uses its own OpenMP library (`libgomp`) — it never looks for `libomp` at all. The `LDFLAGS`/`CPPFLAGS` Homebrew suggests are only needed if you were using Apple Clang with OpenMP, which we are not.
+:::
+
 **Step 2 — Configure R to use Homebrew GCC:**
 
 Create (or edit) the file `~/.R/Makevars` to override the default compiler:
