@@ -255,28 +255,36 @@ If MoBPS or its dependencies fail to compile, ask your HPC support team to load 
 - Both packages compile C++ code, so a working compiler toolchain is required (see Step 1 above)
 :::
 
-Both packages are distributed as source tarballs from the MoBPS GitLab repository. The recommended approach is to **clone the repo and install from the local `.tar.gz` files** rather than from GitHub, which ensures you get the exact tested versions.
+Both packages are distributed as source tarballs from the public MoBPS GitHub repository. Download them first, then install from the local files.
 
 #### Get the Tarballs
 
-**Option A — Clone the MoBPS software repo (recommended):**
+**Option A — Download via browser:**
+
+Go to <https://github.com/tpook92/MoBPS> and download these two files from the root of the repository:
+
+- `RandomFieldsUtils_1.6.0.2.tar.gz`
+- `miraculix_1.6.0.2.tar.gz`
+
+**Option B — Download via curl (Mac / Linux / HPC):**
 
 ```bash
-git clone git@git.wur.nl:mobps/software.git ~/mobps-software
-# Files will be at:
-#   ~/mobps-software/RandomFieldsUtils_1.6.0.2.tar.gz
-#   ~/mobps-software/miraculix_1.6.0.2.tar.gz
-```
+mkdir -p ~/mobps-pkgs && cd ~/mobps-pkgs
 
-**Option B — Download only the tarballs** (if you don't need the full repo):
-
-```bash
-# Using curl (replace TOKEN if repo requires auth)
 curl -L -o RandomFieldsUtils_1.6.0.2.tar.gz \
-  https://git.wur.nl/mobps/software/-/raw/main/RandomFieldsUtils_1.6.0.2.tar.gz
+  https://raw.githubusercontent.com/tpook92/MoBPS/master/RandomFieldsUtils_1.6.0.2.tar.gz
 
 curl -L -o miraculix_1.6.0.2.tar.gz \
-  https://git.wur.nl/mobps/software/-/raw/main/miraculix_1.6.0.2.tar.gz
+  https://raw.githubusercontent.com/tpook92/MoBPS/master/miraculix_1.6.0.2.tar.gz
+```
+
+**Option C — Download via wget (common on HPC clusters):**
+
+```bash
+mkdir -p ~/mobps-pkgs && cd ~/mobps-pkgs
+
+wget https://raw.githubusercontent.com/tpook92/MoBPS/master/RandomFieldsUtils_1.6.0.2.tar.gz
+wget https://raw.githubusercontent.com/tpook92/MoBPS/master/miraculix_1.6.0.2.tar.gz
 ```
 
 ---
@@ -289,7 +297,7 @@ Windows users need **Rtools** installed (see Step 1). Then install from the tarb
 #| eval: false
 
 # Set path to folder containing the .tar.gz files
-pkg_dir <- "C:/Users/yourname/mobps-software"   # adjust to your path
+pkg_dir <- "C:/Users/yourname/mobps-pkgs"   # adjust to your download folder
 
 install.packages(
   file.path(pkg_dir, "RandomFieldsUtils_1.6.0.2.tar.gz"),
@@ -362,7 +370,7 @@ ls /opt/homebrew/bin/gcc-*
 ```{r}
 #| eval: false
 
-pkg_dir <- "~/mobps-software"   # adjust to your path
+pkg_dir <- "~/mobps-pkgs"   # adjust to your path
 
 install.packages(
   file.path(pkg_dir, "RandomFieldsUtils_1.6.0.2.tar.gz"),
@@ -378,7 +386,7 @@ install.packages(
 Or from the terminal:
 
 ```bash
-cd ~/mobps-software
+cd ~/mobps-pkgs
 R CMD INSTALL RandomFieldsUtils_1.6.0.2.tar.gz
 R CMD INSTALL miraculix_1.6.0.2.tar.gz
 ```
@@ -406,7 +414,7 @@ Then install from tarballs in R:
 ```{r}
 #| eval: false
 
-pkg_dir <- "~/mobps-software"   # adjust to your path
+pkg_dir <- "~/mobps-pkgs"   # adjust to your path
 
 install.packages(
   file.path(pkg_dir, "RandomFieldsUtils_1.6.0.2.tar.gz"),
@@ -422,7 +430,7 @@ install.packages(
 Or from bash directly:
 
 ```bash
-cd ~/mobps-software
+cd ~/mobps-pkgs
 R CMD INSTALL RandomFieldsUtils_1.6.0.2.tar.gz
 R CMD INSTALL miraculix_1.6.0.2.tar.gz
 ```
@@ -445,7 +453,7 @@ export R_LIBS_USER=~/R/library
 Then install from the tarballs:
 
 ```bash
-cd ~/mobps-software
+cd ~/mobps-pkgs
 
 R CMD INSTALL --library=~/R/library RandomFieldsUtils_1.6.0.2.tar.gz
 R CMD INSTALL --library=~/R/library miraculix_1.6.0.2.tar.gz
@@ -481,7 +489,7 @@ If your cluster uses Conda/Mamba (see Option 3 in Step 1), the compilers and Ope
 ```bash
 conda activate mobps
 
-cd ~/mobps-software
+cd ~/mobps-pkgs
 R CMD INSTALL RandomFieldsUtils_1.6.0.2.tar.gz
 R CMD INSTALL miraculix_1.6.0.2.tar.gz
 ```

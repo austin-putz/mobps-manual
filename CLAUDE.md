@@ -4,11 +4,19 @@
 
 When writing or improving chapters, **always reference the MoBPS source code** for accurate function signatures, parameters, and behavior.
 
-### Source Locations
+### Two Separate Repositories — Know Which to Use
+
+| Repo | URL | Who it's for | Local path |
+|------|-----|-------------|------------|
+| **Developer repo** (private) | `git@git.wur.nl:mobps/software.git` | Austin (developer) only — pull latest releases and tarballs | `~/Claude/MoBPS/software/` |
+| **Public repo** | `https://github.com/tpook92/MoBPS` | All users — what the manual references | N/A (online only) |
+
+**Never put the WUR GitLab URL (`git.wur.nl`) in any chapter or user-facing content.** All instructions in the manual must point to `https://github.com/tpook92/MoBPS` (branch: `master`).
+
+### Source Locations (for writing chapters)
 
 - **Full R package source:** `~/Claude/MoBPS/MoBPS/R/` — extracted from `MoBPS_1.13.15.tar.gz`, contains all function definitions (~40k lines)
 - **Workshop examples (working R scripts):** `~/Claude/MoBPS/software/MoBPS_Workshop_WIAS/` — real usage examples across Tasks 1–11
-- **Git repo (latest releases):** `~/Claude/MoBPS/software/` — cloned from `git@git.wur.nl:mobps/software.git`
 - **Man pages:** `~/Claude/MoBPS/MoBPS/man/` — parameter documentation in `.Rd` format
 
 ### How to Use
@@ -16,7 +24,8 @@ When writing or improving chapters, **always reference the MoBPS source code** f
 - Before writing/editing any chapter, read the relevant `.R` source files to verify function names, parameter names, defaults, and behavior
 - Use workshop scripts in `MoBPS_Workshop_WIAS/` as authoritative working examples
 - Do not invent or guess function signatures — always verify from source
-- If a new tarball appears in `~/Claude/MoBPS/software/` (e.g., `MoBPS_1.13.16.tar.gz`), extract it to `~/Claude/MoBPS/` to update the source reference
+- To update the local source: `cd ~/Claude/MoBPS/software && git pull` (uses the developer WUR GitLab repo)
+- If a new tarball appears after a pull (e.g., `MoBPS_1.13.16.tar.gz`), extract it: `cd ~/Claude/MoBPS && tar xzf software/MoBPS_1.13.16.tar.gz`
 
 ### Staleness Check
 
