@@ -616,6 +616,16 @@ population <- breeding.diploid(
 )
 ```
 
+```{r}
+#| eval: false
+
+# phenotype generation 2
+population <- breeding.diploid(
+  population,
+  phenotyping.gen = 2
+)
+```
+
 ### 3. Extract and Analyze Results
 
 Use `get.*()` functions to extract information:
@@ -623,13 +633,13 @@ Use `get.*()` functions to extract information:
 ```{r}
 #| eval: false
 
-# Get breeding values
+# Get breeding values of gen 2
 bv <- get.bv(population, gen = 2)
 
-# Get phenotypes
+# Get phenotypes of gen 2
 pheno <- get.pheno(population, gen = 2)
 
-# Calculate inbreeding
+# Calculate inbreeding for gen 2
 inbreeding <- inbreeding.exp(population, gen = 2)
 ```
 
@@ -644,10 +654,10 @@ Use built-in plotting functions:
 bv.development(population)
 
 # PCA plot
-get.pca(population, gen = 1:5)
+get.pca(population, gen = 1:2)
 
 # Kinship development
-kinship.development(population, gen = 1:5)
+kinship.development(population, gen = 1:2)
 ```
 
 ## The Population Object
