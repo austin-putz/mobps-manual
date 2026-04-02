@@ -62,44 +62,448 @@ Some Windows systems require **Rtools**:
 
 #### Mac Users
 
-Some Mac systems require **gfortran/homebrew**:
+Mac users need **Xcode Command Line Tools** and **gfortran** (the Mac equivalent of Rtools). The easiest path is via [Homebrew](https://brew.sh).
 
-1. Download from: <https://mac.r-project.org/tools/>
-2. Follow installation instructions for your macOS version
+**Step 1 — Install Xcode Command Line Tools:**
+
+```bash
+xcode-select --install
+```
+
+A dialog will appear asking you to install. Click "Install" and wait for it to complete. Verify with:
+
+```bash
+xcode-select -p
+# Should print: /Library/Developer/CommandLineTools
+```
+
+**Step 2 — Install Homebrew** (if not already installed):
+
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+For Apple Silicon (M1/M2/M3) Macs, follow any post-install instructions to add Homebrew to your `PATH`:
+
+```bash
+echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
+eval "$(/opt/homebrew/bin/brew shellenv)"
+```
+
+**Step 3 — Install gfortran via Homebrew:**
+
+```bash
+brew install gcc
+```
+
+This installs `gfortran` (bundled with GCC), which R needs to compile packages with Fortran code (including `miraculix`). Verify:
+
+```bash
+gfortran --version
+# Should print: GNU Fortran (Homebrew GCC ...) ...
+```
+
+**Step 4 — Optional: Install R via Homebrew** (if not already installed):
+
+```bash
+brew install --cask r
+```
+
+Or download the `.pkg` installer from <https://cran.r-project.org/bin/macosx/> if you prefer.
 
 #### Linux Users
 
-Usually no special prerequisites needed. Ensure build tools are installed:
+Linux setup varies depending on whether you have admin (sudo) privileges or are working on a shared HPC/cluster system.
+
+---
+
+##### Option 1: Desktop/Server with sudo Access
+
+Install build tools, gfortran, and supporting libraries:
 
 ```bash
-# Ubuntu/Debian
-sudo apt-get install build-essential gfortran
+# Ubuntu / Debian
+sudo apt-get update
+sudo apt-get install build-essential gfortran liblapack-dev libblas-dev \
+  libcurl4-openssl-dev libssl-dev libxml2-dev
 
-# Fedora/RHEL
-sudo dnf install gcc-gfortran
+# Fedora / RHEL / Rocky Linux / AlmaLinux
+sudo dnf install gcc gcc-gfortran gcc-c++ lapack-devel blas-devel \
+  libcurl-devel openssl-devel libxml2-devel make
+
+# openSUSE / SLES
+sudo zypper install gcc gcc-fortran gcc-c++ lapack-devel blas-devel \
+  libcurl-devel libopenssl-devel libxml2-devel
 ```
+
+Install R (if not already installed):
+
+```bash
+# Ubuntu / Debian — add CRAN repo for latest R
+sudo apt-get install --no-install-recommends r-base r-base-dev
+
+# Fedora / RHEL
+sudo dnf install R
+```
+
+---
+
+##### Option 2: HPC / Cluster (module system, no sudo required)
+
+Most HPC systems use **Environment Modules** (`module` command). Load R and the required compiler toolchain before starting R or submitting jobs.
+
+**Check what's available:**
+
+```bash
+module avail R
+module avail gcc
+module avail intel   # Intel compilers also work
+```
+
+**Load the modules** (adjust version numbers to what your cluster provides):
+
+```bash
+module load R/4.3.1          # or whatever version is available
+module load gcc/12.2.0       # provides gfortran
+module load openblas         # BLAS/LAPACK for linear algebra performance
+```
+
+**Make it persistent** — add to your `~/.bashrc` or `~/.bash_profile` so modules load automatically:
+
+```bash
+echo 'module load R/4.3.1' >> ~/.bashrc
+echo 'module load gcc/12.2.0' >> ~/.bashrc
+source ~/.bashrc
+```
+
+**In SLURM job scripts**, load modules at the top of the script:
+
+```bash
+#!/bin/bash
+#SBATCH --job-name=mobps_sim
+#SBATCH --cpus-per-task=4
+#SBATCH --mem=16G
+#SBATCH --time=02:00:00
+
+module load R/4.3.1
+module load gcc/12.2.0
+
+Rscript my_simulation.R
+```
+
+---
+
+##### Option 3: HPC / Cluster (no sudo, no module system)
+
+If your cluster lacks the needed modules, use **Conda/Mamba** to install R and compilers entirely in your home directory — no admin privileges needed.
+
+**Install Miniforge** (lightweight Conda with conda-forge defaults):
+
+```bash
+# Download and install Miniforge
+wget https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-x86_64.sh
+bash Miniforge3-Linux-x86_64.sh -b -p ~/miniforge3
+~/miniforge3/bin/conda init bash
+source ~/.bashrc
+```
+
+**Create an environment with R and compilers:**
+
+```bash
+conda create -n mobps -c conda-forge r-base r-devtools gfortran_linux-64 \
+  openblas lapack -y
+conda activate mobps
+```
+
+**Install R packages inside the environment** (same as normal — no sudo needed):
+
+```r
+install.packages("devtools")
+devtools::install_github("tpook92/MoBPS", subdir="pkg")
+```
+
+**Set a personal R library path** (useful even outside Conda, e.g. if R is already on the cluster but you want to install your own packages):
+
+```bash
+# Add to ~/.bashrc
+export R_LIBS_USER=~/R/library
+mkdir -p ~/R/library
+```
+
+Then in R, verify it's on your search path:
+
+```r
+.libPaths()
+# ~/R/library should appear first
+```
+
+:::{.callout-tip}
+## HPC Tip: Ask Your Sysadmin
+
+If MoBPS or its dependencies fail to compile, ask your HPC support team to load or install `gcc` with Fortran support (`gfortran`). Most clusters already have this — it may just need a `module load gcc` to activate it.
+:::
 
 ### Step 2: Install Performance Packages (Optional but Recommended)
 
-For **significant performance improvements** in large simulations:
+`RandomFieldsUtils` and `miraculix` provide **significant performance improvements** for large simulations by using SIMD CPU instructions and OpenMP multi-threading for genomic matrix operations. For serious simulations — especially on HPC — these are effectively required.
+
+:::{.callout-important}
+## Version and Install Order Matter
+
+- Always install **`RandomFieldsUtils` first**, then `miraculix`
+- Use **exactly version 1.6.0.2 of both** — this is the version Torsten currently recommends and that is known to work with MoBPS 1.13.x
+- Both packages compile C++ code, so a working compiler toolchain is required (see Step 1 above)
+:::
+
+Both packages are distributed as source tarballs from the MoBPS GitLab repository. The recommended approach is to **clone the repo and install from the local `.tar.gz` files** rather than from GitHub, which ensures you get the exact tested versions.
+
+#### Get the Tarballs
+
+**Option A — Clone the MoBPS software repo (recommended):**
+
+```bash
+git clone git@git.wur.nl:mobps/software.git ~/mobps-software
+# Files will be at:
+#   ~/mobps-software/RandomFieldsUtils_1.6.0.2.tar.gz
+#   ~/mobps-software/miraculix_1.6.0.2.tar.gz
+```
+
+**Option B — Download only the tarballs** (if you don't need the full repo):
+
+```bash
+# Using curl (replace TOKEN if repo requires auth)
+curl -L -o RandomFieldsUtils_1.6.0.2.tar.gz \
+  https://git.wur.nl/mobps/software/-/raw/main/RandomFieldsUtils_1.6.0.2.tar.gz
+
+curl -L -o miraculix_1.6.0.2.tar.gz \
+  https://git.wur.nl/mobps/software/-/raw/main/miraculix_1.6.0.2.tar.gz
+```
+
+---
+
+#### Installing on Windows
+
+Windows users need **Rtools** installed (see Step 1). Then install from the tarballs in R:
 
 ```{r}
 #| eval: false
 
-# Install devtools if not already installed
-if (!require("devtools")) install.packages("devtools")
+# Set path to folder containing the .tar.gz files
+pkg_dir <- "C:/Users/yourname/mobps-software"   # adjust to your path
 
-# Install RandomFieldsUtils (install this FIRST)
-devtools::install_github("tpook92/RandomFieldsUtils")
+install.packages(
+  file.path(pkg_dir, "RandomFieldsUtils_1.6.0.2.tar.gz"),
+  repos = NULL, type = "source"
+)
 
-# Then install miraculix (install SECOND)
-devtools::install_github("tpook92/miraculix")
+install.packages(
+  file.path(pkg_dir, "miraculix_1.6.0.2.tar.gz"),
+  repos = NULL, type = "source"
+)
 ```
 
-**Important:**
-- Install `RandomFieldsUtils` **before** `miraculix`
-- Use compatible versions (both v1.6.0.2 recommended)
-- These packages dramatically speed up genomic computations
+Or equivalently from a terminal (Command Prompt or PowerShell):
+
+```bash
+R CMD INSTALL RandomFieldsUtils_1.6.0.2.tar.gz
+R CMD INSTALL miraculix_1.6.0.2.tar.gz
+```
+
+---
+
+#### Installing on Mac
+
+Mac's default Apple Clang compiler **does not support OpenMP**, which both packages require. You must first configure R to use GCC (installed via Homebrew in Step 1) and install `libomp`.
+
+**Step 1 — Install OpenMP support via Homebrew:**
+
+```bash
+brew install libomp
+```
+
+**Step 2 — Configure R to use Homebrew GCC:**
+
+Create (or edit) the file `~/.R/Makevars` to override the default compiler:
+
+```bash
+mkdir -p ~/.R
+```
+
+Then create `~/.R/Makevars` with the following content (adjust GCC version number to match what `brew install gcc` installed — check with `ls /opt/homebrew/bin/gcc*`):
+
+```makefile
+# ~/.R/Makevars
+CC=/opt/homebrew/bin/gcc-14
+CXX=/opt/homebrew/bin/g++-14
+CXX11=/opt/homebrew/bin/g++-14
+CXX14=/opt/homebrew/bin/g++-14
+CXX17=/opt/homebrew/bin/g++-14
+FC=/opt/homebrew/bin/gfortran-14
+F77=/opt/homebrew/bin/gfortran-14
+OBJC=/opt/homebrew/bin/gcc-14
+
+# OpenMP flags
+SHLIB_OPENMP_CFLAGS=-fopenmp
+SHLIB_OPENMP_CXXFLAGS=-fopenmp
+SHLIB_OPENMP_FFLAGS=-fopenmp
+```
+
+:::{.callout-tip}
+## Finding your GCC version number
+
+```bash
+ls /opt/homebrew/bin/gcc-*
+# e.g. /opt/homebrew/bin/gcc-14  → use 14
+```
+:::
+
+**Step 3 — Install from tarballs in R:**
+
+```{r}
+#| eval: false
+
+pkg_dir <- "~/mobps-software"   # adjust to your path
+
+install.packages(
+  file.path(pkg_dir, "RandomFieldsUtils_1.6.0.2.tar.gz"),
+  repos = NULL, type = "source"
+)
+
+install.packages(
+  file.path(pkg_dir, "miraculix_1.6.0.2.tar.gz"),
+  repos = NULL, type = "source"
+)
+```
+
+Or from the terminal:
+
+```bash
+cd ~/mobps-software
+R CMD INSTALL RandomFieldsUtils_1.6.0.2.tar.gz
+R CMD INSTALL miraculix_1.6.0.2.tar.gz
+```
+
+:::{.callout-note}
+## Apple Silicon (M1/M2/M3) Note
+
+The packages use x86 SIMD instructions (AVX/SSE) that are not natively available on Apple Silicon. The `configure.ac` in both packages detects the architecture and falls back to a non-SIMD build automatically — you will still get a working install, just without the maximum SIMD speedup. The OpenMP parallelism still works and provides meaningful gains.
+:::
+
+---
+
+#### Installing on Linux with sudo
+
+```bash
+# Ubuntu/Debian — ensure build tools are present (see Step 1)
+sudo apt-get install libgomp1
+
+# Fedora/RHEL
+sudo dnf install libgomp
+```
+
+Then install from tarballs in R:
+
+```{r}
+#| eval: false
+
+pkg_dir <- "~/mobps-software"   # adjust to your path
+
+install.packages(
+  file.path(pkg_dir, "RandomFieldsUtils_1.6.0.2.tar.gz"),
+  repos = NULL, type = "source"
+)
+
+install.packages(
+  file.path(pkg_dir, "miraculix_1.6.0.2.tar.gz"),
+  repos = NULL, type = "source"
+)
+```
+
+Or from bash directly:
+
+```bash
+cd ~/mobps-software
+R CMD INSTALL RandomFieldsUtils_1.6.0.2.tar.gz
+R CMD INSTALL miraculix_1.6.0.2.tar.gz
+```
+
+---
+
+#### Installing on HPC / Cluster (module system)
+
+Load the required modules first, then install into your personal R library:
+
+```bash
+module load R/4.3.1
+module load gcc/12.2.0      # must include gfortran
+
+# Ensure personal library exists
+mkdir -p ~/R/library
+export R_LIBS_USER=~/R/library
+```
+
+Then install from the tarballs:
+
+```bash
+cd ~/mobps-software
+
+R CMD INSTALL --library=~/R/library RandomFieldsUtils_1.6.0.2.tar.gz
+R CMD INSTALL --library=~/R/library miraculix_1.6.0.2.tar.gz
+```
+
+Add the library path to your `~/.bashrc` so R always finds these packages:
+
+```bash
+echo 'export R_LIBS_USER=~/R/library' >> ~/.bashrc
+```
+
+And add the same to the top of your SLURM job scripts:
+
+```bash
+#!/bin/bash
+#SBATCH --job-name=mobps_sim
+#SBATCH --cpus-per-task=8
+#SBATCH --mem=32G
+
+module load R/4.3.1
+module load gcc/12.2.0
+
+export R_LIBS_USER=~/R/library
+Rscript my_simulation.R
+```
+
+---
+
+#### Installing on HPC without sudo or modules (Conda)
+
+If your cluster uses Conda/Mamba (see Option 3 in Step 1), the compilers and OpenMP support are already bundled in the environment. Just activate it and install:
+
+```bash
+conda activate mobps
+
+cd ~/mobps-software
+R CMD INSTALL RandomFieldsUtils_1.6.0.2.tar.gz
+R CMD INSTALL miraculix_1.6.0.2.tar.gz
+```
+
+---
+
+#### Verify the Installation
+
+In R, confirm both packages load without errors:
+
+```{r}
+#| eval: false
+
+library(RandomFieldsUtils)
+library(miraculix)
+
+# Check versions
+packageVersion("RandomFieldsUtils")  # should be 1.6.0.2
+packageVersion("miraculix")          # should be 1.6.0.2
+```
+
+If `miraculix` loads successfully, MoBPS will automatically detect and use it for faster genomic computations — no extra configuration needed.
 
 ### Step 3: Install MoBPS
 

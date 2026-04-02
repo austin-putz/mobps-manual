@@ -442,24 +442,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>pop_uniform <span class="ot">&lt;-</span> <span class="fu">creating.diploid</span>(</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">nsnp =</span> <span class="dv">1000</span>,</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">nindi =</span> <span class="dv">100</span>,</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">beta_shape1 =</span> <span class="dv">1</span>,      <span class="co"># Beta(1,1) = Uniform(0,1)</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">beta_shape2 =</span> <span class="dv">1</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">beta.shape1 =</span> <span class="dv">1</span>,      <span class="co"># Beta(1,1) = Uniform(0,1)</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">beta.shape2 =</span> <span class="dv">1</span></span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Common variants (higher MAF)</span></span>
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>pop_common <span class="ot">&lt;-</span> <span class="fu">creating.diploid</span>(</span>
 <span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">nsnp =</span> <span class="dv">1000</span>,</span>
 <span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">nindi =</span> <span class="dv">100</span>,</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">beta_shape1 =</span> <span class="dv">2</span>,      <span class="co"># Beta(2,2) concentrates near 0.5</span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">beta_shape2 =</span> <span class="dv">2</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">beta.shape1 =</span> <span class="dv">2</span>,      <span class="co"># Beta(2,2) concentrates near 0.5</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">beta.shape2 =</span> <span class="dv">2</span></span>
 <span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Rare variants (low MAF)</span></span>
 <span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>pop_rare <span class="ot">&lt;-</span> <span class="fu">creating.diploid</span>(</span>
 <span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">nsnp =</span> <span class="dv">1000</span>,</span>
 <span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">nindi =</span> <span class="dv">100</span>,</span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">beta_shape1 =</span> <span class="fl">0.5</span>,    <span class="co"># Beta(0.5,0.5) concentrates near 0 and 1</span></span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">beta_shape2 =</span> <span class="fl">0.5</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">beta.shape1 =</span> <span class="fl">0.5</span>,    <span class="co"># Beta(0.5,0.5) concentrates near 0 and 1</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">beta.shape2 =</span> <span class="fl">0.5</span></span>
 <span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="quarto-figure quarto-figure-center">
@@ -478,7 +478,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Real populations often have many rare variants and fewer common variants. Use <code>beta_shape1 = 0.3, beta_shape2 = 1.5</code> to approximate this.</p>
+<p>Real populations often have many rare variants and fewer common variants. Use <code>beta.shape1 = 0.3, beta.shape2 = 1.5</code> to approximate this.</p>
 </div>
 </div>
 </section>
@@ -607,13 +607,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 data-number="4.5.2" class="anchored" data-anchor-id="from-plink-files"><span class="header-section-number">4.5.2</span> From PLINK Files</h3>
 <p>PLINK (.ped/.map or .bed/.bim/.fam) is also widely used:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Import .ped and .map files</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>ped_data <span class="ot">&lt;-</span> <span class="fu">read.pedmap</span>(<span class="st">"path/to/data.ped"</span>, <span class="st">"path/to/data.map"</span>)</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Create population from imported data</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>population <span class="ot">&lt;-</span> <span class="fu">creating.diploid</span>(</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">dataset =</span> ped_data<span class="sc">$</span>dataset,  <span class="co"># Genotype matrix</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">map =</span> ped_data<span class="sc">$</span>map,           <span class="co"># Genetic map</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># MoBPS recommends converting PLINK files to VCF format for easy import.</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Command line example (using PLINK software):</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># plink --file mydata --recode vcf --out mydata</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Then import the VCF:</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>population <span class="ot">&lt;-</span> <span class="fu">creating.diploid</span>(</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">vcf =</span> <span class="st">"mydata.vcf"</span>,</span>
 <span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">n.additive =</span> <span class="dv">100</span></span>
 <span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -712,7 +712,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">n.additive =</span> <span class="dv">100</span>,</span>
 <span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">founder.pool =</span> <span class="dv">2</span>,           <span class="co"># Mark as pool 2</span></span>
 <span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">name.cohort =</span> <span class="st">"Breed_B"</span>,</span>
-<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">freq =</span> <span class="st">"diff"</span>               <span class="co"># Different frequencies</span></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">freq =</span> <span class="st">"beta"</span>               <span class="co"># Different frequencies</span></span>
 <span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><strong>Uses for founder pools:</strong> - Model crossbreeding programs - Track breed composition (admixture) - Assign breed-specific QTL effects - Study heterosis</p>
@@ -815,8 +815,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">template.chip =</span> <span class="st">"cattle"</span>,</span>
 <span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">n.additive =</span> <span class="dv">100</span>,</span>
 <span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">n.dominant =</span> <span class="dv">20</span>,</span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">beta_shape1 =</span> <span class="fl">0.5</span>,      <span class="co"># Some rare variants</span></span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">beta_shape2 =</span> <span class="fl">1.2</span>,</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">beta.shape1 =</span> <span class="fl">0.5</span>,      <span class="co"># Some rare variants</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">beta.shape2 =</span> <span class="fl">1.2</span>,</span>
 <span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">share.genotyped =</span> <span class="fl">0.8</span>,   <span class="co"># 80% genotyped</span></span>
 <span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">sex.quota =</span> <span class="fl">0.7</span>,         <span class="co"># More females (dairy)</span></span>
 <span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">var.target =</span> <span class="dv">100</span>,</span>
@@ -846,7 +846,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>cross_pop <span class="ot">&lt;-</span> <span class="fu">creating.diploid</span>(</span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">nsnp =</span> <span class="dv">10000</span>, <span class="at">nindi =</span> <span class="dv">100</span>, <span class="at">n.additive =</span> <span class="dv">100</span>,</span>
 <span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">founder.pool =</span> <span class="dv">1</span>, <span class="at">name.cohort =</span> <span class="st">"BreedA"</span>,</span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">beta_shape1 =</span> <span class="dv">2</span>, <span class="at">beta_shape2 =</span> <span class="dv">2</span>  <span class="co"># Common variants</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">beta.shape1 =</span> <span class="dv">2</span>, <span class="at">beta.shape2 =</span> <span class="dv">2</span>  <span class="co"># Common variants</span></span>
 <span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Breed B (different frequencies)</span></span>
@@ -854,8 +854,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">population =</span> cross_pop,</span>
 <span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">nsnp =</span> <span class="dv">10000</span>, <span class="at">nindi =</span> <span class="dv">100</span>, <span class="at">n.additive =</span> <span class="dv">100</span>,</span>
 <span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">founder.pool =</span> <span class="dv">2</span>, <span class="at">name.cohort =</span> <span class="st">"BreedB"</span>,</span>
-<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">beta_shape1 =</span> <span class="fl">0.8</span>, <span class="at">beta_shape2 =</span> <span class="dv">2</span>,  <span class="co"># Rare variants</span></span>
-<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">freq =</span> <span class="st">"diff"</span>  <span class="co"># Independent frequencies from Breed A</span></span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">beta.shape1 =</span> <span class="fl">0.8</span>, <span class="at">beta.shape2 =</span> <span class="dv">2</span>,  <span class="co"># Rare variants</span></span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">freq =</span> <span class="st">"beta"</span>  <span class="co"># Independent frequencies from Breed A</span></span>
 <span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
@@ -1406,24 +1406,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb22-57"><a href="#cb22-57" aria-hidden="true" tabindex="-1"></a>pop_uniform <span class="ot">&lt;-</span> <span class="fu">creating.diploid</span>(</span>
 <span id="cb22-58"><a href="#cb22-58" aria-hidden="true" tabindex="-1"></a>  <span class="at">nsnp =</span> <span class="dv">1000</span>,</span>
 <span id="cb22-59"><a href="#cb22-59" aria-hidden="true" tabindex="-1"></a>  <span class="at">nindi =</span> <span class="dv">100</span>,</span>
-<span id="cb22-60"><a href="#cb22-60" aria-hidden="true" tabindex="-1"></a>  <span class="at">beta_shape1 =</span> <span class="dv">1</span>,      <span class="co"># Beta(1,1) = Uniform(0,1)</span></span>
-<span id="cb22-61"><a href="#cb22-61" aria-hidden="true" tabindex="-1"></a>  <span class="at">beta_shape2 =</span> <span class="dv">1</span></span>
+<span id="cb22-60"><a href="#cb22-60" aria-hidden="true" tabindex="-1"></a>  <span class="at">beta.shape1 =</span> <span class="dv">1</span>,      <span class="co"># Beta(1,1) = Uniform(0,1)</span></span>
+<span id="cb22-61"><a href="#cb22-61" aria-hidden="true" tabindex="-1"></a>  <span class="at">beta.shape2 =</span> <span class="dv">1</span></span>
 <span id="cb22-62"><a href="#cb22-62" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb22-63"><a href="#cb22-63" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-64"><a href="#cb22-64" aria-hidden="true" tabindex="-1"></a><span class="co"># Common variants (higher MAF)</span></span>
 <span id="cb22-65"><a href="#cb22-65" aria-hidden="true" tabindex="-1"></a>pop_common <span class="ot">&lt;-</span> <span class="fu">creating.diploid</span>(</span>
 <span id="cb22-66"><a href="#cb22-66" aria-hidden="true" tabindex="-1"></a>  <span class="at">nsnp =</span> <span class="dv">1000</span>,</span>
 <span id="cb22-67"><a href="#cb22-67" aria-hidden="true" tabindex="-1"></a>  <span class="at">nindi =</span> <span class="dv">100</span>,</span>
-<span id="cb22-68"><a href="#cb22-68" aria-hidden="true" tabindex="-1"></a>  <span class="at">beta_shape1 =</span> <span class="dv">2</span>,      <span class="co"># Beta(2,2) concentrates near 0.5</span></span>
-<span id="cb22-69"><a href="#cb22-69" aria-hidden="true" tabindex="-1"></a>  <span class="at">beta_shape2 =</span> <span class="dv">2</span></span>
+<span id="cb22-68"><a href="#cb22-68" aria-hidden="true" tabindex="-1"></a>  <span class="at">beta.shape1 =</span> <span class="dv">2</span>,      <span class="co"># Beta(2,2) concentrates near 0.5</span></span>
+<span id="cb22-69"><a href="#cb22-69" aria-hidden="true" tabindex="-1"></a>  <span class="at">beta.shape2 =</span> <span class="dv">2</span></span>
 <span id="cb22-70"><a href="#cb22-70" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb22-71"><a href="#cb22-71" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-72"><a href="#cb22-72" aria-hidden="true" tabindex="-1"></a><span class="co"># Rare variants (low MAF)</span></span>
 <span id="cb22-73"><a href="#cb22-73" aria-hidden="true" tabindex="-1"></a>pop_rare <span class="ot">&lt;-</span> <span class="fu">creating.diploid</span>(</span>
 <span id="cb22-74"><a href="#cb22-74" aria-hidden="true" tabindex="-1"></a>  <span class="at">nsnp =</span> <span class="dv">1000</span>,</span>
 <span id="cb22-75"><a href="#cb22-75" aria-hidden="true" tabindex="-1"></a>  <span class="at">nindi =</span> <span class="dv">100</span>,</span>
-<span id="cb22-76"><a href="#cb22-76" aria-hidden="true" tabindex="-1"></a>  <span class="at">beta_shape1 =</span> <span class="fl">0.5</span>,    <span class="co"># Beta(0.5,0.5) concentrates near 0 and 1</span></span>
-<span id="cb22-77"><a href="#cb22-77" aria-hidden="true" tabindex="-1"></a>  <span class="at">beta_shape2 =</span> <span class="fl">0.5</span></span>
+<span id="cb22-76"><a href="#cb22-76" aria-hidden="true" tabindex="-1"></a>  <span class="at">beta.shape1 =</span> <span class="fl">0.5</span>,    <span class="co"># Beta(0.5,0.5) concentrates near 0 and 1</span></span>
+<span id="cb22-77"><a href="#cb22-77" aria-hidden="true" tabindex="-1"></a>  <span class="at">beta.shape2 =</span> <span class="fl">0.5</span></span>
 <span id="cb22-78"><a href="#cb22-78" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb22-79"><a href="#cb22-79" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb22-80"><a href="#cb22-80" aria-hidden="true" tabindex="-1"></a></span>
@@ -1432,7 +1432,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb22-83"><a href="#cb22-83" aria-hidden="true" tabindex="-1"></a>:::{.callout-tip}</span>
 <span id="cb22-84"><a href="#cb22-84" aria-hidden="true" tabindex="-1"></a><span class="fu">## Realistic Allele Frequencies</span></span>
 <span id="cb22-85"><a href="#cb22-85" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-86"><a href="#cb22-86" aria-hidden="true" tabindex="-1"></a>Real populations often have many rare variants and fewer common variants. Use <span class="in">`beta_shape1 = 0.3, beta_shape2 = 1.5`</span> to approximate this.</span>
+<span id="cb22-86"><a href="#cb22-86" aria-hidden="true" tabindex="-1"></a>Real populations often have many rare variants and fewer common variants. Use <span class="in">`beta.shape1 = 0.3, beta.shape2 = 1.5`</span> to approximate this.</span>
 <span id="cb22-87"><a href="#cb22-87" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb22-88"><a href="#cb22-88" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-89"><a href="#cb22-89" aria-hidden="true" tabindex="-1"></a><span class="fu">### Initialization Modes</span></span>
@@ -1585,13 +1585,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb22-248"><a href="#cb22-248" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb22-249"><a href="#cb22-249" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
 <span id="cb22-250"><a href="#cb22-250" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-251"><a href="#cb22-251" aria-hidden="true" tabindex="-1"></a><span class="co"># Import .ped and .map files</span></span>
-<span id="cb22-252"><a href="#cb22-252" aria-hidden="true" tabindex="-1"></a>ped_data <span class="ot">&lt;-</span> <span class="fu">read.pedmap</span>(<span class="st">"path/to/data.ped"</span>, <span class="st">"path/to/data.map"</span>)</span>
-<span id="cb22-253"><a href="#cb22-253" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-254"><a href="#cb22-254" aria-hidden="true" tabindex="-1"></a><span class="co"># Create population from imported data</span></span>
-<span id="cb22-255"><a href="#cb22-255" aria-hidden="true" tabindex="-1"></a>population <span class="ot">&lt;-</span> <span class="fu">creating.diploid</span>(</span>
-<span id="cb22-256"><a href="#cb22-256" aria-hidden="true" tabindex="-1"></a>  <span class="at">dataset =</span> ped_data<span class="sc">$</span>dataset,  <span class="co"># Genotype matrix</span></span>
-<span id="cb22-257"><a href="#cb22-257" aria-hidden="true" tabindex="-1"></a>  <span class="at">map =</span> ped_data<span class="sc">$</span>map,           <span class="co"># Genetic map</span></span>
+<span id="cb22-251"><a href="#cb22-251" aria-hidden="true" tabindex="-1"></a><span class="co"># MoBPS recommends converting PLINK files to VCF format for easy import.</span></span>
+<span id="cb22-252"><a href="#cb22-252" aria-hidden="true" tabindex="-1"></a><span class="co"># Command line example (using PLINK software):</span></span>
+<span id="cb22-253"><a href="#cb22-253" aria-hidden="true" tabindex="-1"></a><span class="co"># plink --file mydata --recode vcf --out mydata</span></span>
+<span id="cb22-254"><a href="#cb22-254" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-255"><a href="#cb22-255" aria-hidden="true" tabindex="-1"></a><span class="co"># Then import the VCF:</span></span>
+<span id="cb22-256"><a href="#cb22-256" aria-hidden="true" tabindex="-1"></a>population <span class="ot">&lt;-</span> <span class="fu">creating.diploid</span>(</span>
+<span id="cb22-257"><a href="#cb22-257" aria-hidden="true" tabindex="-1"></a>  <span class="at">vcf =</span> <span class="st">"mydata.vcf"</span>,</span>
 <span id="cb22-258"><a href="#cb22-258" aria-hidden="true" tabindex="-1"></a>  <span class="at">n.additive =</span> <span class="dv">100</span></span>
 <span id="cb22-259"><a href="#cb22-259" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb22-260"><a href="#cb22-260" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
@@ -1699,7 +1699,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb22-370"><a href="#cb22-370" aria-hidden="true" tabindex="-1"></a>  <span class="at">n.additive =</span> <span class="dv">100</span>,</span>
 <span id="cb22-371"><a href="#cb22-371" aria-hidden="true" tabindex="-1"></a>  <span class="at">founder.pool =</span> <span class="dv">2</span>,           <span class="co"># Mark as pool 2</span></span>
 <span id="cb22-372"><a href="#cb22-372" aria-hidden="true" tabindex="-1"></a>  <span class="at">name.cohort =</span> <span class="st">"Breed_B"</span>,</span>
-<span id="cb22-373"><a href="#cb22-373" aria-hidden="true" tabindex="-1"></a>  <span class="at">freq =</span> <span class="st">"diff"</span>               <span class="co"># Different frequencies</span></span>
+<span id="cb22-373"><a href="#cb22-373" aria-hidden="true" tabindex="-1"></a>  <span class="at">freq =</span> <span class="st">"beta"</span>               <span class="co"># Different frequencies</span></span>
 <span id="cb22-374"><a href="#cb22-374" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb22-375"><a href="#cb22-375" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb22-376"><a href="#cb22-376" aria-hidden="true" tabindex="-1"></a></span>
@@ -1835,8 +1835,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb22-520"><a href="#cb22-520" aria-hidden="true" tabindex="-1"></a>  <span class="at">template.chip =</span> <span class="st">"cattle"</span>,</span>
 <span id="cb22-521"><a href="#cb22-521" aria-hidden="true" tabindex="-1"></a>  <span class="at">n.additive =</span> <span class="dv">100</span>,</span>
 <span id="cb22-522"><a href="#cb22-522" aria-hidden="true" tabindex="-1"></a>  <span class="at">n.dominant =</span> <span class="dv">20</span>,</span>
-<span id="cb22-523"><a href="#cb22-523" aria-hidden="true" tabindex="-1"></a>  <span class="at">beta_shape1 =</span> <span class="fl">0.5</span>,      <span class="co"># Some rare variants</span></span>
-<span id="cb22-524"><a href="#cb22-524" aria-hidden="true" tabindex="-1"></a>  <span class="at">beta_shape2 =</span> <span class="fl">1.2</span>,</span>
+<span id="cb22-523"><a href="#cb22-523" aria-hidden="true" tabindex="-1"></a>  <span class="at">beta.shape1 =</span> <span class="fl">0.5</span>,      <span class="co"># Some rare variants</span></span>
+<span id="cb22-524"><a href="#cb22-524" aria-hidden="true" tabindex="-1"></a>  <span class="at">beta.shape2 =</span> <span class="fl">1.2</span>,</span>
 <span id="cb22-525"><a href="#cb22-525" aria-hidden="true" tabindex="-1"></a>  <span class="at">share.genotyped =</span> <span class="fl">0.8</span>,   <span class="co"># 80% genotyped</span></span>
 <span id="cb22-526"><a href="#cb22-526" aria-hidden="true" tabindex="-1"></a>  <span class="at">sex.quota =</span> <span class="fl">0.7</span>,         <span class="co"># More females (dairy)</span></span>
 <span id="cb22-527"><a href="#cb22-527" aria-hidden="true" tabindex="-1"></a>  <span class="at">var.target =</span> <span class="dv">100</span>,</span>
@@ -1870,7 +1870,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb22-559"><a href="#cb22-559" aria-hidden="true" tabindex="-1"></a>cross_pop <span class="ot">&lt;-</span> <span class="fu">creating.diploid</span>(</span>
 <span id="cb22-560"><a href="#cb22-560" aria-hidden="true" tabindex="-1"></a>  <span class="at">nsnp =</span> <span class="dv">10000</span>, <span class="at">nindi =</span> <span class="dv">100</span>, <span class="at">n.additive =</span> <span class="dv">100</span>,</span>
 <span id="cb22-561"><a href="#cb22-561" aria-hidden="true" tabindex="-1"></a>  <span class="at">founder.pool =</span> <span class="dv">1</span>, <span class="at">name.cohort =</span> <span class="st">"BreedA"</span>,</span>
-<span id="cb22-562"><a href="#cb22-562" aria-hidden="true" tabindex="-1"></a>  <span class="at">beta_shape1 =</span> <span class="dv">2</span>, <span class="at">beta_shape2 =</span> <span class="dv">2</span>  <span class="co"># Common variants</span></span>
+<span id="cb22-562"><a href="#cb22-562" aria-hidden="true" tabindex="-1"></a>  <span class="at">beta.shape1 =</span> <span class="dv">2</span>, <span class="at">beta.shape2 =</span> <span class="dv">2</span>  <span class="co"># Common variants</span></span>
 <span id="cb22-563"><a href="#cb22-563" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb22-564"><a href="#cb22-564" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-565"><a href="#cb22-565" aria-hidden="true" tabindex="-1"></a><span class="co"># Breed B (different frequencies)</span></span>
@@ -1878,8 +1878,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb22-567"><a href="#cb22-567" aria-hidden="true" tabindex="-1"></a>  <span class="at">population =</span> cross_pop,</span>
 <span id="cb22-568"><a href="#cb22-568" aria-hidden="true" tabindex="-1"></a>  <span class="at">nsnp =</span> <span class="dv">10000</span>, <span class="at">nindi =</span> <span class="dv">100</span>, <span class="at">n.additive =</span> <span class="dv">100</span>,</span>
 <span id="cb22-569"><a href="#cb22-569" aria-hidden="true" tabindex="-1"></a>  <span class="at">founder.pool =</span> <span class="dv">2</span>, <span class="at">name.cohort =</span> <span class="st">"BreedB"</span>,</span>
-<span id="cb22-570"><a href="#cb22-570" aria-hidden="true" tabindex="-1"></a>  <span class="at">beta_shape1 =</span> <span class="fl">0.8</span>, <span class="at">beta_shape2 =</span> <span class="dv">2</span>,  <span class="co"># Rare variants</span></span>
-<span id="cb22-571"><a href="#cb22-571" aria-hidden="true" tabindex="-1"></a>  <span class="at">freq =</span> <span class="st">"diff"</span>  <span class="co"># Independent frequencies from Breed A</span></span>
+<span id="cb22-570"><a href="#cb22-570" aria-hidden="true" tabindex="-1"></a>  <span class="at">beta.shape1 =</span> <span class="fl">0.8</span>, <span class="at">beta.shape2 =</span> <span class="dv">2</span>,  <span class="co"># Rare variants</span></span>
+<span id="cb22-571"><a href="#cb22-571" aria-hidden="true" tabindex="-1"></a>  <span class="at">freq =</span> <span class="st">"beta"</span>  <span class="co"># Independent frequencies from Breed A</span></span>
 <span id="cb22-572"><a href="#cb22-572" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb22-573"><a href="#cb22-573" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb22-574"><a href="#cb22-574" aria-hidden="true" tabindex="-1"></a></span>

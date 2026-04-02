@@ -1,5 +1,41 @@
 # MoBPS Quarto Book - Future Work & Roadmap
 
+## MoBPS Source Code Reference
+
+When writing or improving chapters, **always reference the MoBPS source code** for accurate function signatures, parameters, and behavior.
+
+### Source Locations
+
+- **Full R package source:** `~/Claude/MoBPS/MoBPS/R/` — extracted from `MoBPS_1.13.15.tar.gz`, contains all function definitions (~40k lines)
+- **Workshop examples (working R scripts):** `~/Claude/MoBPS/software/MoBPS_Workshop_WIAS/` — real usage examples across Tasks 1–11
+- **Git repo (latest releases):** `~/Claude/MoBPS/software/` — cloned from `git@git.wur.nl:mobps/software.git`
+- **Man pages:** `~/Claude/MoBPS/MoBPS/man/` — parameter documentation in `.Rd` format
+
+### How to Use
+
+- Before writing/editing any chapter, read the relevant `.R` source files to verify function names, parameter names, defaults, and behavior
+- Use workshop scripts in `MoBPS_Workshop_WIAS/` as authoritative working examples
+- Do not invent or guess function signatures — always verify from source
+- If a new tarball appears in `~/Claude/MoBPS/software/` (e.g., `MoBPS_1.13.16.tar.gz`), extract it to `~/Claude/MoBPS/` to update the source reference
+
+### Staleness Check
+
+At the start of every conversation, run:
+
+```bash
+find ~/Claude/MoBPS/software/ -name "MoBPS_*.tar.gz" -newer ~/Claude/MoBPS/software/MoBPS_1.13.15.tar.gz 2>/dev/null
+# and check age:
+stat -f "%Sm" -t "%Y-%m-%d" ~/Claude/MoBPS/software/MoBPS_1.13.15.tar.gz
+```
+
+If the most recent `MoBPS_*.tar.gz` in `~/Claude/MoBPS/software/` is **older than 28 days**, warn the user:
+
+> "The MoBPS source tarball (`MoBPS_X.X.X.tar.gz`) is more than 28 days old. Consider pulling the latest release: `cd ~/Claude/MoBPS/software && git pull`"
+
+If a newer tarball is found than what is currently extracted in `~/Claude/MoBPS/MoBPS/`, remind the user to re-extract it.
+
+---
+
 ## Overview
 
 This document tracks what still needs to be done to make this Quarto book a comprehensive MoBPS cookbook.
