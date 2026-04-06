@@ -84,6 +84,7 @@ multi_cohorts <- get.bv(population,
 ```
 
 **Best practices:**
+
 - Use descriptive names: "TopSires", "TestGroup1", "Line_A"
 - Keep naming consistent across simulations
 - Use cohorts when generation number alone isn't enough
