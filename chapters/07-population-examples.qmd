@@ -119,7 +119,7 @@ pop <- creating.diploid(
   nsnp = 5000, nindi = 100,
   founder.pool = 2,
   name.cohort = "Breed_B",
-  freq = "diff"  # Different allele frequencies
+  freq = "beta"  # Different allele frequencies
 )
 
 # Trait only in Breed A
@@ -283,16 +283,13 @@ pop <- creating.diploid(
 ```{r}
 #| eval: false
 
-# Read PLINK .ped and .map files
-ped_data <- read.pedmap(
-  path_ped = "mydata.ped",
-  path_map = "mydata.map"
-)
+# MoBPS recommends converting PLINK files to VCF format for easy import.
+# Command line example (using PLINK software):
+# plink --file mydata --recode vcf --out mydata
 
-# Create population
+# Then import the VCF:
 pop <- creating.diploid(
-  dataset = ped_data$dataset,
-  map = ped_data$map,
+  vcf = "mydata.vcf",
   n.additive = 150,
   trait.name = "ImportedTrait"
 )

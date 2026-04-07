@@ -158,22 +158,22 @@ get.database(population, cohorts=get.cohorts(population))
 - Complex selection criteria
 - Combining multiple precise selections
 
-### Combining Selection Methods
+### Combining Extraction Methods
 
-You can mix and match these methods:
+You can mix and match with `gen`, `database`, and `cohorts` if needed for some reason as follows:
 
 ```{r}
 #| eval: false
 
-# add 3 generations
+# add 3 generations for example
 population <- breeding.diploid(population, selection.size = c(10, 10), breeding.size = c(50, 50))
 population <- breeding.diploid(population, selection.size = c(10, 10), breeding.size = c(50, 50))
 population <- breeding.diploid(population, selection.size = c(10, 10), breeding.size = c(50, 50))
-
 
 # Select from generations 4-5, specific males from gen 3, AND a cohort
 database <- matrix(c(3, 1, 21, 50), ncol = 4)
 
+# extract TBV vector based on gen + database + cohorts
 bv <- get.bv(population,
              gen = 4:5,              # All of gen 4 & 5
              database = database,     # Males 21-50 from gen 3
@@ -188,9 +188,9 @@ MoBPS has a flexible approach to sex:
 
 ### Traditional Two-Sex Systems
 
-By default, individuals are assigned male (1) or female (2):
+By default, individuals are assigned **male = 1** or **female = 2**:
 
-Using `sex.quota` argument:
+Using `sex.quota` argument to set the **percent of females**:
 
 ```{r}
 #| eval: false
