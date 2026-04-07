@@ -22,6 +22,8 @@ Let's simulate a realistic breeding program with:
 
 ## Step 1: Load MoBPS
 
+> Remember you need to install MoBPS first, visit chapter 1 to see how to install MoBPS on your OS. 
+
 ```{r}
 #| eval: false
 
