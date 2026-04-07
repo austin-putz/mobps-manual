@@ -86,6 +86,20 @@ Sys.setenv(PATH = paste(
 
 However, replace the `rtools44` to your version. 
 
+Also remember, you can add it to your PATH on Windows using `.Rprofile`
+
+```r
+# Make Rtools available
+if (dir.exists("C:/rtools44/usr/bin")) {
+  Sys.setenv(PATH = paste(
+    "C:/rtools44/usr/bin",
+    Sys.getenv("PATH"),
+    sep = ";"
+  ))
+}
+```
+
+And remember to **replace your version** (44 vs 45 or future version). 
 
 #### Mac Users
 
