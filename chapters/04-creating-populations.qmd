@@ -53,24 +53,24 @@ Allele frequencies dramatically affect genetic architecture:
 pop_uniform <- creating.diploid(
   nsnp = 1000,
   nindi = 100,
-  beta_shape1 = 1,      # Beta(1,1) = Uniform(0,1)
-  beta_shape2 = 1
+  beta.shape1 = 1,      # Beta(1,1) = Uniform(0,1)
+  beta.shape2 = 1
 )
 
 # Common variants (higher MAF)
 pop_common <- creating.diploid(
   nsnp = 1000,
   nindi = 100,
-  beta_shape1 = 2,      # Beta(2,2) concentrates near 0.5
-  beta_shape2 = 2
+  beta.shape1 = 2,      # Beta(2,2) concentrates near 0.5
+  beta.shape2 = 2
 )
 
 # Rare variants (low MAF)
 pop_rare <- creating.diploid(
   nsnp = 1000,
   nindi = 100,
-  beta_shape1 = 0.5,    # Beta(0.5,0.5) concentrates near 0 and 1
-  beta_shape2 = 0.5
+  beta.shape1 = 0.5,    # Beta(0.5,0.5) concentrates near 0 and 1
+  beta.shape2 = 0.5
 )
 ```
 
@@ -79,7 +79,7 @@ pop_rare <- creating.diploid(
 :::{.callout-tip}
 ## Realistic Allele Frequencies
 
-Real populations often have many rare variants and fewer common variants. Use `beta_shape1 = 0.3, beta_shape2 = 1.5` to approximate this.
+Real populations often have many rare variants and fewer common variants. Use `beta.shape1 = 0.3, beta.shape2 = 1.5` to approximate this.
 :::
 
 ### Initialization Modes
@@ -232,13 +232,13 @@ PLINK (.ped/.map or .bed/.bim/.fam) is also widely used:
 ```{r}
 #| eval: false
 
-# Import .ped and .map files
-ped_data <- read.pedmap("path/to/data.ped", "path/to/data.map")
+# MoBPS recommends converting PLINK files to VCF format for easy import.
+# Command line example (using PLINK software):
+# plink --file mydata --recode vcf --out mydata
 
-# Create population from imported data
+# Then import the VCF:
 population <- creating.diploid(
-  dataset = ped_data$dataset,  # Genotype matrix
-  map = ped_data$map,           # Genetic map
+  vcf = "mydata.vcf",
   n.additive = 100
 )
 ```
@@ -346,7 +346,7 @@ population <- creating.diploid(
   n.additive = 100,
   founder.pool = 2,           # Mark as pool 2
   name.cohort = "Breed_B",
-  freq = "diff"               # Different frequencies
+  freq = "beta"               # Different frequencies
 )
 ```
 
@@ -482,8 +482,8 @@ cattle <- creating.diploid(
   template.chip = "cattle",
   n.additive = 100,
   n.dominant = 20,
-  beta_shape1 = 0.5,      # Some rare variants
-  beta_shape2 = 1.2,
+  beta.shape1 = 0.5,      # Some rare variants
+  beta.shape2 = 1.2,
   share.genotyped = 0.8,   # 80% genotyped
   sex.quota = 0.7,         # More females (dairy)
   var.target = 100,
@@ -517,7 +517,7 @@ maize <- creating.diploid(
 cross_pop <- creating.diploid(
   nsnp = 10000, nindi = 100, n.additive = 100,
   founder.pool = 1, name.cohort = "BreedA",
-  beta_shape1 = 2, beta_shape2 = 2  # Common variants
+  beta.shape1 = 2, beta.shape2 = 2  # Common variants
 )
 
 # Breed B (different frequencies)
@@ -525,8 +525,8 @@ cross_pop <- creating.diploid(
   population = cross_pop,
   nsnp = 10000, nindi = 100, n.additive = 100,
   founder.pool = 2, name.cohort = "BreedB",
-  beta_shape1 = 0.8, beta_shape2 = 2,  # Rare variants
-  freq = "diff"  # Independent frequencies from Breed A
+  beta.shape1 = 0.8, beta.shape2 = 2,  # Rare variants
+  freq = "beta"  # Independent frequencies from Breed A
 )
 ```
 
