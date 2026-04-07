@@ -58,7 +58,34 @@ Some Windows systems require **Rtools**:
 
 1. Download from: <https://cran.r-project.org/bin/windows/Rtools/>
 2. Install the version matching your R version
-3. Verify with: `pkgbuild::find_rtools()`
+3. Verify with: `pkgbuild::find_rtools()` or `Sys.which("make")`
+
+If Rtools exists on Windows you will see the following from `Sys.which("make")`
+
+```r
+"C:\\rtools44\\usr\\bin\\make.exe
+```
+
+> Remember: You do **NOT** load `Rtools` with `library()` like other packages, `Rtools` is just the compilers needed for your machine
+
+To further test if `Rtools` is read to go, run the following in the R console:
+
+```r
+pkgbuild::check_build_tools(debug = TRUE)
+```
+
+If this is not working, you need to add `Rtools` to your **PATH** with 
+
+```r
+Sys.setenv(PATH = paste(
+  "C:/rtools44/usr/bin",
+  Sys.getenv("PATH"),
+  sep = ";"
+))
+```
+
+However, replace the `rtools44` to your version. 
+
 
 #### Mac Users
 
