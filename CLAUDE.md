@@ -6,42 +6,73 @@ When writing or improving chapters, **always reference the MoBPS source code** f
 
 ### Two Separate Repositories — Know Which to Use
 
-| Repo | URL | Who it's for | Local path |
-|------|-----|-------------|------------|
-| **Developer repo** (private) | `git@git.wur.nl:mobps/software.git` | Austin (developer) only — pull latest releases and tarballs | `~/Claude/MoBPS/software/` |
-| **Public repo** | `https://github.com/tpook92/MoBPS` | All users — what the manual references | N/A (online only) |
+| Repo | URL | Who it's for | Local path (macOS) | Local path (Windows) |
+|------|-----|-------------|------------|------------|
+| **Developer repo** (private) | `git@git.wur.nl:mobps/software.git` | Austin (developer) only — pull latest releases and tarballs | `~/Claude/MoBPS/software/` | `../MoBPS/` (relative to mobps-manual dir) |
+| **Public repo** | `https://github.com/tpook92/MoBPS` | All users — what the manual references | N/A (online only) | N/A (online only) |
+
+**Platform Detection:** Detect which platform you're running on and use the appropriate paths throughout this document.
 
 **Never put the WUR GitLab URL (`git.wur.nl`) in any chapter or user-facing content.** All instructions in the manual must point to `https://github.com/tpook92/MoBPS` (branch: `master`).
 
 ### Source Locations (for writing chapters)
 
+**On macOS:**
 - **Full R package source:** `~/Claude/MoBPS/MoBPS/R/` — extracted from `MoBPS_1.13.15.tar.gz`, contains all function definitions (~40k lines)
 - **Workshop examples (working R scripts):** `~/Claude/MoBPS/software/MoBPS_Workshop_WIAS/` — real usage examples across Tasks 1–11
 - **Man pages:** `~/Claude/MoBPS/MoBPS/man/` — parameter documentation in `.Rd` format
+
+**On Windows:**
+- **Full R package source:** `../MoBPS/R/` — extracted from tarball, contains all function definitions (~40k lines)
+- **Workshop examples (working R scripts):** `../MoBPS/software/MoBPS_Workshop_WIAS/` — real usage examples across Tasks 1–11
+- **Man pages:** `../MoBPS/man/` — parameter documentation in `.Rd` format
 
 ### How to Use
 
 - Before writing/editing any chapter, read the relevant `.R` source files to verify function names, parameter names, defaults, and behavior
 - Use workshop scripts in `MoBPS_Workshop_WIAS/` as authoritative working examples
 - Do not invent or guess function signatures — always verify from source
-- To update the local source: `cd ~/Claude/MoBPS/software && git pull` (uses the developer WUR GitLab repo)
-- If a new tarball appears after a pull (e.g., `MoBPS_1.13.16.tar.gz`), extract it: `cd ~/Claude/MoBPS && tar xzf software/MoBPS_1.13.16.tar.gz`
+
+**To update the local source (macOS):**
+```bash
+cd ~/Claude/MoBPS/software && git pull
+# If new tarball appears:
+cd ~/Claude/MoBPS && tar xzf software/MoBPS_1.13.16.tar.gz
+```
+
+**To update the local source (Windows):**
+```bash
+cd ../MoBPS && git pull
+# If new tarball appears, extract from the software/ directory
+```
 
 ### Staleness Check
 
-At the start of every conversation, run:
+At the start of every conversation, check for newer tarballs and tarball age.
 
+**On macOS:**
 ```bash
 find ~/Claude/MoBPS/software/ -name "MoBPS_*.tar.gz" -newer ~/Claude/MoBPS/software/MoBPS_1.13.15.tar.gz 2>/dev/null
 # and check age:
 stat -f "%Sm" -t "%Y-%m-%d" ~/Claude/MoBPS/software/MoBPS_1.13.15.tar.gz
 ```
 
-If the most recent `MoBPS_*.tar.gz` in `~/Claude/MoBPS/software/` is **older than 28 days**, warn the user:
+**On Windows (PowerShell/bash):**
+```bash
+# Check for tarball files in ../MoBPS directory
+ls ../MoBPS/*.tar.gz 2>/dev/null || ls ../MoBPS/software/*.tar.gz 2>/dev/null
+# On Windows, use Get-Item or ls to check modification date
+```
 
-> "The MoBPS source tarball (`MoBPS_X.X.X.tar.gz`) is more than 28 days old. Consider pulling the latest release: `cd ~/Claude/MoBPS/software && git pull`"
+If the most recent `MoBPS_*.tar.gz` is **older than 28 days**, warn the user:
 
-If a newer tarball is found than what is currently extracted in `~/Claude/MoBPS/MoBPS/`, remind the user to re-extract it.
+> "The MoBPS source tarball (`MoBPS_X.X.X.tar.gz`) is more than 28 days old. Consider pulling the latest release"
+
+Platform-specific pull commands:
+- **macOS:** `cd ~/Claude/MoBPS/software && git pull`
+- **Windows:** `cd ../MoBPS && git pull`
+
+If a newer tarball is found than what is currently extracted, remind the user to re-extract it.
 
 ---
 
