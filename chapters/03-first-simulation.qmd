@@ -41,8 +41,8 @@ set.seed(12345)
 
 # Create a founder population
 population <- creating.diploid(
-  nsnp = 10000,                # 10,000 SNP markers
-  nindi = 100,                 # 100 individuals (50 male, 50 female)
+  nsnp   = 10000,              # 10,000 SNP markers
+  nindi  = 100,                # 100 individuals (50 male, 50 female)
   chr.nr = 5,                  # 5 chromosomes
   chromosome.length = 2,       # 2 Morgan each (10M total)
   n.additive = 100,            # 100 additive QTLs
@@ -68,9 +68,9 @@ population <- creating.diploid(
 # Phenotype all individuals in generation 1
 population <- breeding.diploid(
   population,
-  phenotyping = "all",         # Phenotype everyone
+  phenotyping     = "all",     # Phenotype everyone
   phenotyping.gen = 1,         # From generation 1
-  heritability = 0.5           # h² = 0.5 (moderate heritability)
+  heritability    = 0.5        # h² = 0.5 (moderate heritability)
 )
 ```
 
@@ -88,8 +88,8 @@ population <- breeding.diploid(
 # Perform genomic prediction (GBLUP)
 population <- breeding.diploid(
   population,
-  bve = TRUE,                  # Calculate breeding value estimates
-  bve.gen = 1                  # Use generation 1 as training set
+  bve     = TRUE,                 # Calculate breeding value estimates
+  bve.gen = 1                     # Use generation 1 as training set
 )
 ```
 
@@ -114,9 +114,9 @@ The `bve = TRUE` uses MoBPS's internal GBLUP assuming **known heritability**. Fo
 population <- breeding.diploid(
   population,
   selection.size = c(10, 10),         # 10 males, 10 females
-  selection.criteria = "bve",         # Select on estimated BV
-  selection.m.cohorts = "Founders",   # Males from Founders
-  selection.f.cohorts = "Founders",   # Females from Founders
+  selection.criteria  = "bve",        # Select on estimated BV
+  selection.m.cohorts = "Founders_M",   # Males from Founders
+  selection.f.cohorts = "Founders_F",   # Females from Founders
   breeding.size = c(50, 50),          # Generate 50M + 50F offspring
   name.cohort = "Generation_2"        # Name the offspring
 )
@@ -127,9 +127,13 @@ population <- breeding.diploid(
 - The top 10 males (by EBV) were selected as sires
 - The top 10 females (by EBV) were selected as dams
 - 100 offspring (50 male, 50 female) were created via random mating
-- Selection intensity: 10% of males, 10% of females
+- Selection intensity: 20% of males, 20% of females
+
+> NOTE: If you use "Founders" instead of "Founders_M" it will calculate the wrong selection intensity
 
 ## Step 6: Repeat for Multiple Generations {#sec-repeat}
+
+> NOTE: `selection.gen` does not exist so separate into males and females in the last step!
 
 ```{r}
 #| eval: false
@@ -137,43 +141,46 @@ population <- breeding.diploid(
 # Simulate 10 generations
 for (gen in 2:10) {
 
-  # Phenotype the current generation
+  # 1. Phenotype the current generation
   population <- breeding.diploid(
     population,
-    phenotyping = "all",
+    phenotyping     = "all",
     phenotyping.gen = gen,
-    heritability = 0.5
+    heritability    = 0.5
   )
 
-  # Update genomic predictions using all data
+  # 2. Update genomic predictions (GEBV) using all data
   population <- breeding.diploid(
     population,
-    bve = TRUE,
+    bve     = TRUE,
     bve.gen = 1:gen                   # Cumulative training set
   )
 
-  # Select and breed
+  # 3. Select and 4. Mate to produce new offspring
   population <- breeding.diploid(
     population,
-    selection.size = c(10, 10),
-    selection.criteria = "bve",
-    selection.gen = gen,               # Select from current generation
-    breeding.size = c(50, 50),
-    name.cohort = paste0("Generation_", gen+1)
+    selection.size     = c(10, 10),    # 10 males and 10 females
+    selection.criteria = "bve",        # use EBV to select top animals
+    selection.m.gen    = gen,          # Select Males from current generation
+    selection.f.gen    = gen,          # Select Females from current generation
+    breeding.size      = c(50, 50),    # create 50 new males and 50 new females
+    name.cohort        = paste0("Generation_", gen+1) # name the next generation
   )
 }
 ```
 
 **What's happening in the loop?**
 
-1. Each generation is phenotyped
-2. Predictions are updated with cumulative data (generations 1 to current)
+1. Each generation is fully phenotyped
+2. GEBVs are updated with cumulative data (generations 1 to current)
 3. Top 10 males and 10 females are selected
 4. 100 offspring are produced
 
 ## Step 7: Analyze Results {#sec-analyze}
 
 ### Genetic Gain
+
+> NOTE: NOT Working right now
 
 ```{r}
 #| eval: false
@@ -187,14 +194,19 @@ This creates a plot showing:
 - Genetic gain over time
 - Standard deviation within generation
 
-### Extract Breeding Values
+### Extract True Breeding Value (TBV) Trend
 
 ```{r}
 #| eval: false
 
-# Get true breeding values for all generations
+# Get true breeding values (TBV) for all generations
 bv_all <- get.bv(population, gen = 1:11)
 
+# histogram
+hist(bv_all, col = "dodgerblue3")
+```
+
+```{r}
 # Calculate mean BV per generation
 mean_bv <- apply(bv_all, 2, mean)
 mean_bv
