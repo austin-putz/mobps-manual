@@ -203,7 +203,7 @@ population <- creating.diploid(
 )
 ```
 
-Using `sex.s` argument:
+The `sex.s` argument allows users to enter a vector of 1's and 2's for each sex:
 
 ```{r}
 #| eval: false
