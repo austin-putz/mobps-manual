@@ -1,6 +1,6 @@
 # Quarto build outputs
-# docs/ folder is NOT ignored - it's used for GitHub Pages
-# Only ignore HTML/PDF files in the root directory
+# docs/ folder is now ignored - GitHub Actions builds and deploys it
+docs/
 /*.html
 /*.pdf
 /.quarto/
