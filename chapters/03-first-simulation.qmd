@@ -27,7 +27,8 @@ Let's simulate a realistic breeding program with:
 ```{r}
 #| eval: false
 
-# Load the package
+# Load packages
+library(tidyverse)
 library(MoBPS)
 
 # Optional: Set seed for reproducibility
@@ -188,6 +189,7 @@ bv.development(population, gen = 1:11)
 ```
 
 This creates a plot showing:
+
 - Mean breeding value by generation
 - Genetic gain over time
 - Standard deviation within generation
@@ -200,91 +202,147 @@ The key is to extract generation and cohort information **for each individual** 
 #| eval: false
 
 # Method 1: Loop through each generation separately
-bv_by_gen <- data.frame()
+data_all_gens <- tibble()
 
+# loop over all 11 generations to extract info
 for (gen in 1:11) {
+  
   # Extract breeding values for this generation
+  # get.bv() returns a p x n matrix (p = number of traits, n = number of animals)
   bv <- get.bv(population, gen = gen)
 
   # Extract cohort names for each individual
   cohorts <- get.cohorts.individual(population, gen = gen, use.id = TRUE)
 
-  # Combine into data frame
-  gen_data <- data.frame(
-    generation = gen,
-    individual_id = names(cohorts),
-    cohort = as.character(cohorts),
-    bv = as.vector(bv),
-    stringsAsFactors = FALSE
+  # Combine gen + ID + cohort + TBV (bv) into a data frame
+  data_gen <- tibble(
+    Generation    = gen,                   # Generation
+    Ind_ID        = names(cohorts),        # Individual ID
+    Cohort        = as.character(cohorts), # convert cohorts vector to character
+    TBV           = as.numeric(bv)        # convert TBV matrix to vector
   )
 
-  bv_by_gen <- rbind(bv_by_gen, gen_data)
+  # stack new dataframe on top of last generation's data
+  data_all_gens <- bind_rows(data_all_gens, data_gen)
 }
 
-# View structure
-head(bv_by_gen)
+# remove temporary loop objects
+rm(bv); rm(cohorts); rm(data_gen)
 
-# Calculate mean BV per generation using aggregate
-mean_bv <- aggregate(bv ~ generation, data = bv_by_gen, FUN = mean)
-mean_bv
-
-# Or using dplyr (if installed)
-# library(dplyr)
-# bv_summary <- bv_by_gen %>%
-#   group_by(generation) %>%
-#   summarise(
-#     mean_bv = mean(bv),
-#     sd_bv = sd(bv),
-#     n = n()
-#   )
+# View structure of returned data frame (all data from gens 1:11)
+print(data_all_gens)
 ```
 
-Now we can properly visualize and analyze the data:
+We can aggregate by Generation to find means and variances
+
+```{r}
+# Use dplyr (if installed) to aggregate by generation
+data_summary <- data_all_gens %>%
+  group_by(Generation) %>%
+  summarise(
+    TBV_Mean = mean(TBV),
+    TBV_SD   = sd(TBV),
+    n        = n()
+  )
+
+# print results
+print(data_summary)
+```
+
+Now we can properly visualize and analyze the data. 
+Below is a plot of the true genetic gain for this replicate. 
 
 ```{r}
 #| eval: false
 
 # Plot mean BV by generation
-plot(mean_bv$generation, mean_bv$bv,
-     type = "b", lwd = 2, col = "dodgerblue3",
-     xlab = "Generation", ylab = "Mean Breeding Value",
-     main = "Genetic Gain Over Time")
-grid()
+ggplot(data_summary, aes(x=Generation, y=TBV_Mean)) +
+  geom_line(color="dodgerblue3") + 
+  geom_point(color="dodgerblue3") +
+  labs(
+    title = "Mean Breeding Value by Generation",
+    x     = "Generation",
+    y     = "Mean True Breeding Value (TBV)"
+  )
+```
 
+We can calculate the total (true) genetic gain for this simulation with the following:
+
+```{r}
 # Calculate genetic gain from generation 1 to 11
-genetic_gain <- mean_bv$bv[11] - mean_bv$bv[1]
-cat("Total genetic gain:", round(genetic_gain, 3), "genetic SD\n")
+genetic_gain <- data_summary$TBV_Mean[11] - data_summary$TBV_Mean[1]
+cat("Total genetic gain:", round(genetic_gain, 3), "\n")
+```
 
+Now we can plot a histogram of all TBVs from all generations: 
+
+```{r}
 # Histogram of all breeding values
-hist(bv_by_gen$bv, col = "dodgerblue3",
-     xlab = "Breeding Value", main = "Distribution of BV Across All Generations")
+ggplot(data_all_gens, aes(x=TBV)) +
+  geom_histogram(fill="dodgerblue3", color="white") +
+  labs(
+    title = "Distribution of TBVs from All Generations",
+    x = "True Breeding Value (TBV)"
+  )
 ```
 
 ### Inbreeding Analysis
 
+We can use helper functions to extract the **inbreeding coefficients**:
+
 ```{r}
 #| eval: false
 
-# Calculate genomic inbreeding for generation 11
+# Calculate inbreeding for generation 11 (A matrix I think - 'IBD' in help)
+# this returns a named numeric vector (IDs available)
 inbreeding_gen11 <- inbreeding.emp(population, gen = 11)
-mean(inbreeding_gen11)
 
+# calculate the mean for this group (gen 11 here)
+mean(inbreeding_gen11)
+```
+
+NOTE: `inbreeding.emp()` returns a named numeric vector (IDs) and represents the IBD inbreeding (F) coefficients
+
+If you need the IDs of these animals, use the `names()` function
+
+```{r}
+names(inbreeding_gen11)
+```
+
+We can extract the F (inbreeding) value for each generation using the following: 
+
+```{r}
 # Track inbreeding across generations
 inbreeding_trend <- numeric(11)
 for (gen in 1:11) {
   inbreeding_trend[gen] <- mean(inbreeding.emp(population, gen = gen))
 }
 
-# Plot inbreeding trend
-plot(1:11, inbreeding_trend,
-     type = "b",
-     xlab = "Generation",
-     ylab = "Mean Inbreeding Coefficient",
-     main = "Inbreeding Over Time",
-     col = "red", lwd = 2)
+# create a data frame with all results
+data_inbreeding <- tibble(
+  Generation = 1:11,
+  FVal = inbreeding_trend
+)
+```
+
+Plot the mean F value trend over time with the following: 
+
+```{r}
+# plot with ggplot2
+data_inbreeding %>%
+ggplot(., aes(x=Generation, y=FVal)) +
+  geom_line(color="orange2") +
+  geom_point(color="orange2") +
+  labs(
+    title = "Mean Inbreeding Over Time",
+    x     = "Generation",
+    y     = "Mean Inbreeding Coefficient (F)"
+  )
 ```
 
 ### Kinship Between Individuals
+
+We can extract the relationship among animals with `kinship.emp()`
 
 ```{r}
 #| eval: false
@@ -292,6 +350,13 @@ plot(1:11, inbreeding_trend,
 # Calculate kinship matrix for generation 11
 kinship_matrix <- kinship.emp(population, gen = 11)
 
+# print first 5 animals
+kinship_matrix[1:5, 1:5]
+```
+
+Calculate the average
+
+```{r}
 # Average kinship (off-diagonal elements)
 n <- nrow(kinship_matrix)
 avg_kinship <- sum(kinship_matrix - diag(diag(kinship_matrix))) / (n * (n - 1))
@@ -309,70 +374,7 @@ get.pca(population, gen = c(1, 5, 11))
 
 This creates a PCA plot showing how the population has diverged from founders.
 
-## Complete Script
 
-Here's the entire simulation in one script:
-
-```{r}
-#| eval: false
-
-library(MoBPS)
-set.seed(12345)
-
-# 1. Create founders
-population <- creating.diploid(
-  nsnp = 10000, nindi = 100, chr.nr = 5, chromosome.length = 2,
-  n.additive = 100, n.dominant = 20, share.genotyped = 1,
-  var.target = 1, name.cohort = "Founders"
-)
-
-# 2. Phenotype founders
-population <- breeding.diploid(
-  population, phenotyping = "all", phenotyping.gen = 1, heritability = 0.5
-)
-
-# 3. Initial genomic prediction
-population <- breeding.diploid(population, bve = TRUE, bve.gen = 1)
-
-# 4. Create first offspring generation
-population <- breeding.diploid(
-  population, selection.size = c(10, 10), selection.criteria = "bve",
-  selection.m.cohorts = "Founders", selection.f.cohorts = "Founders",
-  breeding.size = c(50, 50), name.cohort = "Generation_2"
-)
-
-# 5. Repeat for 9 more generations
-for (gen in 2:10) {
-  population <- breeding.diploid(
-    population, phenotyping = "all", phenotyping.gen = gen, heritability = 0.5
-  )
-  population <- breeding.diploid(population, bve = TRUE, bve.gen = 1:gen)
-  population <- breeding.diploid(
-    population, selection.size = c(10, 10), selection.criteria = "bve",
-    selection.gen = gen, breeding.size = c(50, 50),
-    name.cohort = paste0("Generation_", gen+1)
-  )
-}
-
-# 6. Analyze results
-bv.development(population, gen = 1:11)
-
-# Extract breeding values by generation
-bv_by_gen <- data.frame()
-for (gen in 1:11) {
-  bv <- get.bv(population, gen = gen)
-  cohorts <- get.cohorts.individual(population, gen = gen, use.id = TRUE)
-  gen_data <- data.frame(generation = gen, individual_id = names(cohorts),
-                         cohort = as.character(cohorts), bv = as.vector(bv))
-  bv_by_gen <- rbind(bv_by_gen, gen_data)
-}
-mean_bv <- aggregate(bv ~ generation, data = bv_by_gen, FUN = mean)
-genetic_gain <- mean_bv$bv[11] - mean_bv$bv[1]
-cat("Genetic gain:", round(genetic_gain, 3), "\n")
-
-inbreeding_gen11 <- inbreeding.emp(population, gen = 11)
-cat("Mean inbreeding gen 11:", round(mean(inbreeding_gen11), 4), "\n")
-```
 
 ## Understanding the Results
 
@@ -380,10 +382,10 @@ cat("Mean inbreeding gen 11:", round(mean(inbreeding_gen11), 4), "\n")
 
 After 10 generations of selection with these parameters, you should see:
 
-- **Genetic gain:** ~2-4 genetic standard deviations
-- **Inbreeding:** ~5-15% (due to small effective population size)
-- **Selection response:** Decreasing per generation (plateauing)
-- **Prediction accuracy:** Improving with cumulative training data
+- **Genetic gain:** ~10 units
+- **Inbreeding:** ~50% (due to small effective population size)
+- **Selection response:** Linear increase over generation (mostly)
+- **Prediction accuracy:** Improving with cumulative training data (and decrease in Ne)
 
 ### Why These Results?
 
@@ -402,7 +404,7 @@ Modify the simulation to explore different scenarios:
 #| eval: false
 
 # More extreme selection
-selection.size = c(5, 5)  # Top 5% of each sex
+selection.size = c(5, 5)  # Top 5 of each sex (vs 10)
 ```
 
 ### Larger Population
@@ -411,9 +413,9 @@ selection.size = c(5, 5)  # Top 5% of each sex
 #| eval: false
 
 # Reduce inbreeding
-nindi = 500,                # 500 founders
-selection.size = c(25, 25),  # But still select top 10%
-breeding.size = c(250, 250)  # Maintain pop size
+nindi = 500                  # 500 founders (250 each)
+selection.size = c(50, 50)   # But still select top 20%
+breeding.size = c(250, 250)  # Offspring numbers produce (250 of each sex)
 ```
 
 ### Multiple Traits
@@ -422,9 +424,9 @@ breeding.size = c(250, 250)  # Maintain pop size
 #| eval: false
 
 # Add a second trait
-n.additive = c(100, 80),           # Trait 1 & 2
-trait.cor = matrix(c(1, -0.3,      # Negative correlation
-                      -0.3, 1), nrow = 2)
+n.additive = c(100, 80)           # Trait 1 & 2
+trait.cor = matrix(c(1.0, -0.3,      # Negative correlation
+                    -0.3,  1.0), nrow = 2)
 ```
 
 ### Different Mating Strategies
@@ -433,7 +435,7 @@ trait.cor = matrix(c(1, -0.3,      # Negative correlation
 #| eval: false
 
 # Avoid inbreeding
-avoid.mating.halfsib = TRUE,
+avoid.mating.halfsib = TRUE
 avoid.mating.fullsib = TRUE
 ```
 
@@ -442,12 +444,14 @@ avoid.mating.fullsib = TRUE
 :::{.callout-warning}
 ## "Not enough males/females"
 
-**Problem:** Selection.size too large for available individuals.
+**Problem:** `selection.size` too large for available individuals.
 
 **Solution:** Check population size:
+
 ```{r}
 #| eval: false
-get.size(population, gen = 2)
+#| 
+get.size(population)  # outputs matrix of (number of generations) x 2 (Sex or Males/Females)
 ```
 Ensure `selection.size` doesn't exceed population size.
 :::
@@ -457,7 +461,7 @@ Ensure `selection.size` doesn't exceed population size.
 
 **Problem:** Forgot to phenotype before BVE.
 
-**Solution:** Always phenotype before prediction:
+**Solution:** Often you want to phenotype before prediction, but not always:
 ```{r}
 #| eval: false
 population <- breeding.diploid(population,
@@ -470,6 +474,7 @@ population <- breeding.diploid(population,
 ## Speeding Up Simulations
 
 For large-scale simulations:
+
 - Reduce `nsnp` (1000 SNPs often sufficient)
 - Use `miraculix` package for fast matrix operations
 - Set `copy.breeding.values = FALSE` to reduce memory
