@@ -30,17 +30,25 @@ The simplest approach: generate random genotypes.
 
 # Create a simple founder population
 population <- creating.diploid(
-  nsnp = 5000,          # 5,000 SNP markers
-  nindi = 200,          # 200 individuals
-  n.additive = 100      # 100 QTLs
+  nsnp       = 5000,    # 5,000 SNP markers
+  nindi      = 200,     # 200 individuals (100 each sex)
+  n.additive = 100      # 100 Additive QTLs
 )
 ```
 
 **Default behavior:**
+
 - Single chromosome (5 Morgan length)
 - Random genotypes with allele frequency ~ Uniform(0, 1)
 - 50% male, 50% female
 - All individuals diploid and unrelated
+
+:::{.callout-warning}
+## Cohort Names by Sex
+
+Remember MoBPS adds `_M` and `_F` to your cohort name by default and remember
+**1 = Male** and **2 = Female** for `database` usage later. 
+:::
 
 ### Controlling Allele Frequencies
 
@@ -51,8 +59,8 @@ Allele frequencies dramatically affect genetic architecture:
 
 # Uniform allele frequencies (default)
 pop_uniform <- creating.diploid(
-  nsnp = 1000,
-  nindi = 100,
+  nsnp        = 1000,
+  nindi       = 100,
   beta.shape1 = 1,      # Beta(1,1) = Uniform(0,1)
   beta.shape2 = 1
 )
