@@ -180,13 +180,11 @@ for (gen in 2:10) {
 
 ### Genetic Gain
 
-> NOTE: NOT Working right now
-
 ```{r}
 #| eval: false
 
 # Plot breeding value trends
-bv.development(population)
+bv.development(population, gen = 1:11)
 ```
 
 This creates a plot showing:
@@ -311,7 +309,7 @@ for (gen in 2:10) {
 }
 
 # 6. Analyze results
-bv.development(population)
+bv.development(population, gen = 1:11)
 bv_all <- get.bv(population, gen = 1:11)
 mean_bv <- apply(bv_all, 2, mean)
 cat("Genetic gain:", round(mean_bv[11] - mean_bv[1], 3), "\n")
