@@ -236,6 +236,8 @@ print(data_all_gens)
 We can aggregate by Generation to find means and variances
 
 ```{r}
+#| eval: false
+
 # Use dplyr (if installed) to aggregate by generation
 data_summary <- data_all_gens %>%
   group_by(Generation) %>%
@@ -269,6 +271,8 @@ ggplot(data_summary, aes(x=Generation, y=TBV_Mean)) +
 We can calculate the total (true) genetic gain for this simulation with the following:
 
 ```{r}
+#| eval: false
+
 # Calculate genetic gain from generation 1 to 11
 genetic_gain <- data_summary$TBV_Mean[11] - data_summary$TBV_Mean[1]
 cat("Total genetic gain:", round(genetic_gain, 3), "\n")
@@ -277,6 +281,8 @@ cat("Total genetic gain:", round(genetic_gain, 3), "\n")
 Now we can plot a histogram of all TBVs from all generations: 
 
 ```{r}
+#| eval: false
+
 # Histogram of all breeding values
 ggplot(data_all_gens, aes(x=TBV)) +
   geom_histogram(fill="dodgerblue3", color="white") +
@@ -306,12 +312,16 @@ NOTE: `inbreeding.emp()` returns a named numeric vector (IDs) and represents the
 If you need the IDs of these animals, use the `names()` function
 
 ```{r}
+#| eval: false
+
 names(inbreeding_gen11)
 ```
 
 We can extract the F (inbreeding) value for each generation using the following: 
 
 ```{r}
+#| eval: false
+
 # Track inbreeding across generations
 inbreeding_trend <- numeric(11)
 for (gen in 1:11) {
@@ -328,6 +338,8 @@ data_inbreeding <- tibble(
 Plot the mean F value trend over time with the following: 
 
 ```{r}
+#| eval: false
+
 # plot with ggplot2
 data_inbreeding %>%
 ggplot(., aes(x=Generation, y=FVal)) +
@@ -357,6 +369,8 @@ kinship_matrix[1:5, 1:5]
 Calculate the average
 
 ```{r}
+#| eval: false
+
 # Average kinship (off-diagonal elements)
 n <- nrow(kinship_matrix)
 avg_kinship <- sum(kinship_matrix - diag(diag(kinship_matrix))) / (n * (n - 1))
